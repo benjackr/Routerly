@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, 复制, Check, FlaskConical } from 'lucide-react';
-import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type Model能力, type PricingTier, type Limit, type Limit指标, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
+import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type Model能力, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
 
 type Provider = string;
 type ProviderModel = {
@@ -178,7 +178,7 @@ const METRIC_OPTIONS = [
 // ── Limit types ────────────────────────────────────────────────────────────────
 type LimitRow = {
   metric: Limit指标;
-  windowType: '时间段' | 'rolling';
+  windowType: 'period' | 'rolling';
   时间段: LimitPeriod;
   rollingAmount: string;
   rollingUnit: RollingUnit;
@@ -211,7 +211,7 @@ const ROLLING_UNIT_OPTIONS: { value: RollingUnit; label: string }[] = [
 ];
 
 const EMPTY_LIMIT_ROW: LimitRow = {
-  metric: 'cost', windowType: '时间段', 时间段: 'monthly',
+  metric: 'cost', windowType: 'period', 时间段: 'monthly',
   rollingAmount: '24', rollingUnit: 'hour', value: '',
 };
 
@@ -220,7 +220,7 @@ function rowToLimit(r: LimitRow): Limit {
   if (r.windowType === 'rolling') {
     return { metric: r.metric, windowType: 'rolling', rollingAmount: parseInt(r.rollingAmount) || 1, rollingUnit: r.rollingUnit, value: parseFloat(r.value) };
   }
-  return { metric: r.metric, windowType: '时间段', 时间段: r.时间段, value: parseFloat(r.value) };
+  return { metric: r.metric, windowType: 'period', 时间段: r.时间段, value: parseFloat(r.value) };
 }
 
 /** Convert a saved Limit back to a row (handles old `window` field for backward compat) */
@@ -233,7 +233,7 @@ function limitToRow(l: Limit): LimitRow {
   if (l.windowType === 'rolling') {
     return { metric: l.metric, windowType: 'rolling', 时间段: 'daily', rollingAmount: String(l.rollingAmount ?? 24), rollingUnit: l.rollingUnit ?? 'hour', value: String(l.value) };
   }
-  return { metric: l.metric, windowType: '时间段', 时间段: l.时间段 ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
+  return { metric: l.metric, windowType: 'period', 时间段: l.时间段 ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -302,8 +302,8 @@ export function ModelFormPage() {
   const prefillProvider = searchParams.get('provider');
   const prefillModelId = searchParams.get('modelId');
   const isEditing = Boolean(id);
-  const isNewModel = !isEditing && !isCloning;
   const isCloning = Boolean(cloneSourceId);
+  const isNewModel = !isEditing && !isCloning;
   const editingModelId = isEditing ? decodeURIComponent(id!) : null;
 
   const [catalog, setCatalog] = useState<ProviderCatalog>({});
@@ -637,9 +637,9 @@ export function ModelFormPage() {
     const resolved限制: LimitRow[] = model.limits?.length
       ? model.limits.map(limitToRow)
       : [
-          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'daily',   value: model.globalThresholds.daily   })] : []),
-          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'weekly',  value: model.globalThresholds.weekly  })] : []),
-          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'monthly', value: model.globalThresholds.monthly })] : []),
+          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'daily',   value: model.globalThresholds.daily   })] : []),
+          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'weekly',  value: model.globalThresholds.weekly  })] : []),
+          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'monthly', value: model.globalThresholds.monthly })] : []),
         ];
 
     setLimitRows(resolved限制);
