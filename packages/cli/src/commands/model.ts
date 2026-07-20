@@ -589,5 +589,86 @@ Examples:
       console.log(chalk.gray(`\n${entries.length} model${entries.length !== 1 ? 's' : ''} shown. ★ = configured in Routerly.`));
     });
 
+  // ── Fetch models from a provider's /v1/models endpoint ────────────────
+  cmd.command('fetch')
+    .description('Fetch models from a provider\'s OpenAI-compatible /v1/models endpoint')
+    .requiredOption('--endpoint <url>', 'Provider endpoint URL (e.g. https://api.openai.com/v1)')
+    .option('--api-key <key>', 'API key for the provider endpoint')
+    .option('--import', 'Import all discovered models automatically')
+    .option('--provider <name>', 'Provider name to use when importing (default: custom)')
+    .option('--json', 'Output raw JSON')
+    .addHelpText('after', `
+Examples:
+  routerly model fetch --endpoint https://api.openai.com/v1 --api-key sk-...
+  routerly model fetch --endpoint http://localhost:11434/v1 --import
+  routerly model fetch --endpoint https://api.openai.com/v1 --api-key sk-... --import --provider openai
+`)
+    .action(async (opts: { endpoint: string; apiKey?: string; json?: boolean; import?: boolean; provider?: string }) => {
+      const provider = opts.provider || 'custom';
+
+      // Step 1: Discover models
+      console.log(chalk.cyan(`Discovering models from ${opts.endpoint}...`));
+      let result: { success: boolean; models: Array<{ id: string; object: string; created: number }>; error?: string };
+      try {
+        result = await api('POST', '/api/models/discover', { endpoint: opts.endpoint, apiKey: opts.apiKey });
+      } catch (err) {
+        console.error(chalk.red(`Error: ${(err as Error).message}`));
+        process.exit(1);
+      }
+
+      if (!result.success) {
+        console.error(chalk.red(`Discovery failed: ${result.error}`));
+        process.exit(1);
+      }
+
+      if (result.models.length === 0) {
+        console.log(chalk.yellow('No models returned by the endpoint.'));
+        return;
+      }
+
+      // Step 2: Display
+      if (opts.json) {
+        console.log(JSON.stringify(result.models, null, 2));
+        return;
+      }
+
+      console.log(chalk.green(`\nFound ${result.models.length} model(s):`));
+      const table = new Table({
+        head: ['Model ID', 'Owned By', 'Created'],
+        style: { head: ['blue'] },
+        colWidths: [50, 20, 20],
+      });
+      for (const m of result.models) {
+        table.push([
+          m.id,
+          m.owned_by || '-',
+          m.created ? new Date(m.created * 1000).toISOString().split('T')[0] : '-',
+        ]);
+      }
+      console.log(table.toString());
+
+      // Step 3: Import (auto or interactive)
+      if (opts.import) {
+        // Auto-import all
+        console.log(chalk.cyan(`\nImporting ${result.models.length} model(s) as "${provider}"...`));
+        try {
+          const modelIds = result.models.map(m => m.id);
+          const importResult = await api('POST', '/api/models/import', {
+            provider,
+            endpoint: opts.endpoint,
+            apiKey: opts.apiKey,
+            modelIds,
+          }) as { imported: number; total: number };
+          console.log(chalk.green(`Imported ${importResult.imported}/${importResult.total} model(s).`));
+        } catch (err) {
+          console.error(chalk.red(`Import error: ${(err as Error).message}`));
+          process.exit(1);
+        }
+      } else {
+        console.log(chalk.gray(`\nTip: run with --import to import these models, or visit the dashboard to import interactively.`));
+      }
+    });
+
+
   return cmd;
 }
