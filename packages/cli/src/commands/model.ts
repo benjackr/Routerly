@@ -608,7 +608,7 @@ Examples:
 
       // Step 1: Discover models
       console.log(chalk.cyan(`Discovering models from ${opts.endpoint}...`));
-      let result: { success: boolean; models: Array<{ id: string; object: string; created: number }>; error?: string };
+      let result: { success: boolean; models: Array<{ id: string; object: string; created: number; owned_by: string }>; error?: string };
       try {
         result = await api('POST', '/api/models/discover', { endpoint: opts.endpoint, apiKey: opts.apiKey });
       } catch (err) {
