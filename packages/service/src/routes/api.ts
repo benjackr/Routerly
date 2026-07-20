@@ -16,6 +16,7 @@ import { catalogFetcher } from '../catalog/fetcher.js';
 import { syncModelsFromCatalog } from '../catalog/sync.js';
 import { z } from 'zod';
 import { getTrace } from '../routing/traceStore.js';
+import { discoverModels } from '../providers/discover.js';
 import { getProviderAdapter } from '../providers/index.js';
 import { sendTestNotification } from '../notifications/sender.js';
 import { emitEvent } from '../notifications/emitter.js';
@@ -691,7 +692,43 @@ export const apiRoutes: FastifyPluginAsync = async (fastify) => {
     return reply.status(204).send();
   });
 
-  // ── Model catalog (dynamic, cross-referenced with configured models) ─────────
+  // ── Model auto-discovery ──────────────────────────────────────────────
+fastify.post<{ Body: { endpoint: string; apiKey?: string } }>('/api/models/discover', async (req, reply) => {
+  if (!requirePerm(req, 'model:write', reply)) return;
+  const { endpoint, apiKey } = req.body;
+  if (!endpoint) return reply.status(400).send({ error: 'endpoint required' });
+  const result = await discoverModels(endpoint, apiKey);
+  return reply.send(result);
+});
+fastify.post<{ Body: { provider: string; endpoint: string; apiKey?: string; modelIds: string[] } }>('/api/models/import', async (req, reply) => {
+  if (!requirePerm(req, 'model:write', reply)) return;
+  const { provider, endpoint, apiKey, modelIds } = req.body;
+  if (!provider || !endpoint || !modelIds?.length) {
+    return reply.status(400).send({ error: 'provider, endpoint, and modelIds are required' });
+  }
+  const models = await readConfig('models');
+  let imported = 0;
+  for (const id of modelIds) {
+    if (models.some((m: { id: string }) => m.id === id)) continue;
+    models.push({
+      id,
+      name: id,
+      provider: provider as Provider,
+      endpoint,
+      apiKey: apiKey || undefined,
+      cost: { inputPerMillion: 0, outputPerMillion: 0 },
+    });
+    imported++;
+  }
+  if (imported > 0) {
+    await writeConfig('models', models);
+    void emitEvent('config.model_imported', 'info', { count: imported, provider }, { log: req.log });
+    audit(req, 'model:import', 'success', { count: imported, provider });
+  }
+  return reply.send({ imported, total: modelIds.length });
+});
+
+// ── Model catalog (dynamic, cross-referenced with configured models) ─────────
   fastify.get('/api/models/catalog', async (req, reply) => {
     if (!requirePerm(req, 'model:read', reply)) return;
     const [catalog, configured] = await Promise.all([
