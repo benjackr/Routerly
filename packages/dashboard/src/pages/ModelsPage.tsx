@@ -38,7 +38,7 @@ const STATUS_SEVERITY: Record<ExtendedStatus, number> = {
 const STATUS_META: Record<ExtendedStatus, { label: string; color: string }> = {
   healthy:     { label: '健康',     color: 'var(--success)' },
   degraded:    { label: '降级',    color: 'var(--warning)' },
-  unavailable: { label: 'Unavailable', color: 'var(--danger)' },
+  unavailable: { label: '不可用', color: 'var(--danger)' },
   cooldown:    { label: '冷却',    color: 'var(--text-muted)' },
   nodata:      { label: '无数据',     color: 'var(--text-muted)' },
 };
@@ -385,10 +385,10 @@ export function ModelsPage() {
                   <Telescope size={16} /> 发现
                 </Link>
                 <button className="btn" onClick={() => setShowFetchModal(true)}>
-                  <DownloadCloud size={16} /> Fetch
+                  <DownloadCloud size={16} /> 添加提供商
                 </button>
                 <Link to="/dashboard/models/new" className="btn btn-primary">
-                  <Plus size={16} /> Add Model
+                  <Plus size={16} /> 添加模型
                 </Link>
               </div>
               {selectedForDelete.size > 0 && (
@@ -399,9 +399,11 @@ export function ModelsPage() {
                       onConfirm: async () => {
                         const ids = Array.from(selectedForDelete);
                         setConfirmState(null);
-                        await Promise.all(ids.map(id => deleteModel(id)));
+                        for (const id of ids) {
+                          try { await deleteModel(id); } catch (e) { console.error('删除失败:', id, e); }
+                        }
                         setSelectedForDelete(new Set());
-                        setModels(await getModels());
+                        try { setModels(await getModels()); } catch (e) {}
                       },
                     });
                   }}
