@@ -6,7 +6,7 @@ interface Props {
   danger?: boolean;
 }
 
-export function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = 'Confirm', danger = true }: Props) {
+export function ConfirmDialog({ message, onConfirm, onCancel, confirmLabel = '确认', danger = false }: Props) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 1000,
