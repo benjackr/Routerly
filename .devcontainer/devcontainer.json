@@ -1,0 +1,13 @@
+{
+  "name": "Routerly Dev",
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Dashboard",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  }
+}
