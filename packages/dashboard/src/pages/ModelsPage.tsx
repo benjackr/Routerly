@@ -580,7 +580,7 @@ export function ModelsPage() {
           }} onClick={e => e.stopPropagation()}>
             <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>从端点拉取模型</h2>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
-              Enter an OpenAI-compatible endpoint URL to discover available models.
+              输入 OpenAI 兼容的端点地址，自动发现可用模型。
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
               <input
