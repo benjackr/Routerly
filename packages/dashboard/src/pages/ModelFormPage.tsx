@@ -344,13 +344,6 @@ export function ModelFormPage() {
   const [catalogDefaults, setCatalogDefaults] = useState<Model['catalogDefaults']>(undefined);
   // Batch import states (new model only)
   const [showBatchImport, setShowBatchImport] = useState(true);
-  const [batchFetchLoading, setBatchFetchLoading] = useState(false);
-  const [batchFetchError, setBatchFetchError] = useState('');
-  const [batchDiscoveredModels, setBatchDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
-  const [batchSelectedModels, setBatchSelectedModels] = useState<Set<string>>(new Set());
-  const [batchImportLoading, setBatchImportLoading] = useState(false);
-  const [batchImportResult, setBatchImportResult] = useState<{ imported: number; total: number } | null>(null);
-  const [batchFetchSearch, setBatchFetchSearch] = useState('');
 
   useEffect(() => {
     async function init() {
