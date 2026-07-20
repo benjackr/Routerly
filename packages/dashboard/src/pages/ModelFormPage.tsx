@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
-import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, Copy, Check, FlaskConical } from 'lucide-react';
-import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type ModelCapabilities, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
+import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, 复制, Check, FlaskConical } from 'lucide-react';
+import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type Model能力, type PricingTier, type Limit, type Limit指标, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
 
 type Provider = string;
 type ProviderModel = {
@@ -19,13 +19,13 @@ type ProviderModel = {
     output: number;
     cache?: number;
   }>;
-  capabilities?: ModelCapabilities;
+  capabilities?: Model能力;
 };
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 const PROVIDER_LABELS: Partial<Record<string, string>> = {
-  'anthropic-oauth': 'Anthropic (Pro/Max subscription)',
-  'openai-oauth': 'OpenAI (ChatGPT Plus/Pro subscription)',
+  'anthropic-oauth': 'Anthropic (Pro/Max 订阅)',
+  'openai-oauth': 'OpenAI (ChatGPT Plus/Pro 订阅)',
 };
 
 const WEB_PROVIDERS = ['openai-web', 'anthropic-web'] as const;
@@ -33,8 +33,8 @@ type WebProvider = typeof WEB_PROVIDERS[number];
 const isWebProvider = (p: string): p is WebProvider => (WEB_PROVIDERS as readonly string[]).includes(p);
 
 const WEB_PROVIDER_TOKEN_LABEL: Record<WebProvider, string> = {
-  'openai-web': 'Access Token',
-  'anthropic-web': 'Session Token',
+  'openai-web': '访问令牌',
+  'anthropic-web': '会话令牌',
 };
 
 const WEB_PROVIDER_TOKEN_PLACEHOLDER: Record<WebProvider, string> = {
@@ -47,7 +47,7 @@ const WEB_PROVIDER_INSTRUCTIONS: Record<WebProvider, React.ReactNode> = {
     <>
       While logged in to ChatGPT, open{' '}
       <code style={{ fontSize: '0.78rem' }}>https://chatgpt.com/api/auth/session</code> in a new
-      tab. Copy the value of the <code style={{ fontSize: '0.78rem' }}>accessToken</code> field
+      tab. 复制 the value of the <code style={{ fontSize: '0.78rem' }}>accessToken</code> field
       (starts with <code style={{ fontSize: '0.78rem' }}>eyJ</code>).
       The token expires every ~24 hours.
       For reliable access, also fill in the <strong>cf_clearance</strong> field below.
@@ -74,8 +74,8 @@ const isSubscriptionProvider = (p: string): p is SubscriptionProvider =>
   (SUBSCRIPTION_PROVIDERS as readonly string[]).includes(p);
 
 const SUBSCRIPTION_TOKEN_LABEL: Record<SubscriptionProvider, string> = {
-  'anthropic-oauth': 'Subscription OAuth Token',
-  'openai-oauth': 'Auth file path',
+  'anthropic-oauth': '订阅 OAuth 令牌',
+  'openai-oauth': '认证文件路径',
 };
 
 const SUBSCRIPTION_TOKEN_PLACEHOLDER: Record<SubscriptionProvider, string> = {
@@ -83,12 +83,12 @@ const SUBSCRIPTION_TOKEN_PLACEHOLDER: Record<SubscriptionProvider, string> = {
   'openai-oauth': '~/.codex/auth.json (default)',
 };
 
-function CopyCode({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  function handleCopy() {
+function 复制Code({ text }: { text: string }) {
+  const [copied, set已复制] = useState(false);
+  function handle复制() {
     navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      set已复制(true);
+      setTimeout(() => set已复制(false), 2000);
     });
   }
   return (
@@ -106,8 +106,8 @@ function CopyCode({ text }: { text: string }) {
       <code style={{ fontSize: '0.88rem', letterSpacing: '0.01em', color: '#e2e8f0' }}>{text}</code>
       <button
         type="button"
-        onClick={handleCopy}
-        title={copied ? 'Copied!' : '复制到剪贴板'}
+        onClick={handle复制}
+        title={copied ? '已复制!' : '复制到剪贴板'}
         style={{
           background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.08)',
           border: '1px solid ' + (copied ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.18)'),
@@ -124,8 +124,8 @@ function CopyCode({ text }: { text: string }) {
         }}
       >
         {copied
-          ? <><Check size={12} /> Copied</>
-          : <><Copy size={12} /> Copy</>
+          ? <><Check size={12} /> 已复制</>
+          : <><复制 size={12} /> 复制</>
         }
       </button>
     </span>
@@ -140,10 +140,10 @@ const SUBSCRIPTION_INSTRUCTIONS: Record<SubscriptionProvider, React.ReactNode> =
         <li>
           Run this command and copy the token it prints:
           <div style={{ margin: '0.3rem 0 0.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <CopyCode text="claude setup-token" />
+            <复制Code text="claude setup-token" />
           </div>
         </li>
-        <li>Paste the token into the <em>Subscription OAuth Token</em> field below.</li>
+        <li>Paste the token into the <em>订阅 OAuth 令牌</em> field below.</li>
       </ol>
       <span style={{ opacity: 0.7, fontSize: '0.8rem' }}>
         Regenerate when it expires. Subscription use via a gateway may be against the provider&apos;s Terms.
@@ -160,7 +160,7 @@ const SUBSCRIPTION_INSTRUCTIONS: Record<SubscriptionProvider, React.ReactNode> =
           and refreshes it automatically. No manual copy/paste needed.
         </li>
         <li>
-          Leave the <em>Auth file path</em> field blank to use the default, or enter a custom path
+          Leave the <em>认证文件路径</em> field blank to use the default, or enter a custom path
           if your Codex app stores auth elsewhere.
         </li>
       </ol>
@@ -172,20 +172,20 @@ const SUBSCRIPTION_INSTRUCTIONS: Record<SubscriptionProvider, React.ReactNode> =
 };
 
 const METRIC_OPTIONS = [
-  { value: 'context_tokens', label: 'Context tokens' },
+  { value: 'context_tokens', label: '上下文令牌' },
 ];
 
 // ── Limit types ────────────────────────────────────────────────────────────────
 type LimitRow = {
-  metric: LimitMetric;
-  windowType: 'period' | 'rolling';
-  period: LimitPeriod;
+  metric: Limit指标;
+  windowType: '时间段' | 'rolling';
+  时间段: LimitPeriod;
   rollingAmount: string;
   rollingUnit: RollingUnit;
   value: string;
 };
 
-const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
+const LIMIT_METRIC_OPTIONS: { value: Limit指标; label: string }[] = [
   { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
   { value: 'input_tokens',  label: 'Input tokens'    },
@@ -211,7 +211,7 @@ const ROLLING_UNIT_OPTIONS: { value: RollingUnit; label: string }[] = [
 ];
 
 const EMPTY_LIMIT_ROW: LimitRow = {
-  metric: 'cost', windowType: 'period', period: 'monthly',
+  metric: 'cost', windowType: '时间段', 时间段: 'monthly',
   rollingAmount: '24', rollingUnit: 'hour', value: '',
 };
 
@@ -220,7 +220,7 @@ function rowToLimit(r: LimitRow): Limit {
   if (r.windowType === 'rolling') {
     return { metric: r.metric, windowType: 'rolling', rollingAmount: parseInt(r.rollingAmount) || 1, rollingUnit: r.rollingUnit, value: parseFloat(r.value) };
   }
-  return { metric: r.metric, windowType: 'period', period: r.period, value: parseFloat(r.value) };
+  return { metric: r.metric, windowType: '时间段', 时间段: r.时间段, value: parseFloat(r.value) };
 }
 
 /** Convert a saved Limit back to a row (handles old `window` field for backward compat) */
@@ -231,9 +231,9 @@ function limitToRow(l: Limit): LimitRow {
     minute: 'hourly', hour: 'hourly', day: 'daily', week: 'weekly', month: 'monthly', year: 'yearly',
   };
   if (l.windowType === 'rolling') {
-    return { metric: l.metric, windowType: 'rolling', period: 'daily', rollingAmount: String(l.rollingAmount ?? 24), rollingUnit: l.rollingUnit ?? 'hour', value: String(l.value) };
+    return { metric: l.metric, windowType: 'rolling', 时间段: 'daily', rollingAmount: String(l.rollingAmount ?? 24), rollingUnit: l.rollingUnit ?? 'hour', value: String(l.value) };
   }
-  return { metric: l.metric, windowType: 'period', period: l.period ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
+  return { metric: l.metric, windowType: '时间段', 时间段: l.时间段 ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -302,6 +302,7 @@ export function ModelFormPage() {
   const prefillProvider = searchParams.get('provider');
   const prefillModelId = searchParams.get('modelId');
   const isEditing = Boolean(id);
+  const isNewModel = !isEditing && !isCloning;
   const isCloning = Boolean(cloneSourceId);
   const editingModelId = isEditing ? decodeURIComponent(id!) : null;
 
@@ -322,16 +323,16 @@ export function ModelFormPage() {
   const [tierRows, setTierRows] = useState<TierRow[]>([]);
   const [limitRows, setLimitRows] = useState<LimitRow[]>([]);
   // Batch import
-  const [showBatchImport, setShowBatchImport] = useState(true);
-  const [batchFetchLoading, setBatchFetchLoading] = useState(false);
-  const [batchFetchError, setBatchFetchError] = useState('');
-  const [batchDiscoveredModels, setBatchDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
-  const [batchSelectedModels, setBatchSelectedModels] = useState<Set<string>>(new Set());
-  const [batchImportLoading, setBatchImportLoading] = useState(false);
-  const [batchImportResult, setBatchImportResult] = useState<{ imported: number; total: number } | null>(null);
-  const [batchFetchSearch, setBatchFetchSearch] = useState('');
+  
+  
+  
+  
+  
+  
+  
+  
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [showLimits, setShowLimits] = useState(false);
+  const [show限制, setShow限制] = useState(false);
   const [saving, setSaving] = useState(false);
   const [oauthTest, setOauthTest] = useState<{ status: 'idle' | 'testing' | 'ok' | 'error'; msg?: string }>({ status: 'idle' });
   const [err, setErr] = useState('');
@@ -341,6 +342,15 @@ export function ModelFormPage() {
   const [isEmbeddingModel, setIsEmbeddingModel] = useState(false);
   const [fieldOverrides, setFieldOverrides] = useState<Record<string, boolean>>({});
   const [catalogDefaults, setCatalogDefaults] = useState<Model['catalogDefaults']>(undefined);
+  // Batch import states (new model only)
+  const [showBatchImport, setShowBatchImport] = useState(true);
+  const [batchFetchLoading, setBatchFetchLoading] = useState(false);
+  const [batchFetchError, setBatchFetchError] = useState('');
+  const [batchDiscoveredModels, setBatchDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
+  const [batchSelectedModels, setBatchSelectedModels] = useState<Set<string>>(new Set());
+  const [batchImportLoading, setBatchImportLoading] = useState(false);
+  const [batchImportResult, setBatchImportResult] = useState<{ imported: number; total: number } | null>(null);
+  const [batchFetchSearch, setBatchFetchSearch] = useState('');
 
   useEffect(() => {
     async function init() {
@@ -362,7 +372,7 @@ export function ModelFormPage() {
           if (model) {
             editModel(model, catModels);
           } else {
-            setErr('Model not found');
+            setErr('未找到模型');
           }
         } else if (isCloning && cloneSourceId) {
           const source = allModels.find(m => m.id === cloneSourceId);
@@ -371,7 +381,7 @@ export function ModelFormPage() {
             // Clear the ID so the user must choose a new one
             setForm(f => ({ ...f, customId: '' }));
           } else {
-            setErr('Source model not found');
+            setErr('未找到源模型');
           }
         } else {
           // Initialize new — honour ?provider=&modelId= from discovery, fall back to openai default
@@ -409,7 +419,7 @@ export function ModelFormPage() {
           }
         }
       } catch (e) {
-        setErr(e instanceof Error ? e.message : 'Error loading models');
+        setErr(e instanceof Error ? e.message : '加载模型失败');
       } finally {
         setLoading(false);
       }
@@ -474,7 +484,7 @@ export function ModelFormPage() {
                   cache: t.cachePerMillion != null ? String(t.cachePerMillion) : '',
                 })));
               } else if (field === 'capabilities' && typeof defVal === 'object' && defVal !== null) {
-                const caps = defVal as ModelCapabilities;
+                const caps = defVal as Model能力;
                 /* v8 ignore next */
                 setIsEmbeddingModel(caps.embedding === true);
               }
@@ -624,16 +634,16 @@ export function ModelFormPage() {
     }));
 
     // Resolve limits: prefer new `limits`, fall back to legacy `globalThresholds`
-    const resolvedLimits: LimitRow[] = model.limits?.length
+    const resolved限制: LimitRow[] = model.limits?.length
       ? model.limits.map(limitToRow)
       : [
-          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'daily',   value: model.globalThresholds.daily   })] : []),
-          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'weekly',  value: model.globalThresholds.weekly  })] : []),
-          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'monthly', value: model.globalThresholds.monthly })] : []),
+          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'daily',   value: model.globalThresholds.daily   })] : []),
+          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'weekly',  value: model.globalThresholds.weekly  })] : []),
+          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: '时间段', 时间段: 'monthly', value: model.globalThresholds.monthly })] : []),
         ];
 
-    setLimitRows(resolvedLimits);
-    setShowLimits(resolvedLimits.length > 0);
+    setLimitRows(resolved限制);
+    setShow限制(resolved限制.length > 0);
 
     if (model.cost.pricingTiers?.length) {
       setTierRows(model.cost.pricingTiers.map(t => ({
@@ -938,6 +948,170 @@ export function ModelFormPage() {
             )}
           </div>
 
+
+          {/* ========== 批量添加模型 ========== */}
+          {isNewModel && (
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: 24, marginBottom: 32 }}>
+              <h2 style={{ margin: '0 0 4px', fontSize: '1.1rem' }}>批量添加模型</h2>
+              <p style={{ margin: '0 0 16px', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                填写提供商信息和 API 端点，自动发现该提供商下的所有模型，勾选后批量添加。
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+                <div className="form-group">
+                  <label className="form-label">Routerly ID</label>
+                  <input className="form-input" value={form.customProviderName || form.provider}
+                    onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value, provider: e.target.value }))}
+                    placeholder="例如：openrouter-custom" />
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 2 }}>Routerly ID 是该提供商在 Routerly 内的唯一标识</div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">提供商</label>
+                  <input className="form-input" value={form.customProviderName || form.provider}
+                    onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value, provider: e.target.value }))}
+                    placeholder="例如：OpenRouter" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">端点 URL 端点</label>
+                  <input className="form-input" value={form.endpoint}
+                    onChange={e => setForm(f => ({ ...f, endpoint: e.target.value }))}
+                    placeholder="https://api.openai.com/v1" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">API 密钥/令牌</label>
+                  <input className="form-input" type="password" value={form.apiKey}
+                    onChange={e => setForm(f => ({ ...f, apiKey: e.target.value }))}
+                    placeholder="sk-..." />
+                </div>
+                <button type="button" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}
+                  onClick={async () => {
+                    setBatchFetchLoading(true);
+                    setBatchFetchError('');
+                    setBatchImportResult(null);
+                    setBatchDiscoveredModels([]);
+                    setBatchSelectedModels(new Set());
+                    try {
+                      const result = await discoverModels(form.endpoint, form.apiKey);
+                      if (!result.success) {
+                        setBatchFetchError(result.error || '发现模型失败');
+                        return;
+                      }
+                      setBatchDiscoveredModels(result.models || []);
+                    } catch (err) {
+                      setBatchFetchError((err as Error).message);
+                    } finally {
+                      setBatchFetchLoading(false);
+                    }
+                  }}
+                  disabled={batchFetchLoading || !form.endpoint}>
+                  {batchFetchLoading ? <span className="spinner" style={{ width: 14, height: 14 }} /> : null}
+                  {' '}{batchFetchLoading ? '发现中...' : '从端点拉取'}
+                </button>
+              </div>
+
+              {batchImportResult && (
+                <div style={{ padding: '8px 12px', background: 'rgba(34,197,94,0.1)', borderRadius: 6,
+                  color: 'var(--success)', fontSize: '0.82rem', marginBottom: 12 }}>
+                  ✅ 成功导入 {batchImportResult.imported} / {batchImportResult.total} 个模型
+                </div>
+              )}
+
+              {batchFetchError && (
+                <div style={{ padding: '8px 12px', background: 'rgba(220,38,38,0.1)', borderRadius: 6,
+                  color: 'var(--danger)', fontSize: '0.82rem', marginBottom: 12 }}>
+                  {batchFetchError}
+                </div>
+              )}
+
+              {batchDiscoveredModels.length > 0 && (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                      发现 {batchDiscoveredModels.length} 个模型
+                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <input
+                        value={batchFetchSearch}
+                        onChange={e => setBatchFetchSearch(e.target.value)}
+                        placeholder="搜索模型…"
+                        style={{ paddingLeft: 8, height: 28, fontSize: '0.82rem', borderRadius: 4,
+                          border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none', width: 160 }}
+                      />
+                      <label style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                        <input type="checkbox"
+                          checked={batchSelectedModels.size === batchDiscoveredModels.length && batchDiscoveredModels.length > 0}
+                          onChange={() => {
+                            if (batchSelectedModels.size === batchDiscoveredModels.length) setBatchSelectedModels(new Set());
+                            else setBatchSelectedModels(new Set(batchDiscoveredModels.map((m: any) => m.id)));
+                          }} />
+                        全选
+                      </label>
+                    </div>
+                  </div>
+                  <div style={{ maxHeight: 300, overflow: 'auto', border: '1px solid var(--border)', borderRadius: 6, marginBottom: 12 }}>
+                    {(() => {
+                      const q = batchFetchSearch.trim().toLowerCase();
+                      return q
+                        ? batchDiscoveredModels.filter((m: any) => m.id.toLowerCase().includes(q) || (m.owned_by || '').toLowerCase().includes(q))
+                        : batchDiscoveredModels;
+                    })().map((m: any) => (
+                      <label key={m.id} style={{
+                        display: 'flex', alignItems: 'center', gap: 10, padding: '6px 12px',
+                        cursor: 'pointer', fontSize: '0.85rem',
+                        borderBottom: '1px solid var(--border)',
+                      }}>
+                        <input type="checkbox" checked={batchSelectedModels.has(m.id)}
+                          onChange={() => {
+                            setBatchSelectedModels(prev => {
+                              const next = new Set(prev);
+                              if (next.has(m.id)) next.delete(m.id); else next.add(m.id);
+                              return next;
+                            });
+                          }} />
+                        <span className="mono">{m.id}</span>
+                        {m.owned_by && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({m.owned_by})</span>}
+                      </label>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', alignItems: 'center', marginTop: 4 }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                      提供商: <strong>{form.customProviderName || form.provider}</strong>，将添加 {batchSelectedModels.size} 个模型
+                    </span>
+                    <button type="button" className="btn btn-primary"
+                      onClick={async () => {
+                        if (batchSelectedModels.size === 0) {
+                          setBatchFetchError('请先勾选要添加的模型');
+                          return;
+                        }
+                        setBatchImportLoading(true);
+                        setBatchFetchError('');
+                        try {
+                          const provider = form.customProviderName || form.provider;
+                          const result = await importModels({
+                            provider,
+                            endpoint: form.endpoint,
+                            apiKey: form.apiKey,
+                            modelIds: Array.from(batchSelectedModels),
+                          });
+                          setBatchImportResult(result);
+                          setBatchDiscoveredModels([]);
+                          setBatchSelectedModels(new Set());
+                          try { setModels(await getModels()); } catch (e) {}
+                        } catch (err) {
+                          setBatchFetchError((err as Error).message);
+                        } finally {
+                          setBatchImportLoading(false);
+                        }
+                      }}
+                      disabled={batchImportLoading}>
+                      {batchImportLoading ? '导入中...' : (batchSelectedModels.size > 0 ? `保存选中 (${batchSelectedModels.size})` : '保存选中')}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
           <div className="form-section">
             <h3 className="section-title">Model Identification</h3>
             <p className="section-desc">Unique identifier and provider settings for this model configuration.</p>
@@ -993,7 +1167,7 @@ export function ModelFormPage() {
                 {(isCustomModel || providerModels.length === 0) && (
                   <input className="form-input" style={{ marginTop: providerModels.length > 0 ? 6 : 0 }}
                     value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
-                    placeholder="e.g. my-fine-tuned-model" required autoFocus />
+                    placeholder="例如：my-fine-tuned-model" required autoFocus />
                 )}
                 {!isCustomModel && selectedPreset?.notes && (
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{selectedPreset.notes}</div>
@@ -1004,8 +1178,8 @@ export function ModelFormPage() {
 
           {/* ── Section: Connection ───────────────────────────── */}
           <div className="form-section">
-            <h3 className="section-title">Connection details</h3>
-            <p className="section-desc">API endpoint and authentication credentials required to perform requests.</p>
+            <h3 className="section-title">连接信息</h3>
+            <p className="section-desc">API 端点及认证凭据，用于发送请求。</p>
 
             {isWebProvider(form.provider) && (
               <div style={{
@@ -1017,9 +1191,9 @@ export function ModelFormPage() {
                 <span style={{ fontSize: '1rem', flexShrink: 0 }}>⚠️</span>
                 <div style={{ fontSize: '0.82rem', lineHeight: 1.6, color: 'var(--text-primary)' }}>
                   <p style={{ margin: '0 0 6px' }}>
-                    <strong>Unofficial provider — use at your own risk.</strong>{' '}
-                    This integration relies on an undocumented internal API that may change or break without notice.
-                    It may violate the provider&apos;s Terms of Service and could result in account suspension.
+                    <strong>非官方提供商 — 使用风险自负。</strong>{' '}
+                    此集成依赖于未文档化的内部 API，可能随时更改或失效。
+                    这可能违反提供商的服务条款并导致账号封禁。
                   </p>
                   <p style={{ margin: 0 }}>{WEB_PROVIDER_INSTRUCTIONS[form.provider as WebProvider]}</p>
                 </div>
@@ -1041,7 +1215,7 @@ export function ModelFormPage() {
             )}
 
             <div className="form-group">
-              <label className="form-label">Endpoint URL</label>
+              <label className="form-label">端点 URL</label>
               <input className="form-input" value={form.endpoint}
                 onChange={e => setForm(f => ({ ...f, endpoint: e.target.value }))} required />
             </div>
@@ -1052,7 +1226,7 @@ export function ModelFormPage() {
                   ? WEB_PROVIDER_TOKEN_LABEL[form.provider as WebProvider]
                   : isSubscriptionProvider(form.provider)
                   ? SUBSCRIPTION_TOKEN_LABEL[form.provider as SubscriptionProvider]
-                  : 'API Key / Token'}
+                  : 'API 密钥/令牌'}
               </label>
               {form.provider === 'openai-oauth' ? (
                 <>
@@ -1061,7 +1235,7 @@ export function ModelFormPage() {
                       name="apiKey" autoComplete="关闭"
                       value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: e.target.value })); setOauthTest({ status: 'idle' }); }}
                       placeholder={
-                        (editingModelId || isCloning) ? 'Leave blank to keep existing path'
+                        (editingModelId || isCloning) ? '留空以保留现有路径'
                         : '~/.codex/auth.json (default)'
                       }
                       style={{ flex: 1 }} />
@@ -1070,7 +1244,7 @@ export function ModelFormPage() {
                       disabled={oauthTest.status === 'testing'}
                       style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, padding: '0 14px', height: 38, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500, whiteSpace: 'nowrap' }}>
                       {oauthTest.status === 'testing' ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <FlaskConical size={14} />}
-                      Test
+                      测试
                     </button>
                   </div>
                   {oauthTest.status === 'ok' && (
@@ -1090,11 +1264,11 @@ export function ModelFormPage() {
                     name="apiKey" autoComplete="new-password"
                     value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: e.target.value }))}
                     placeholder={
-                      editingModelId ? 'Leave blank to keep existing key'
-                      : isCloning ? 'Leave blank to keep existing key'
+                      editingModelId ? '留空以保留现有密钥'
+                      : isCloning ? '留空以保留现有密钥'
                       : isWebProvider(form.provider) ? WEB_PROVIDER_TOKEN_PLACEHOLDER[form.provider as WebProvider]
                       : isSubscriptionProvider(form.provider) ? SUBSCRIPTION_TOKEN_PLACEHOLDER[form.provider as SubscriptionProvider]
-                      : form.provider === 'ollama' ? 'not required for local models'
+                      : form.provider === 'ollama' ? '本地模型不需要'
                       : 'sk-…'
                     }
                     style={{ paddingRight: 40 }} />
@@ -1155,7 +1329,7 @@ export function ModelFormPage() {
                     placeholder={editingModelId ? 'Leave blank to keep existing' : 'wJalrXUtnFEMI/K7MDENG/…'} />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Session Token <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional, for temporary credentials)</span></label>
+                  <label className="form-label">会话令牌 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional, for temporary credentials)</span></label>
                   <input className="form-input" type="password" autoComplete="new-password"
                     value={form.awsSessionToken}
                     onChange={e => setForm(f => ({ ...f, awsSessionToken: e.target.value }))}
@@ -1184,7 +1358,7 @@ export function ModelFormPage() {
                   <textarea className="form-input" rows={6}
                     value={form.vertexServiceAccountKey}
                     onChange={e => setForm(f => ({ ...f, vertexServiceAccountKey: e.target.value }))}
-                    placeholder={editingModelId ? 'Leave blank to keep existing key' : 'Paste the contents of your service account JSON key file'}
+                    placeholder={editingModelId ? '留空以保留现有密钥' : 'Paste the contents of your service account JSON key file'}
                     style={{ fontFamily: 'monospace', fontSize: '0.78rem', resize: 'vertical' }} />
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>
                     The full JSON content of a service account key with Vertex AI User role.
@@ -1196,10 +1370,10 @@ export function ModelFormPage() {
 
           </div>
 
-          {/* ── Section: Capabilities ─────────────────────────── */}
+          {/* ── Section: 能力 ─────────────────────────── */}
           <div className="form-section">
-            <h3 className="section-title">Capabilities</h3>
-            <p className="section-desc">Specify the type and capabilities of this model.</p>
+            <h3 className="section-title">能力</h3>
+            <p className="section-desc">指定此模型的类型和能力。</p>
             <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <input
                 type="checkbox"
@@ -1209,7 +1383,7 @@ export function ModelFormPage() {
                 style={{ width: 16, height: 16, cursor: 'pointer' }}
               />
               <label htmlFor="cap-embedding" style={{ cursor: 'pointer', marginBottom: 0 }}>
-                Embedding model
+                嵌入模型
                 <span style={{ marginLeft: 8, fontSize: '0.75rem', color: 'var(--text-muted)' }}>This model generates vector embeddings (not chat completions)</span>
                 <FieldBadge field="capabilities" />
               </label>
@@ -1218,8 +1392,8 @@ export function ModelFormPage() {
 
           {/* ── Section: Pricing ─────────────────────────────── */}
           <div className="form-section">
-            <h3 className="section-title">Pricing & context</h3>
-            <p className="section-desc">Cost parameters and processing limits used for billing and routing.</p>
+            <h3 className="section-title">定价与上下文</h3>
+            <p className="section-desc">用于计费和路由的成本参数与处理限制。</p>
 
             <div className="grid-3">
               <div className="form-group">
@@ -1259,14 +1433,14 @@ export function ModelFormPage() {
             <button type="button" onClick={() => setShowAdvanced(v => !v)}
               style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500, padding: '4px 0', userSelect: 'none' }}>
               <ChevronDown size={18} style={{ transform: showAdvanced ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
-              Advanced — Pricing tiers
+              高级 — 定价层级
               {tierRows.length > 0 && (
                 <span style={{ marginLeft: 6, background: 'var(--accent)', color: '#fff', fontSize: '0.75rem', borderRadius: 12, padding: '2px 8px' }}>{tierRows.length}</span>
               )}
               <FieldBadge field="pricingTiers" />
             </button>
             <p className="section-desc" style={{ marginTop: 8 }}>
-              Override pricing when a metric exceeds a threshold. For example: "Above 200 000 context tokens, prices change."
+              当某个指标超过阈值时覆盖定价。例如："超过 200,000 上下文令牌时，价格变更。"
             </p>
 
             {showAdvanced && (
@@ -1279,16 +1453,16 @@ export function ModelFormPage() {
                       <X size={16} />
                     </button>
 
-                    {/* Condition: Above X [metric] */}
+                    {/* Condition: 超过 X [metric] */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16, paddingRight: 24 }}>
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: '0.75rem' }}>Above</label>
+                        <label className="form-label" style={{ fontSize: '0.75rem' }}>超过</label>
                         <input className="form-input" type="number" step="1" value={tier.above}
                           onChange={e => updateTier(idx, 'above', e.target.value)}
                           placeholder="200000" />
                       </div>
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: '0.75rem' }}>Metric</label>
+                        <label className="form-label" style={{ fontSize: '0.75rem' }}>指标</label>
                         <select className="form-input" value={tier.metric}
                           onChange={e => updateTier(idx, 'metric', e.target.value)}>
                           {METRIC_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -1297,7 +1471,7 @@ export function ModelFormPage() {
                     </div>
 
                     {/* Tier pricing */}
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Override pricing</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>覆盖定价</div>
                     <div className="form-group">
                       <label className="form-label" style={{ fontSize: '0.75rem' }}>输入 $/百万</label>
                       <input className="form-input" type="number" step="any" value={tier.input}
@@ -1320,38 +1494,38 @@ export function ModelFormPage() {
                   style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1.5px dashed var(--border)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '10px 16px', width: '100%', justifyContent: 'center', transition: 'all 0.15s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(74, 144, 226, 0.05)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-muted)'; (e.currentTarget as HTMLButtonElement).style.background = 'none'; }}>
-                  <Plus size={16} /> Add pricing tier
+                  <Plus size={16} /> 添加定价层级
                 </button>
               </div>
             )}
           </div>
 
-          {/* ── Section: Limits ───────────────────────────────── */}
+          {/* ── Section: 限制 ───────────────────────────────── */}
           <div style={{ marginTop: 24, borderTop: '1px solid var(--border)', paddingTop: 16 }}>
-            <button type="button" onClick={() => setShowLimits(v => !v)}
+            <button type="button" onClick={() => setShow限制(v => !v)}
               style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500, padding: '4px 0', userSelect: 'none' }}>
-              <ChevronDown size={18} style={{ transform: showLimits ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
-              Limits
+              <ChevronDown size={18} style={{ transform: show限制 ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }} />
+              限制
               {limitRows.filter(l => l.value !== '').length > 0 && (
                 <span style={{ marginLeft: 6, background: 'var(--accent)', color: '#fff', fontSize: '0.75rem', borderRadius: 12, padding: '2px 8px' }}>
                   {limitRows.filter(l => l.value !== '').length}
                 </span>
               )}
             </button>
-            <p className="section-desc" style={{ marginTop: 8 }}>Usage limits for this model. Multiple rules can be combined.</p>
+            <p className="section-desc" style={{ marginTop: 8 }}>此模型的使用限制。可以组合多个规则。</p>
 
-            {showLimits && (
+            {show限制 && (
               <div style={{ marginTop: 16 }}>
                 {limitRows.map((lim, idx) => {
                   const upd = (patch: Partial<LimitRow>) =>
                     setLimitRows(rows => rows.map((r, i) => i === idx ? { ...r, ...patch } : r));
                   return (
                     <div key={idx} style={{ display: 'grid', gridTemplateColumns: '130px 110px 1fr 100px auto', gap: 10, alignItems: 'flex-end', marginBottom: 12, background: 'var(--surface-2, rgba(255,255,255,0.04))', border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px' }}>
-                      {/* Metric */}
+                      {/* 指标 */}
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: '0.75rem' }}>Metric</label>
+                        <label className="form-label" style={{ fontSize: '0.75rem' }}>指标</label>
                         <select className="form-input" value={lim.metric}
-                          onChange={e => upd({ metric: e.target.value as LimitMetric })}>
+                          onChange={e => upd({ metric: e.target.value as Limit指标 })}>
                           {LIMIT_METRIC_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                         </select>
                       </div>
@@ -1359,23 +1533,23 @@ export function ModelFormPage() {
                       <div className="form-group" style={{ margin: 0 }}>
                         <label className="form-label" style={{ fontSize: '0.75rem' }}>Type</label>
                         <select className="form-input" value={lim.windowType}
-                          onChange={e => upd({ windowType: e.target.value as 'period' | 'rolling' })}>
-                          <option value="period">时间段</option>
+                          onChange={e => upd({ windowType: e.target.value as '时间段' | 'rolling' })}>
+                          <option value="时间段">时间段</option>
                           <option value="rolling">Rolling</option>
                         </select>
                       </div>
                       {/* Period selector OR rolling amount+unit */}
-                      {lim.windowType === 'period' ? (
+                      {lim.windowType === '时间段' ? (
                         <div className="form-group" style={{ margin: 0 }}>
                           <label className="form-label" style={{ fontSize: '0.75rem' }}>时间段</label>
-                          <select className="form-input" value={lim.period}
-                            onChange={e => upd({ period: e.target.value as LimitPeriod })}>
+                          <select className="form-input" value={lim.时间段}
+                            onChange={e => upd({ 时间段: e.target.value as LimitPeriod })}>
                             {PERIOD_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                           </select>
                         </div>
                       ) : (
                         <div className="form-group" style={{ margin: 0 }}>
-                          <label className="form-label" style={{ fontSize: '0.75rem' }}>Every</label>
+                          <label className="form-label" style={{ fontSize: '0.75rem' }}>每</label>
                           <div style={{ display: 'flex', gap: 6 }}>
                             <input className="form-input" type="number" min="1" step="1" value={lim.rollingAmount}
                               onChange={e => upd({ rollingAmount: e.target.value })}
@@ -1409,7 +1583,7 @@ export function ModelFormPage() {
                   style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1.5px dashed var(--border)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.85rem', padding: '10px 16px', width: '100%', justifyContent: 'center', transition: 'all 0.15s' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.background = 'rgba(74, 144, 226, 0.05)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-muted)'; (e.currentTarget as HTMLButtonElement).style.background = 'none'; }}>
-                  <Plus size={16} /> Add limit
+                  <Plus size={16} /> 添加限制
                 </button>
               </div>
             )}
@@ -1418,13 +1592,13 @@ export function ModelFormPage() {
           <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-start', marginTop: 32, paddingTop: 16, borderTop: '1px solid var(--border)', alignItems: 'center' }}>
             <button type="button" className="btn btn-secondary" onClick={goBack} disabled={saving}>取消</button>
             <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? <span className="spinner" /> : (editingModelId ? 'Save Changes' : isCloning ? 'Create Clone' : 'Create Model')}
+              {saving ? <span className="spinner" /> : (editingModelId ? '保存更改' : isCloning ? '创建克隆' : '创建模型')}
             </button>
             {editingModelId && (
               <button type="button" className="btn btn-secondary" disabled={testState === 'loading'}
                 onClick={async () => { setTestState('loading'); setTestState(await testModel(editingModelId)); }}>
                 {testState === 'loading' ? <span className="spinner" /> : <FlaskConical size={14} />}
-                {testState === 'loading' ? ' Testing…' : ' Test'}
+                {testState === 'loading' ? ' 测试ing…' : ' 测试'}
               </button>
             )}
             {testState && testState !== 'loading' && (
