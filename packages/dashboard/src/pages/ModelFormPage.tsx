@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
 import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, Copy, Check, FlaskConical } from 'lucide-react';
-import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, type Model, type ModelCapabilities, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
+import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type ModelCapabilities, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
 
 type Provider = string;
 type ProviderModel = {
@@ -321,6 +321,15 @@ export function ModelFormPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [tierRows, setTierRows] = useState<TierRow[]>([]);
   const [limitRows, setLimitRows] = useState<LimitRow[]>([]);
+  // Batch import
+  const [showBatchImport, setShowBatchImport] = useState(true);
+  const [batchFetchLoading, setBatchFetchLoading] = useState(false);
+  const [batchFetchError, setBatchFetchError] = useState('');
+  const [batchDiscoveredModels, setBatchDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
+  const [batchSelectedModels, setBatchSelectedModels] = useState<Set<string>>(new Set());
+  const [batchImportLoading, setBatchImportLoading] = useState(false);
+  const [batchImportResult, setBatchImportResult] = useState<{ imported: number; total: number } | null>(null);
+  const [batchFetchSearch, setBatchFetchSearch] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLimits, setShowLimits] = useState(false);
   const [saving, setSaving] = useState(false);
