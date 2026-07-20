@@ -620,6 +620,8 @@ export function ModelsPage() {
           message={confirmState.message}
           onConfirm={confirmState.onConfirm}
           onCancel={() => setConfirmState(null)}
+          danger
+          confirmLabel="删除"
         />
       )}
       {showFetchModal && (
