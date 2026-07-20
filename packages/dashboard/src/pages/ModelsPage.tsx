@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Plus, Trash2, Server, Edit2, Copy, ChevronUp, ChevronDown, ChevronsUpDown, Search, X, Telescope, FlaskConical } from 'lucide-react';
-import { getModels, deleteModel, testModel, getProviderHealth, type Model, type ProviderHealth } from '../api';
+import { Plus, Trash2, Server, Edit2, Copy, ChevronUp, ChevronDown, ChevronsUpDown, Search, X, Telescope, FlaskConical, DownloadCloud } from 'lucide-react';
+import { getModels, deleteModel, testModel, getProviderHealth, discoverModels, importModels, type Model, type ProviderHealth, type DiscoverResult } from '../api';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 
 type SortKey = 'id' | 'provider' | 'endpoint' | 'input' | 'output' | 'cache' | 'context';
@@ -96,6 +96,14 @@ export function ModelsPage() {
   const [page, setPage] = useState(1);
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
   const [testResults, setTestResults] = useState<Record<string, 'loading' | { ok: boolean; latencyMs: number; error?: string }>>({});
+  const [showFetchModal, setShowFetchModal] = useState(false);
+  const [fetchEndpoint, setFetchEndpoint] = useState('');
+  const [fetchApiKey, setFetchApiKey] = useState('');
+  const [fetchLoading, setFetchLoading] = useState(false);
+  const [fetchError, setFetchError] = useState('');
+  const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
+  const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
+  const [importLoading, setImportLoading] = useState(false);
   const healthActive = useRef(true);
 
   // Health tab state
@@ -129,6 +137,68 @@ export function ModelsPage() {
     const id = setInterval(fetchHealth, HEALTH_REFRESH_MS);
     return () => { healthActive.current = false; clearInterval(id); };
   }, []);
+
+  async function handleFetchDiscover() {
+    if (!fetchEndpoint) return;
+    setFetchLoading(true);
+    setFetchError('');
+    setDiscoveredModels([]);
+    setSelectedModels(new Set());
+    try {
+      const result = await discoverModels(fetchEndpoint, fetchApiKey);
+      if (!result.success) {
+        setFetchError(result.error || 'Discovery failed');
+        return;
+      }
+      setDiscoveredModels(result.models || []);
+    } catch (err) {
+      setFetchError((err as Error).message);
+    } finally {
+      setFetchLoading(false);
+    }
+  }
+
+  function toggleModel(id: string) {
+    setSelectedModels(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAllModels() {
+    setSelectedModels(prev => {
+      if (prev.size === discoveredModels.length) return new Set();
+      return new Set(discoveredModels.map(m => m.id));
+    });
+  }
+
+  async function handleImport() {
+    if (selectedModels.size === 0) return;
+    setImportLoading(true);
+    try {
+      const provider = new URL(fetchEndpoint).hostname.replace('api.', '').replace('.com', '');
+      const result = await importModels({
+        provider,
+        endpoint: fetchEndpoint,
+        apiKey: fetchApiKey,
+        modelIds: Array.from(selectedModels),
+      });
+      alert(`Imported ${result.imported} of ${result.total} models`);
+      setShowFetchModal(false);
+      setFetchEndpoint('');
+      setFetchApiKey('');
+      setDiscoveredModels([]);
+      setSelectedModels(new Set());
+      // Reload the model list
+      setModels(await getModels());
+    } catch (err) {
+      setFetchError((err as Error).message);
+    } finally {
+      setImportLoading(false);
+    }
+  }
 
   async function handleTest(id: string) {
     setTestResults(r => ({ ...r, [id]: 'loading' }));
@@ -302,6 +372,9 @@ export function ModelsPage() {
                 <Link to="/dashboard/models/discover" className="btn">
                   <Telescope size={16} /> Discover
                 </Link>
+                <button className="btn" onClick={() => setShowFetchModal(true)}>
+                  <DownloadCloud size={16} /> Fetch
+                </button>
                 <Link to="/dashboard/models/new" className="btn btn-primary">
                   <Plus size={16} /> Add Model
                 </Link>
@@ -493,6 +566,95 @@ export function ModelsPage() {
           onConfirm={confirmState.onConfirm}
           onCancel={() => setConfirmState(null)}
         />
+      )}
+      {showFetchModal && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(0,0,0,0.5)',
+        }} onClick={() => !fetchLoading && setShowFetchModal(false)}>
+          <div style={{
+            background: 'var(--surface)', borderRadius: 12, padding: 24,
+            minWidth: 500, maxWidth: 700, maxHeight: '80vh', overflow: 'auto',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+          }} onClick={e => e.stopPropagation()}>
+            <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>Fetch Models from Endpoint</h2>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
+              Enter an OpenAI-compatible endpoint URL to discover available models.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              <input
+                value={fetchEndpoint}
+                onChange={e => setFetchEndpoint(e.target.value)}
+                placeholder="https://api.openai.com/v1"
+                disabled={fetchLoading}
+                style={{ height: 36, padding: '0 12px', fontSize: '0.85rem', borderRadius: 6,
+                  border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none' }}
+              />
+              <input
+                value={fetchApiKey}
+                onChange={e => setFetchApiKey(e.target.value)}
+                placeholder="API Key (optional)"
+                type="password"
+                disabled={fetchLoading}
+                style={{ height: 36, padding: '0 12px', fontSize: '0.85rem', borderRadius: 6,
+                  border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none' }}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={handleFetchDiscover}
+                disabled={fetchLoading || !fetchEndpoint}
+                style={{ alignSelf: 'flex-start' }}
+              >
+                {fetchLoading ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <DownloadCloud size={16} />}
+                {' '}{fetchLoading ? 'Discovering...' : 'Discover'}
+              </button>
+            </div>
+            {fetchError && (
+              <div style={{ padding: '8px 12px', background: 'rgba(220,38,38,0.1)', borderRadius: 6,
+                color: 'var(--danger)', fontSize: '0.82rem', marginBottom: 12 }}>
+                {fetchError}
+              </div>
+            )}
+            {discoveredModels.length > 0 && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                    {discoveredModels.length} model{discoveredModels.length !== 1 ? 's' : ''} found
+                  </span>
+                  <label style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                    <input type="checkbox" checked={selectedModels.size === discoveredModels.length && discoveredModels.length > 0}
+                      onChange={toggleAllModels} />
+                    Select all
+                  </label>
+                </div>
+                <div style={{ maxHeight: 300, overflow: 'auto', border: '1px solid var(--border)', borderRadius: 6 }}>
+                  {discoveredModels.map(m => (
+                    <label key={m.id} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '6px 12px',
+                      cursor: 'pointer', fontSize: '0.85rem',
+                      borderBottom: '1px solid var(--border)',
+                    }}>
+                      <input type="checkbox" checked={selectedModels.has(m.id)}
+                        onChange={() => toggleModel(m.id)} />
+                      <span className="mono">{m.id}</span>
+                      {m.owned_by && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({m.owned_by})</span>}
+                    </label>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
+                  <button className="btn" onClick={() => setShowFetchModal(false)} disabled={importLoading}>
+                    Cancel
+                  </button>
+                  <button className="btn btn-primary" onClick={handleImport}
+                    disabled={selectedModels.size === 0 || importLoading}>
+                    {importLoading ? 'Importing...' : `Import Selected (${selectedModels.size})`}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </>
   );
