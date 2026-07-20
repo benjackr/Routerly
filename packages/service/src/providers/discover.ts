@@ -63,7 +63,7 @@ export async function discoverModels(
 export async function probeEndpoint(
   endpoint: string,
   apiKey?: string,
-): Promise<{ ok: boolean; sample?: string[]; error?: string }> {
+): Promise<{ ok: boolean; sample?: string[]; error: string | undefined }> {
   const result = await discoverModels(endpoint, apiKey);
   if (!result.success) {
     return { ok: false, error: result.error };
