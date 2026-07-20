@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams, useLocation } from 'react-router-dom';
-import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, 复制, Check, FlaskConical } from 'lucide-react';
-import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type Model能力, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
+import { Plus, X, ChevronDown, EyeOff, Eye, ArrowLeft, Copy, Check, FlaskConical } from 'lucide-react';
+import { getModels, createModel, updateModel, testOpenAIOAuth, testModel, getProviders, discoverModels, importModels, type Model, type ModelCapabilities, type PricingTier, type Limit, type LimitMetric, type LimitPeriod, type RollingUnit, type CatalogEntry, type ProviderCatalog } from '../api';
 
 type Provider = string;
 type ProviderModel = {
@@ -19,7 +19,7 @@ type ProviderModel = {
     output: number;
     cache?: number;
   }>;
-  capabilities?: Model能力;
+  capabilities?: ModelCapabilities;
 };
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -47,7 +47,7 @@ const WEB_PROVIDER_INSTRUCTIONS: Record<WebProvider, React.ReactNode> = {
     <>
       While logged in to ChatGPT, open{' '}
       <code style={{ fontSize: '0.78rem' }}>https://chatgpt.com/api/auth/session</code> in a new
-      tab. 复制 the value of the <code style={{ fontSize: '0.78rem' }}>accessToken</code> field
+      tab. Copy the value of the <code style={{ fontSize: '0.78rem' }}>accessToken</code> field
       (starts with <code style={{ fontSize: '0.78rem' }}>eyJ</code>).
       The token expires every ~24 hours.
       For reliable access, also fill in the <strong>cf_clearance</strong> field below.
@@ -83,12 +83,12 @@ const SUBSCRIPTION_TOKEN_PLACEHOLDER: Record<SubscriptionProvider, string> = {
   'openai-oauth': '~/.codex/auth.json (default)',
 };
 
-function 复制Code({ text }: { text: string }) {
-  const [copied, set已复制] = useState(false);
-  function handle复制() {
+function CopyCode({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  function handleCopy() {
     navigator.clipboard.writeText(text).then(() => {
-      set已复制(true);
-      setTimeout(() => set已复制(false), 2000);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     });
   }
   return (
@@ -106,7 +106,7 @@ function 复制Code({ text }: { text: string }) {
       <code style={{ fontSize: '0.88rem', letterSpacing: '0.01em', color: '#e2e8f0' }}>{text}</code>
       <button
         type="button"
-        onClick={handle复制}
+        onClick={handleCopy}
         title={copied ? '已复制!' : '复制到剪贴板'}
         style={{
           background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.08)',
@@ -125,7 +125,7 @@ function 复制Code({ text }: { text: string }) {
       >
         {copied
           ? <><Check size={12} /> 已复制</>
-          : <><复制 size={12} /> 复制</>
+          : <><Copy size={12} /> 复制</>
         }
       </button>
     </span>
@@ -140,7 +140,7 @@ const SUBSCRIPTION_INSTRUCTIONS: Record<SubscriptionProvider, React.ReactNode> =
         <li>
           Run this command and copy the token it prints:
           <div style={{ margin: '0.3rem 0 0.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <复制Code text="claude setup-token" />
+            <CopyCode text="claude setup-token" />
           </div>
         </li>
         <li>Paste the token into the <em>订阅 OAuth 令牌</em> field below.</li>
@@ -177,15 +177,15 @@ const METRIC_OPTIONS = [
 
 // ── Limit types ────────────────────────────────────────────────────────────────
 type LimitRow = {
-  metric: Limit指标;
+  metric: LimitMetric;
   windowType: 'period' | 'rolling';
-  时间段: LimitPeriod;
+  period: LimitPeriod;
   rollingAmount: string;
   rollingUnit: RollingUnit;
   value: string;
 };
 
-const LIMIT_METRIC_OPTIONS: { value: Limit指标; label: string }[] = [
+const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
   { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
   { value: 'input_tokens',  label: 'Input tokens'    },
@@ -211,7 +211,7 @@ const ROLLING_UNIT_OPTIONS: { value: RollingUnit; label: string }[] = [
 ];
 
 const EMPTY_LIMIT_ROW: LimitRow = {
-  metric: 'cost', windowType: 'period', 时间段: 'monthly',
+  metric: 'cost', windowType: 'period', period: 'monthly',
   rollingAmount: '24', rollingUnit: 'hour', value: '',
 };
 
@@ -220,7 +220,7 @@ function rowToLimit(r: LimitRow): Limit {
   if (r.windowType === 'rolling') {
     return { metric: r.metric, windowType: 'rolling', rollingAmount: parseInt(r.rollingAmount) || 1, rollingUnit: r.rollingUnit, value: parseFloat(r.value) };
   }
-  return { metric: r.metric, windowType: 'period', 时间段: r.时间段, value: parseFloat(r.value) };
+  return { metric: r.metric, windowType: 'period', period: r.period, value: parseFloat(r.value) };
 }
 
 /** Convert a saved Limit back to a row (handles old `window` field for backward compat) */
@@ -231,9 +231,9 @@ function limitToRow(l: Limit): LimitRow {
     minute: 'hourly', hour: 'hourly', day: 'daily', week: 'weekly', month: 'monthly', year: 'yearly',
   };
   if (l.windowType === 'rolling') {
-    return { metric: l.metric, windowType: 'rolling', 时间段: 'daily', rollingAmount: String(l.rollingAmount ?? 24), rollingUnit: l.rollingUnit ?? 'hour', value: String(l.value) };
+    return { metric: l.metric, windowType: 'rolling', period: 'daily', rollingAmount: String(l.rollingAmount ?? 24), rollingUnit: l.rollingUnit ?? 'hour', value: String(l.value) };
   }
-  return { metric: l.metric, windowType: 'period', 时间段: l.时间段 ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
+  return { metric: l.metric, windowType: 'period', period: l.period ?? (legacyWindow ? legacyPeriodMap[legacyWindow] : undefined) ?? 'monthly', rollingAmount: '24', rollingUnit: 'hour', value: String(l.value) };
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -484,7 +484,7 @@ export function ModelFormPage() {
                   cache: t.cachePerMillion != null ? String(t.cachePerMillion) : '',
                 })));
               } else if (field === 'capabilities' && typeof defVal === 'object' && defVal !== null) {
-                const caps = defVal as Model能力;
+                const caps = defVal as ModelCapabilities;
                 /* v8 ignore next */
                 setIsEmbeddingModel(caps.embedding === true);
               }
@@ -637,9 +637,9 @@ export function ModelFormPage() {
     const resolved限制: LimitRow[] = model.limits?.length
       ? model.limits.map(limitToRow)
       : [
-          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'daily',   value: model.globalThresholds.daily   })] : []),
-          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'weekly',  value: model.globalThresholds.weekly  })] : []),
-          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: 'period', 时间段: 'monthly', value: model.globalThresholds.monthly })] : []),
+          ...(model.globalThresholds?.daily   != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'daily',   value: model.globalThresholds.daily   })] : []),
+          ...(model.globalThresholds?.weekly  != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'weekly',  value: model.globalThresholds.weekly  })] : []),
+          ...(model.globalThresholds?.monthly != null ? [limitToRow({ metric: 'cost', windowType: 'period', period: 'monthly', value: model.globalThresholds.monthly })] : []),
         ];
 
     setLimitRows(resolved限制);
@@ -1525,7 +1525,7 @@ export function ModelFormPage() {
                       <div className="form-group" style={{ margin: 0 }}>
                         <label className="form-label" style={{ fontSize: '0.75rem' }}>指标</label>
                         <select className="form-input" value={lim.metric}
-                          onChange={e => upd({ metric: e.target.value as Limit指标 })}>
+                          onChange={e => upd({ metric: e.target.value as LimitMetric })}>
                           {LIMIT_METRIC_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                         </select>
                       </div>
@@ -1533,17 +1533,17 @@ export function ModelFormPage() {
                       <div className="form-group" style={{ margin: 0 }}>
                         <label className="form-label" style={{ fontSize: '0.75rem' }}>Type</label>
                         <select className="form-input" value={lim.windowType}
-                          onChange={e => upd({ windowType: e.target.value as '时间段' | 'rolling' })}>
-                          <option value="时间段">时间段</option>
+                          onChange={e => upd({ windowType: e.target.value as 'period' | 'rolling' })}>
+                          <option value="period">时间段</option>
                           <option value="rolling">Rolling</option>
                         </select>
                       </div>
                       {/* Period selector OR rolling amount+unit */}
-                      {lim.windowType === '时间段' ? (
+                      {lim.windowType === 'period' ? (
                         <div className="form-group" style={{ margin: 0 }}>
                           <label className="form-label" style={{ fontSize: '0.75rem' }}>时间段</label>
-                          <select className="form-input" value={lim.时间段}
-                            onChange={e => upd({ 时间段: e.target.value as LimitPeriod })}>
+                          <select className="form-input" value={lim.period}
+                            onChange={e => upd({ period: e.target.value as LimitPeriod })}>
                             {PERIOD_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                           </select>
                         </div>
