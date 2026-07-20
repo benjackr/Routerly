@@ -106,6 +106,7 @@ export function ModelsPage() {
   const [importLoading, setImportLoading] = useState(false);
   const [fetchSearch, setFetchSearch] = useState('');
   const [providerName, setProviderName] = useState('');
+  const [selectedForDelete, setSelectedForDelete] = useState<Set<string>>(new Set());
   const [importResult, setImportResult] = useState<{imported: number; total: number} | null>(null);
   const healthActive = useRef(true);
 
@@ -213,7 +214,7 @@ export function ModelsPage() {
 
   function handleDelete(id: string) {
     setConfirmState({
-      message: `移除 model "${id}"?`,
+      message: `移除模型 "${id}"?`,
       onConfirm: async () => {
         setConfirmState(null);
         await deleteModel(id);
@@ -338,7 +339,7 @@ export function ModelsPage() {
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
         <h1>模型</h1>
-        <p>LLM providers registered with Routerly</p>
+        <p>已注册的 LLM 提供商</p>
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border)', marginTop: 12 }}>
           <button style={tabStyle('models')} onClick={() => setTab('models')}>模型</button>
           <button style={tabStyle('health')} onClick={() => setTab('health')}>健康</button>
@@ -381,7 +382,7 @@ export function ModelsPage() {
                   )}
                 </div>
                 <Link to="/dashboard/models/discover" className="btn">
-                  <Telescope size={16} /> Discover
+                  <Telescope size={16} /> 发现
                 </Link>
                 <button className="btn" onClick={() => setShowFetchModal(true)}>
                   <DownloadCloud size={16} /> Fetch
@@ -390,6 +391,24 @@ export function ModelsPage() {
                   <Plus size={16} /> Add Model
                 </Link>
               </div>
+              {selectedForDelete.size > 0 && (
+                <button className="btn btn-danger" style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                  onClick={() => {
+                    setConfirmState({
+                      message: `确定移除选中的 ${selectedForDelete.size} 个模型？`,
+                      onConfirm: async () => {
+                        const ids = Array.from(selectedForDelete);
+                        setConfirmState(null);
+                        await Promise.all(ids.map(id => deleteModel(id)));
+                        setSelectedForDelete(new Set());
+                        setModels(await getModels());
+                      },
+                    });
+                  }}
+                >
+                  <Trash2 size={15} /> 移除选中 ({selectedForDelete.size})
+                </button>
+              )}
             </div>
             {loading ? (
               <div className="loading-center"><div className="spinner" /></div>
@@ -403,6 +422,16 @@ export function ModelsPage() {
                   <table style={{ minWidth: 700 }}>
                     <thead>
                       <tr>
+                        <th style={{ width: 40 }}>
+                          <input type="checkbox"
+                            checked={selectedForDelete.size === filtered.length && filtered.length > 0}
+                            onChange={() => {
+                              if (selectedForDelete.size === filtered.length) setSelectedForDelete(new Set());
+                              else setSelectedForDelete(new Set(filtered.map(m => m.id)));
+                            }}
+                            style={{ cursor: 'pointer' }}
+                          />
+                        </th>
                         <th style={thStyle}>{thInner('ID', 'id')}</th>
                         <th style={thStyle}>{thInner('提供商', 'provider')}</th>
                         <th style={thStyle}>{thInner('端点', 'endpoint')}</th>
@@ -415,7 +444,20 @@ export function ModelsPage() {
                     </thead>
                     <tbody>
                       {paginated.map(m => (
-                          <tr key={m.id}>
+                          <tr key={m.id} style={selectedForDelete.has(m.id) ? { background: 'rgba(220,38,38,0.05)' } : undefined}>
+                            <td>
+                              <input type="checkbox"
+                                checked={selectedForDelete.has(m.id)}
+                                onChange={() => {
+                                  setSelectedForDelete(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has(m.id)) next.delete(m.id); else next.add(m.id);
+                                    return next;
+                                  });
+                                }}
+                                style={{ cursor: 'pointer' }}
+                              />
+                            </td>
                             <td><span className="mono">{m.id}</span></td>
                             <td><span className={`badge badge-${m.provider}`}>{m.provider}</span></td>
                             <td><span className="mono" style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{m.endpoint}</span></td>
@@ -590,11 +632,20 @@ export function ModelsPage() {
             minWidth: 500, maxWidth: 700, maxHeight: '80vh', overflow: 'auto',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>从端点拉取模型</h2>
+            <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>添加提供商</h2>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
-              输入 OpenAI 兼容的端点地址，自动发现可用模型。
+              填写提供商信息和 API 端点，连接后自动发现该提供商下的可用模型。
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 4 }}>提供商信息</div>
+              <input
+                value={providerName}
+                onChange={e => setProviderName(e.target.value)}
+                placeholder="提供商名称"
+                disabled={fetchLoading}
+                style={{ height: 36, padding: '0 12px', fontSize: '0.85rem', borderRadius: 6,
+                  border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none' }}
+              />
               <input
                 value={fetchEndpoint}
                 onChange={e => setFetchEndpoint(e.target.value)}
@@ -608,14 +659,6 @@ export function ModelsPage() {
                 onChange={e => setFetchApiKey(e.target.value)}
                 placeholder="API Key (选填)"
                 type="password"
-                disabled={fetchLoading}
-                style={{ height: 36, padding: '0 12px', fontSize: '0.85rem', borderRadius: 6,
-                  border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none' }}
-              />
-              <input
-                value={providerName}
-                onChange={e => setProviderName(e.target.value)}
-                placeholder="提供商名称 (自动从 URL 生成)"
                 disabled={fetchLoading}
                 style={{ height: 36, padding: '0 12px', fontSize: '0.85rem', borderRadius: 6,
                   border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', outline: 'none' }}
@@ -681,11 +724,11 @@ export function ModelsPage() {
                 </div>
                 <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
                   <button className="btn" onClick={() => setShowFetchModal(false)} disabled={importLoading}>
-                    Cancel
+                    取消
                   </button>
                   <button className="btn btn-primary" onClick={handleImport}
                     disabled={selectedModels.size === 0 || importLoading}>
-                    {importLoading ? '导入中...' : `导入选中模型 (${selectedModels.size})`}
+                    {importLoading ? '导入中...' : `导入选中 (${selectedModels.size})`}
                   </button>
                 </div>
               </>
