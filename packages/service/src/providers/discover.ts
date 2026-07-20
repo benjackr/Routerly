@@ -22,11 +22,14 @@ export async function discoverModels(
   apiKey?: string,
 ): Promise<DiscoverResult> {
   const baseUrl = endpoint.endsWith('/') ? endpoint : endpoint + '/';
-  const modelsUrl = `${baseUrl}v1/models`;
+  // Detect if endpoint already includes /v1/ — avoid doubling it
+  const modelsUrl = baseUrl.match(/\/v1\//) ? `${baseUrl}models` : `${baseUrl}v1/models`;
 
   try {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
+      'User-Agent': 'Routerly/1.0 (+https://github.com/Inebrio/Routerly)',
+      'Accept': 'application/json, text/plain, */*',
     };
     if (apiKey) {
       headers['Authorization'] = `Bearer ${apiKey}`;
