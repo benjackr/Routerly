@@ -114,21 +114,21 @@ export function ProjectTokenTab() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                   <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Created</span>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>创建时间</span>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                       {new Date(token.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                     </span>
                   </div>
                   <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Last used</span>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>最近使用</span>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                       {token.lastUsedAt ? new Date(token.lastUsedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
                     </span>
                   </div>
                   <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Expires</span>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>过期</span>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                      {token.expiresAt ? new Date(token.expiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Never'}
+                      {token.expiresAt ? new Date(token.expiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '永不'}
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>

@@ -89,7 +89,7 @@ export function NotificationDropdown({
         padding: '10px 12px', borderBottom: '1px solid var(--border)',
         fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)',
       }}>
-        <span>Notifications</span>
+        <span>通知</span>
         {unread > 0 && (
           <button
             onClick={onMarkAll}
@@ -201,7 +201,7 @@ export function ProfileNotificationBadge({ anchorRef }: { anchorRef: React.RefOb
     <>
       <button
         onClick={e => { e.preventDefault(); e.stopPropagation(); setOpen(o => !o); }}
-        title="Notifications"
+        title="通知"
         style={{
           position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px',

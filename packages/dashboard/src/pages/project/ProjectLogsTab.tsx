@@ -33,7 +33,7 @@ export function ProjectLogsTab() {
   const [pageSize]                          = useState(100);
 
   const POLL_OPTIONS: { label: string; value: number }[] = [
-    { label: 'Off',  value: 0 },
+    { label: '关闭',  value: 0 },
     { label: '5s',   value: 5_000 },
     { label: '15s',  value: 15_000 },
     { label: '30s',  value: 30_000 },
@@ -114,12 +114,12 @@ export function ProjectLogsTab() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
           <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
             {pollInterval === 0
-              ? 'Auto-refresh disabilitato'
-              : `Auto-refresh ogni ${POLL_OPTIONS.find(o => o.value === pollInterval)?.label}`}
+              ? '自动刷新已关闭'
+              : `自动刷新每 ${POLL_OPTIONS.find(o => o.value === pollInterval)?.label}`}
             {lastUpdated && <> &middot; ultimo aggiornamento: {lastUpdated.toLocaleTimeString()}</>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>Refresh</span>
+            <span style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>刷新</span>
             {POLL_OPTIONS.map(o => (
               <button
                 key={o.value}
@@ -133,7 +133,7 @@ export function ProjectLogsTab() {
               className="btn btn-sm btn-secondary"
               onClick={handleRefreshNow}
               disabled={refreshing}
-              title="Aggiorna subito"
+              title="立即刷新"
               style={{ marginLeft: 4 }}
             >
               {refreshing ? '…' : '↻ Now'}
@@ -143,12 +143,12 @@ export function ProjectLogsTab() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' }}>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Period</FilterLabel>
+            <FilterLabel>时间段</FilterLabel>
             <DateRangePicker value={dateRange} onChange={setDateRange} />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 200 }}>
-            <FilterLabel>Model</FilterLabel>
+            <FilterLabel>模型</FilterLabel>
             <MultiSelect
               options={modelOptions}
               value={modelIds}
@@ -166,14 +166,14 @@ export function ProjectLogsTab() {
                   className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setCallTypeFilter(f)}
                 >
-                  {f === 'all' ? 'All' : f === 'completion' ? 'Completion' : 'Router'}
+                  {f === 'all' ? '全部' : f === 'completion' ? 'Completion' : 'Router'}
                 </button>
               ))}
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Status</FilterLabel>
+            <FilterLabel>状态</FilterLabel>
             <div style={{ display: 'flex', gap: 4 }}>
               {(['all', 'success', 'blocked', 'error'] as const).map(f => (
                 <button
@@ -181,7 +181,7 @@ export function ProjectLogsTab() {
                   className={`btn btn-sm ${outcomeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setOutcomeFilter(f)}
                 >
-                  {f === 'all' ? 'All' : f === 'success' ? 'Success' : f === 'blocked' ? 'Blocked' : 'Error'}
+                  {f === 'all' ? '全部' : f === 'success' ? '操作成功' : f === 'blocked' ? 'Blocked' : '错误'}
                 </button>
               ))}
             </div>
@@ -209,7 +209,7 @@ export function ProjectLogsTab() {
           {/* Summary strip */}
           <div className="stats-grid" style={{ marginBottom: 24 }}>
             <div className="stat-card">
-              <div className="stat-label">Total Cost</div>
+              <div className="stat-label">总消耗</div>
               <div className="stat-value">${stats.summary.totalCost.toFixed(4)}</div>
             </div>
             <div className="stat-card">
@@ -277,7 +277,7 @@ export function ProjectLogsTab() {
                 <thead>
                   <tr>
                     <th>Time</th>
-                    <th>Model</th>
+                    <th>模型</th>
                     <th>Type</th>
                     <th>In</th>
                     <th>Out</th>
@@ -285,7 +285,7 @@ export function ProjectLogsTab() {
                     <th>Latency</th>
                     <th>TTFT</th>
                     <th>Tok/s</th>
-                    <th>Status</th>
+                    <th>状态</th>
                   </tr>
                 </thead>
                 <tbody>

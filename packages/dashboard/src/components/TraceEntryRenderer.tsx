@@ -171,7 +171,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{String(e.details?.upstreamModelId ?? '—')}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Provider</span>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>提供商</span>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{String(e.details?.provider ?? '—')}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -179,7 +179,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{String(e.details?.source ?? '—')}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Endpoint</span>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>端点</span>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'monospace', wordBreak: 'break-all' }}>{String(e.details?.endpoint ?? '—')}</span>
             </div>
           </div>
@@ -196,7 +196,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Model</span>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>模型</span>
               <span style={{ fontSize: '0.82rem', color: '#10b981', fontFamily: 'monospace', fontWeight: 600 }}>{e.details?.modelId ?? '—'}</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -336,7 +336,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
               <div style={{ fontSize: '0.82rem', color: '#fca5a5', fontFamily: 'monospace', fontWeight: 600 }}>{String(e.details?.rule ?? '—')}</div>
             </div>
             <div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>Action</div>
+              <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>操作</div>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{[e.details?.block && 'block', e.details?.log && 'log'].filter(Boolean).join('+') || '—'}</div>
             </div>
           </div>

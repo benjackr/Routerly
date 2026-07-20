@@ -38,7 +38,7 @@ export function ProjectsPage() {
   return (
     <>
       <div className="page-header">
-        <h1>Projects</h1>
+        <h1>项目</h1>
         <p>Client applications that access Routerly</p>
       </div>
       {err && <div className="form-error" style={{ margin: '0 20px' }}>{err}</div>}
@@ -53,12 +53,12 @@ export function ProjectsPage() {
         {loading ? (
           <div className="loading-center"><div className="spinner" /></div>
         ) : projects.length === 0 ? (
-          <div className="empty-state"><FolderOpen size={40} /><p>No projects yet.</p></div>
+          <div className="empty-state"><FolderOpen size={40} /><p>暂无项目。</p></div>
         ) : (
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>Name</th><th>Tokens</th><th>Policies</th><th>Models</th><th></th></tr>
+                <tr><th>名称</th><th>Token</th><th>Policies</th><th>模型</th><th></th></tr>
               </thead>
               <tbody>
                 {projects.map(p => (

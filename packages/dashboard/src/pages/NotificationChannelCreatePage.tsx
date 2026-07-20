@@ -159,7 +159,7 @@ export function NotificationChannelCreatePage() {
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 4 }}>Configure a new notification channel.</p>
       </div>
 
-      <form onSubmit={handleSubmit} autoComplete="off" style={{ maxWidth: 600 }}>
+      <form onSubmit={handleSubmit} autoComplete="关闭" style={{ maxWidth: 600 }}>
         {error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
 
         {/* Tab bar */}

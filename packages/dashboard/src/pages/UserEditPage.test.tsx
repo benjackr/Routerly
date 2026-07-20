@@ -27,7 +27,7 @@ function makeUser(overrides: Record<string, unknown> = {}) {
 }
 
 function makeRole(overrides: Record<string, unknown> = {}) {
-  return { id: 'viewer', name: 'Viewer', permissions: [], builtin: false, ...overrides };
+  return { id: 'viewer', name: '查看者', permissions: [], builtin: false, ...overrides };
 }
 
 function renderPage(userId = 'u1') {
@@ -42,7 +42,7 @@ function renderPage(userId = 'u1') {
 
 beforeEach(() => {
   mockGetUsers.mockResolvedValue([makeUser()]);
-  mockGetRoles.mockResolvedValue([makeRole(), makeRole({ id: 'admin', name: 'Admin' })]);
+  mockGetRoles.mockResolvedValue([makeRole(), makeRole({ id: 'admin', name: '管理员' })]);
   mockUpdateUser.mockResolvedValue(makeUser());
 });
 

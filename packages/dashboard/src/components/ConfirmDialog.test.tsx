@@ -8,7 +8,7 @@ describe('ConfirmDialog', () => {
     render(<ConfirmDialog message="Delete this?" onConfirm={vi.fn()} onCancel={vi.fn()} />);
     expect(screen.getByText('Delete this?')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '取消' })).toBeTruthy();
   });
 
   it('calls onConfirm when confirm button clicked', async () => {
@@ -21,13 +21,13 @@ describe('ConfirmDialog', () => {
   it('calls onCancel when cancel button clicked', async () => {
     const onCancel = vi.fn();
     render(<ConfirmDialog message="Sure?" onConfirm={vi.fn()} onCancel={onCancel} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
   it('uses custom confirmLabel', () => {
-    render(<ConfirmDialog message="?" onConfirm={vi.fn()} onCancel={vi.fn()} confirmLabel="Remove" />);
-    expect(screen.getByRole('button', { name: 'Remove' })).toBeTruthy();
+    render(<ConfirmDialog message="?" onConfirm={vi.fn()} onCancel={vi.fn()} confirmLabel="移除" />);
+    expect(screen.getByRole('button', { name: '移除' })).toBeTruthy();
   });
 
   // Covers the branch on line 21: danger=false → btn-primary class

@@ -19,7 +19,7 @@ vi.mock('../../components/TraceEntryRenderer', () => ({
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [{ modelId: 'openai/gpt-4o' }],
   routingModelId: 'openai/gpt-4o',
   tokens: [
@@ -515,8 +515,8 @@ describe('ProjectTestTab — trace events', () => {
     await userEvent.type(screen.getByPlaceholderText('sk-rt-...'), 'sk-rt-mykey');
     await userEvent.type(screen.getByPlaceholderText('Type a message...'), 'hi');
     await userEvent.click(screen.getByTitle('Send (Enter)'));
-    await waitFor(() => screen.getByText('Clear'));
-    await userEvent.click(screen.getByText('Clear'));
+    await waitFor(() => screen.getByText('清空'));
+    await userEvent.click(screen.getByText('清空'));
     await waitFor(() => expect(screen.queryByTestId('trace-entry')).toBeNull());
     // Should show placeholder again
     expect(screen.getAllByText('No request sent yet.').length).toBe(4);

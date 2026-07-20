@@ -120,7 +120,7 @@ function makeStats(overrides: Record<string, unknown> = {}) {
   };
 }
 
-const mockProject = { id: 'proj-1', name: 'Test', models: [] };
+const mockProject = { id: 'proj-1', name: '测试', models: [] };
 
 function renderTab() {
   function LayoutWrapper() {
@@ -158,7 +158,7 @@ describe('ProjectLogsTab — loading state', () => {
 describe('ProjectLogsTab — stats when loaded', () => {
   it('shows Total Cost stat card', async () => {
     renderTab();
-    await waitFor(() => expect(screen.getByText('Total Cost')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('总消耗')).toBeTruthy());
     expect(screen.getByText('$1.2300')).toBeTruthy();
   });
 
@@ -234,17 +234,17 @@ describe('ProjectLogsTab — records table', () => {
     await waitFor(() => expect(screen.getByText('Request Logs')).toBeTruthy());
     const thead = document.querySelector('thead')!;
     expect(thead.querySelector('th[title], th')?.closest('thead')).toBeTruthy();
-    // 'Model' appears in both FilterLabel and <th>; check the <th> specifically
+    // '模型' appears in both FilterLabel and <th>; check the <th> specifically
     const ths = Array.from(thead.querySelectorAll('th')).map(th => th.textContent?.trim());
     expect(ths).toContain('Time');
-    expect(ths).toContain('Model');
+    expect(ths).toContain('模型');
     expect(ths).toContain('Type');
     expect(ths).toContain('In');
     expect(ths).toContain('Out');
     expect(ths).toContain('Cost');
     expect(ths).toContain('Latency');
     expect(ths).toContain('TTFT');
-    expect(ths).toContain('Status');
+    expect(ths).toContain('状态');
   });
 
   it('renders record rows', async () => {
@@ -356,7 +356,7 @@ describe('ProjectLogsTab — outcome filter', () => {
   it('clicking Success filter shows only successful records', async () => {
     renderTab();
     await waitFor(() => screen.getByText('Request Logs'));
-    await userEvent.click(screen.getByRole('button', { name: 'Success' }));
+    await userEvent.click(screen.getByRole('button', { name: '操作成功' }));
     await waitFor(() => {
       const rows = document.querySelectorAll('tbody tr');
       expect(rows.length).toBe(2); // rec-1 and rec-4 both have outcome='success'
@@ -366,7 +366,7 @@ describe('ProjectLogsTab — outcome filter', () => {
   it('clicking Error filter shows only error records', async () => {
     renderTab();
     await waitFor(() => screen.getByText('Request Logs'));
-    await userEvent.click(screen.getByRole('button', { name: 'Error' }));
+    await userEvent.click(screen.getByRole('button', { name: '错误' }));
     await waitFor(() => {
       const rows = document.querySelectorAll('tbody tr');
       expect(rows.length).toBe(1);
@@ -414,7 +414,7 @@ describe('ProjectLogsTab — "No records match" empty state', () => {
     }));
     renderTab();
     await waitFor(() => screen.getByText('Request Logs'));
-    await userEvent.click(screen.getByRole('button', { name: 'Success' }));
+    await userEvent.click(screen.getByRole('button', { name: '操作成功' }));
     await waitFor(() =>
       expect(screen.getByText('No records match the active filters.')).toBeTruthy()
     );
@@ -426,16 +426,16 @@ describe('ProjectLogsTab — "No records match" empty state', () => {
 describe('ProjectLogsTab — poll interval controls', () => {
   it('shows auto-refresh status text', async () => {
     renderTab();
-    // Either "Auto-refresh disabilitato" or "Auto-refresh ogni ..." is visible
+    // Either "自动刷新已关闭" or "Auto-refresh ogni ..." is visible
     await waitFor(() => expect(document.querySelector('.card')).toBeTruthy());
     expect(document.body.textContent).toMatch(/Auto-refresh/);
   });
 
   it('clicking Off sets pollInterval to 0', async () => {
     renderTab();
-    await waitFor(() => screen.getByRole('button', { name: 'Off' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Off' }));
-    // "Auto-refresh disabilitato" should appear
+    await waitFor(() => screen.getByRole('button', { name: '关闭' }));
+    await userEvent.click(screen.getByRole('button', { name: '关闭' }));
+    // "自动刷新已关闭" should appear
     await waitFor(() =>
       expect(screen.getByText(/Auto-refresh disabilitato/)).toBeTruthy()
     );

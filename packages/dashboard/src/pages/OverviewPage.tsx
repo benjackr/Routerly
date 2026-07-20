@@ -125,7 +125,7 @@ export function OverviewPage() {
   return (
     <>
       <div className="page-header">
-        <h1>Overview</h1>
+        <h1>概览</h1>
         <p>Usage summary and cost breakdown</p>
       </div>
       <div className="page-body">
@@ -146,7 +146,7 @@ export function OverviewPage() {
 
         {/* Stats grid */}
         <div className="stats-grid">
-          <StatCard icon={<DollarSign size={18} />} label="Total Cost" accentColor="#3D75F5"
+          <StatCard icon={<DollarSign size={18} />} label="总消耗" accentColor="#3D75F5"
             value={`$${stats.summary.totalCost.toFixed(4)}`} sub="USD this period" />
           <StatCard icon={<Activity size={18} />} label="Total Calls" accentColor="#5A90F8"
             value={stats.summary.totalCalls}
@@ -158,9 +158,9 @@ export function OverviewPage() {
             sub="of all requests" />
           <StatCard icon={<XCircle size={18} />} label="Errors" accentColor="#EF4444" valueColor="#EF4444"
             value={stats.summary.errorCalls} sub="failed requests" />
-          <StatCard icon={<Boxes size={18} />} label="Models" accentColor="#8B5CF6"
+          <StatCard icon={<Boxes size={18} />} label="模型" accentColor="#8B5CF6"
             value={modelCount} sub="registered" />
-          <StatCard icon={<FolderOpen size={18} />} label="Projects" accentColor="#A78BFA"
+          <StatCard icon={<FolderOpen size={18} />} label="项目" accentColor="#A78BFA"
             value={projectCount} sub="active" />
         </div>
 
@@ -233,8 +233,8 @@ export function OverviewPage() {
               <table>
                 <thead>
                   <tr>
-                    <th>Model</th>
-                    <th style={{ textAlign: 'right' }}>Calls</th>
+                    <th>模型</th>
+                    <th style={{ textAlign: 'right' }}>调用次数</th>
                     <th style={{ textAlign: 'right' }}>Errors</th>
                     <th style={{ textAlign: 'right' }}>Cost</th>
                   </tr>

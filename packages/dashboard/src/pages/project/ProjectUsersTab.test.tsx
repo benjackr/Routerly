@@ -18,7 +18,7 @@ vi.mock('../../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <p>{message}</p>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -36,7 +36,7 @@ const mockUsers = [
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [],
   members: [
     { userId: 'u1', role: 'editor' },
@@ -114,7 +114,7 @@ describe('ProjectUsersTab — initial render', () => {
 
   it('shows empty state when no members', async () => {
     renderTab({ ...mockProject, members: [] });
-    await waitFor(() => expect(screen.getByText('No members found.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('暂无成员。')).toBeTruthy());
   });
 
   it('shows error when getUsers rejects', async () => {
@@ -136,8 +136,8 @@ describe('ProjectUsersTab — initial render', () => {
   });
 
   it('shows "No members" when members key absent', async () => {
-    renderTab({ id: 'proj-1', name: 'Test', models: [] });
-    await waitFor(() => expect(screen.getByText('No members found.')).toBeTruthy());
+    renderTab({ id: 'proj-1', name: '测试', models: [] });
+    await waitFor(() => expect(screen.getByText('暂无成员。')).toBeTruthy());
   });
 });
 
@@ -253,7 +253,7 @@ describe('ProjectUsersTab — add member', () => {
 
   it('adds member when project has no members array (p.members falsy → [] branch)', async () => {
     // Project without members key → p.members is undefined → uses [] fallback
-    renderTab({ id: 'proj-1', name: 'Test', models: [] });
+    renderTab({ id: 'proj-1', name: '测试', models: [] });
     await waitFor(() => screen.getByRole('button', { name: /Add Member/i }));
     await userEvent.click(screen.getByRole('button', { name: /Add Member/i }));
     await waitFor(() => screen.getByText('alice@example.com'));
@@ -288,7 +288,7 @@ describe('ProjectUsersTab — edit member role', () => {
     renderTab();
     await waitFor(() => screen.getByTitle('Change Role'));
     await userEvent.click(screen.getByTitle('Change Role'));
-    await userEvent.click(screen.getByTitle('Cancel'));
+    await userEvent.click(screen.getByTitle('取消'));
     await waitFor(() => expect(screen.queryByTitle('Save changes')).toBeNull());
     expect(mockUpdateProjectMember).not.toHaveBeenCalled();
   });
@@ -334,7 +334,7 @@ describe('ProjectUsersTab — remove member', () => {
     renderTab();
     await waitFor(() => screen.getByTitle('Remove Member'));
     await userEvent.click(screen.getByTitle('Remove Member'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockRemoveProjectMember).not.toHaveBeenCalled();
   });

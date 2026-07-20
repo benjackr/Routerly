@@ -23,7 +23,7 @@ import { useProject } from './ProjectLayout';
 const ALL_PII_ENTITIES: PiiEntity[] = ['EMAIL', 'PHONE', 'CREDIT_CARD', 'SSN', 'IBAN'];
 
 const PII_LABELS: Record<PiiEntity, string> = {
-  EMAIL: 'Email',
+  EMAIL: '邮箱',
   PHONE: 'Phone',
   CREDIT_CARD: 'Credit Card',
   SSN: 'SSN',

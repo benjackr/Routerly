@@ -13,7 +13,7 @@ vi.mock('../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <span>{message}</span>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -72,7 +72,7 @@ describe('ProjectsPage — empty state', () => {
   it('shows empty state when no projects', async () => {
     mockGetProjects.mockResolvedValue([]);
     renderPage();
-    await waitFor(() => expect(screen.queryByText('No projects yet.')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('暂无项目。')).not.toBeNull());
   });
 
   it('shows 0 projects in toolbar', async () => {
@@ -97,7 +97,7 @@ describe('ProjectsPage — loaded state', () => {
   });
 
   it('shows plural "2 projects" in toolbar', async () => {
-    mockGetProjects.mockResolvedValue([makeProject({ id: 'p1', name: 'A' }), makeProject({ id: 'p2', name: 'B' })]);
+    mockGetProjects.mockResolvedValue([makeProject({ id: 'p1', name: '至' }), makeProject({ id: 'p2', name: 'B' })]);
     renderPage();
     await waitFor(() => expect(screen.queryByText('2 projects')).not.toBeNull());
   });
@@ -179,7 +179,7 @@ describe('ProjectsPage — delete flow', () => {
     await waitFor(() => screen.getByTitle('Delete project'));
     await userEvent.click(screen.getByTitle('Delete project'));
     await waitFor(() => screen.getByTestId('confirm-dialog'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockDeleteProject).not.toHaveBeenCalled();
   });

@@ -17,14 +17,14 @@ vi.mock('../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <span>{message}</span>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
 
 vi.mock('./notificationChannelFields', () => ({
   CHANNEL_PROVIDER_META: [
-    { key: 'dashboard', label: 'Dashboard', description: 'In-app inbox' },
+    { key: 'dashboard', label: '仪表盘', description: 'In-app inbox' },
     { key: 'smtp',      label: 'SMTP',      description: 'Custom mail server' },
     { key: 'webhook',   label: 'Webhook',   description: 'HTTP webhook' },
     { key: 'slack',     label: 'Slack',     description: 'Slack Bot API' },
@@ -113,7 +113,7 @@ describe('NotificationChannelListPage — table rendering', () => {
     mockGetChannels.mockResolvedValue([makeChannel()]);
     renderPage();
     await waitFor(() => {
-      expect(screen.getByText('Name')).toBeTruthy();
+      expect(screen.getByText('名称')).toBeTruthy();
       expect(screen.getByText('Type')).toBeTruthy();
       expect(screen.getByText('Events / Targets')).toBeTruthy();
     });
@@ -142,7 +142,7 @@ describe('NotificationChannelListPage — sorting', () => {
     ]);
     renderPage();
     await waitFor(() => expect(screen.getAllByText('Alpha').length).toBeGreaterThan(0));
-    await userEvent.click(screen.getByText('Name'));
+    await userEvent.click(screen.getByText('名称'));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('Beta');
   });
@@ -303,7 +303,7 @@ describe('NotificationChannelListPage — delete', () => {
     renderPage();
     await waitFor(() => screen.getByTitle('Delete channel'));
     await userEvent.click(screen.getByTitle('Delete channel'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     expect(screen.queryByTestId('confirm-dialog')).toBeNull();
     expect(mockDelete).not.toHaveBeenCalled();
   });
@@ -368,7 +368,7 @@ describe('NotificationChannelListPage — add picker', () => {
     await waitFor(() => screen.getByText(/No notification channels/));
     await userEvent.click(screen.getByRole('button', { name: /Add Channel/ }));
     // Picker dropdown renders provider entries
-    await waitFor(() => expect(screen.getAllByText('Dashboard').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('仪表盘').length).toBeGreaterThan(0));
   });
 
   it('shows search input in picker', async () => {
@@ -394,7 +394,7 @@ describe('NotificationChannelListPage — add picker', () => {
     await userEvent.click(screen.getByRole('button', { name: /Add Channel/ }));
     await waitFor(() => screen.getByPlaceholderText('Search channels…'));
     await userEvent.type(screen.getByPlaceholderText('Search channels…'), 'zzzmatch');
-    await waitFor(() => expect(screen.getByText('No results')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('无结果')).toBeTruthy());
   });
 
   it('closes picker when clicking outside', async () => {
@@ -411,7 +411,7 @@ describe('NotificationChannelListPage — add picker', () => {
     renderPage();
     await waitFor(() => screen.getByText(/No notification channels/));
     await userEvent.click(screen.getByRole('button', { name: /Add Channel/ }));
-    await waitFor(() => expect(screen.getAllByText('Dashboard').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('仪表盘').length).toBeGreaterThan(0));
 
     // Click the first provider button in the picker — it closes the picker
     const providerBtns = Array.from(document.querySelectorAll('button')).filter(b =>
@@ -514,9 +514,9 @@ describe('NotificationChannelListPage — sort desc→asc on second click', () =
     renderPage();
     await waitFor(() => expect(screen.getAllByText('Alpha').length).toBeGreaterThan(0));
     // First click: asc→desc (Beta first)
-    await userEvent.click(screen.getByText('Name'));
+    await userEvent.click(screen.getByText('名称'));
     // Second click: desc→asc (Alpha first again)
-    await userEvent.click(screen.getByText('Name'));
+    await userEvent.click(screen.getByText('名称'));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('Alpha');
   });

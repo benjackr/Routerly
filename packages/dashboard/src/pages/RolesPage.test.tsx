@@ -20,7 +20,7 @@ vi.mock('../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <span>{message}</span>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -100,22 +100,22 @@ describe('RolesPage — loaded roles', () => {
   });
 
   it('renders builtin badge for builtin roles', async () => {
-    mockGetRoles.mockResolvedValue([makeRole({ builtin: true, name: 'Admin' })]);
+    mockGetRoles.mockResolvedValue([makeRole({ builtin: true, name: '管理员' })]);
     renderPage();
     await waitFor(() => expect(screen.queryByText('built-in')).not.toBeNull());
   });
 
   it('does not show Edit/Delete buttons for builtin roles', async () => {
-    mockGetRoles.mockResolvedValue([makeRole({ builtin: true, name: 'Admin' })]);
+    mockGetRoles.mockResolvedValue([makeRole({ builtin: true, name: '管理员' })]);
     renderPage();
-    await waitFor(() => screen.queryByText('Admin'));
-    expect(screen.queryByRole('button', { name: 'Edit' })).toBeNull();
+    await waitFor(() => screen.queryByText('管理员'));
+    expect(screen.queryByRole('button', { name: '编辑' })).toBeNull();
   });
 
   it('shows Edit and Delete buttons for non-builtin roles', async () => {
     mockGetRoles.mockResolvedValue([makeRole()]);
     renderPage();
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeNull());
+    await waitFor(() => expect(screen.queryByRole('button', { name: '编辑' })).not.toBeNull());
     // delete button is btn-danger with only a Trash2 SVG (no text/aria-label)
     expect(document.querySelector('button.btn-danger')).not.toBeNull();
   });
@@ -213,8 +213,8 @@ describe('RolesPage — edit role', () => {
   it('shows edit form when Edit clicked', async () => {
     mockGetRoles.mockResolvedValue([makeRole({ id: 'r1', name: 'Operator', permissions: ['project:read'] })]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => {
       const nameInput = screen.getByPlaceholderText('Role name') as HTMLInputElement;
       expect(nameInput.value).toBe('Operator');
@@ -224,8 +224,8 @@ describe('RolesPage — edit role', () => {
   it('hides edit form and clicking New Role hides edit form', async () => {
     mockGetRoles.mockResolvedValue([makeRole()]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByRole('button', { name: /New Role/ }));
     await userEvent.click(screen.getByRole('button', { name: /New Role/ }));
     // create form shown, edit form hidden
@@ -235,11 +235,11 @@ describe('RolesPage — edit role', () => {
   it('cancels edit on Cancel click', async () => {
     mockGetRoles.mockResolvedValue([makeRole({ id: 'r1', name: 'Operator' })]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByRole('button', { name: /Cancel/ }));
     await userEvent.click(screen.getByRole('button', { name: /Cancel/ }));
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Edit' })).not.toBeNull());
+    await waitFor(() => expect(screen.queryByRole('button', { name: '编辑' })).not.toBeNull());
   });
 
   it('submits edit and updates role in list', async () => {
@@ -248,8 +248,8 @@ describe('RolesPage — edit role', () => {
     mockGetRoles.mockResolvedValue([role]);
     mockUpdateRole.mockResolvedValue(updated);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByPlaceholderText('Role name'));
     const nameInput = screen.getByPlaceholderText('Role name') as HTMLInputElement;
     await userEvent.clear(nameInput);
@@ -267,9 +267,9 @@ describe('RolesPage — edit role', () => {
     mockGetRoles.mockResolvedValue([role1, role2]);
     mockUpdateRole.mockResolvedValue(updatedRole1);
     renderPage();
-    await waitFor(() => expect(screen.queryAllByRole('button', { name: 'Edit' })).toHaveLength(2));
+    await waitFor(() => expect(screen.queryAllByRole('button', { name: '编辑' })).toHaveLength(2));
     // Edit the first role
-    await userEvent.click(screen.getAllByRole('button', { name: 'Edit' })[0]!);
+    await userEvent.click(screen.getAllByRole('button', { name: '编辑' })[0]!);
     await waitFor(() => screen.getByPlaceholderText('Role name'));
     await userEvent.click(screen.getByRole('button', { name: /Save/ }));
     await waitFor(() => expect(mockUpdateRole).toHaveBeenCalled());
@@ -282,8 +282,8 @@ describe('RolesPage — edit role', () => {
     mockGetRoles.mockResolvedValue([makeRole()]);
     mockUpdateRole.mockRejectedValue(new Error('Conflict'));
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByRole('button', { name: /Save/ }));
     await userEvent.click(screen.getByRole('button', { name: /Save/ }));
     await waitFor(() => expect(screen.queryByText('Conflict')).not.toBeNull());
@@ -293,8 +293,8 @@ describe('RolesPage — edit role', () => {
     mockGetRoles.mockResolvedValue([makeRole()]);
     mockUpdateRole.mockRejectedValue('oops');
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByRole('button', { name: /Save/ }));
     await userEvent.click(screen.getByRole('button', { name: /Save/ }));
     await waitFor(() => expect(screen.queryByText('Failed to update role')).not.toBeNull());
@@ -303,8 +303,8 @@ describe('RolesPage — edit role', () => {
   it('toggles permission in edit form', async () => {
     mockGetRoles.mockResolvedValue([makeRole({ permissions: ['project:read'] })]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByPlaceholderText('Role name'));
     const projReadLabel = screen.getByText('Projects – Read').closest('label') as HTMLElement;
     const cb = projReadLabel.querySelector('input[type="checkbox"]') as HTMLInputElement;
@@ -338,7 +338,7 @@ describe('RolesPage — delete role', () => {
     await waitFor(() => document.querySelector('button.btn-danger'));
     await userEvent.click(document.querySelector('button.btn-danger') as HTMLElement);
     await waitFor(() => screen.getByTestId('confirm-dialog'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockDeleteRole).not.toHaveBeenCalled();
   });
@@ -383,8 +383,8 @@ describe('RolesPage — permission labels', () => {
   it('renders all 14 permission labels in the permission grid during edit', async () => {
     mockGetRoles.mockResolvedValue([makeRole({ permissions: [] })]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Edit' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    await waitFor(() => screen.getByRole('button', { name: '编辑' }));
+    await userEvent.click(screen.getByRole('button', { name: '编辑' }));
     await waitFor(() => screen.getByPlaceholderText('Role name'));
     const labels = [
       'Projects – Read', 'Projects – Write', 'Models – Read', 'Models – Write',

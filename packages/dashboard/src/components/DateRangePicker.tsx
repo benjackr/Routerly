@@ -8,10 +8,10 @@ export interface DateRange {
 }
 
 const MONTHS_IT = [
-  'gennaio','febbraio','marzo','aprile','maggio','giugno',
-  'luglio','agosto','settembre','ottobre','novembre','dicembre',
+  '1月','2月','3月','4月','5月','6月',
+  '7月','8月','9月','10月','11月','12月',
 ];
-const DAYS_IT = ['lun','mar','mer','gio','ven','sab','dom'];
+const DAYS_IT = ['一','二','三','四','五','六','日'];
 
 /** Returns a calendar grid array (Mon-based) for given year/month */
 function getCalendarDays(year: number, month: number): (Date | null)[] {
@@ -52,94 +52,94 @@ function parseTimeFromISO(iso: string, defaultTime: string): string {
 /** Recent time-window presets (minutes / hours) — always use ISO datetime strings */
 export const RECENT_PRESETS: { label: string; range: () => DateRange }[] = [
   {
-    label: 'Ultimo minuto',
-    range: () => ({ from: new Date(Date.now() - 1 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimo minuto' }),
+    label: '最近1分钟',
+    range: () => ({ from: new Date(Date.now() - 1 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近1分钟' }),
   },
   {
-    label: 'Ultimi 3 minuti',
-    range: () => ({ from: new Date(Date.now() - 3 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimi 3 minuti' }),
+    label: '最近3分钟',
+    range: () => ({ from: new Date(Date.now() - 3 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近3分钟' }),
   },
   {
-    label: 'Ultimi 5 minuti',
-    range: () => ({ from: new Date(Date.now() - 5 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimi 5 minuti' }),
+    label: '最近5分钟',
+    range: () => ({ from: new Date(Date.now() - 5 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近5分钟' }),
   },
   {
-    label: 'Ultimi 10 minuti',
-    range: () => ({ from: new Date(Date.now() - 10 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimi 10 minuti' }),
+    label: '最近10分钟',
+    range: () => ({ from: new Date(Date.now() - 10 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近10分钟' }),
   },
   {
-    label: 'Ultimi 15 minuti',
-    range: () => ({ from: new Date(Date.now() - 15 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimi 15 minuti' }),
+    label: '最近15分钟',
+    range: () => ({ from: new Date(Date.now() - 15 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近15分钟' }),
   },
   {
-    label: 'Ultimi 30 minuti',
-    range: () => ({ from: new Date(Date.now() - 30 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultimi 30 minuti' }),
+    label: '最近30分钟',
+    range: () => ({ from: new Date(Date.now() - 30 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近30分钟' }),
   },
   {
-    label: 'Ultima ora',
-    range: () => ({ from: new Date(Date.now() - 60 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultima ora' }),
+    label: '最近1小时',
+    range: () => ({ from: new Date(Date.now() - 60 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近1小时' }),
   },
   {
-    label: 'Ultime 6 ore',
-    range: () => ({ from: new Date(Date.now() - 6 * 60 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultime 6 ore' }),
+    label: '最近6小时',
+    range: () => ({ from: new Date(Date.now() - 6 * 60 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近6小时' }),
   },
   {
-    label: 'Ultime 12 ore',
-    range: () => ({ from: new Date(Date.now() - 12 * 60 * 60_000).toISOString(), to: new Date().toISOString(), label: 'Ultime 12 ore' }),
+    label: '最近12小时',
+    range: () => ({ from: new Date(Date.now() - 12 * 60 * 60_000).toISOString(), to: new Date().toISOString(), label: '最近12小时' }),
   },
 ];
 
 /** Day-level presets — use YYYY-MM-DD format */
 export const PRESETS: { label: string; range: () => DateRange }[] = [
   {
-    label: 'Oggi',
-    range: () => { const t = fmt(new Date()); return { from: t, to: t, label: 'Oggi' }; },
+    label: '今天',
+    range: () => { const t = fmt(new Date()); return { from: t, to: t, label: '今天' }; },
   },
   {
-    label: 'Ieri',
-    range: () => { const y = fmt(addDays(new Date(), -1)); return { from: y, to: y, label: 'Ieri' }; },
+    label: '昨天',
+    range: () => { const y = fmt(addDays(new Date(), -1)); return { from: y, to: y, label: '昨天' }; },
   },
   {
-    label: 'Questa settimana',
-    range: () => ({ from: fmt(startOfWeek(new Date())), to: fmt(new Date()), label: 'Questa settimana' }),
+    label: '本周',
+    range: () => ({ from: fmt(startOfWeek(new Date())), to: fmt(new Date()), label: '本周' }),
   },
   {
-    label: 'Questo mese',
+    label: '本月',
     range: () => {
       const now = new Date();
-      return { from: fmt(new Date(now.getFullYear(), now.getMonth(), 1)), to: fmt(now), label: 'Questo mese' };
+      return { from: fmt(new Date(now.getFullYear(), now.getMonth(), 1)), to: fmt(now), label: '本月' };
     },
   },
   {
-    label: 'Questo trimestre',
+    label: '本季度',
     range: () => {
       const now = new Date();
       const q = Math.floor(now.getMonth() / 3);
-      return { from: fmt(new Date(now.getFullYear(), q * 3, 1)), to: fmt(now), label: 'Questo trimestre' };
+      return { from: fmt(new Date(now.getFullYear(), q * 3, 1)), to: fmt(now), label: '本季度' };
     },
   },
   {
-    label: "Quest'anno",
+    label: "今年",
     range: () => {
       const now = new Date();
-      return { from: fmt(new Date(now.getFullYear(), 0, 1)), to: fmt(now), label: "Quest'anno" };
+      return { from: fmt(new Date(now.getFullYear(), 0, 1)), to: fmt(now), label: "今年" };
     },
   },
   {
-    label: 'Ultimi 7 giorni',
-    range: () => ({ from: fmt(addDays(new Date(), -6)), to: fmt(new Date()), label: 'Ultimi 7 giorni' }),
+    label: '最近7天',
+    range: () => ({ from: fmt(addDays(new Date(), -6)), to: fmt(new Date()), label: '最近7天' }),
   },
   {
-    label: 'Ultimi 30 giorni',
-    range: () => ({ from: fmt(addDays(new Date(), -29)), to: fmt(new Date()), label: 'Ultimi 30 giorni' }),
+    label: '最近30天',
+    range: () => ({ from: fmt(addDays(new Date(), -29)), to: fmt(new Date()), label: '最近30天' }),
   },
   {
-    label: 'Ultimi 12 mesi',
-    range: () => ({ from: fmt(addDays(new Date(), -364)), to: fmt(new Date()), label: 'Ultimi 12 mesi' }),
+    label: '最近12个月',
+    range: () => ({ from: fmt(addDays(new Date(), -364)), to: fmt(new Date()), label: '最近12个月' }),
   },
   {
-    label: 'Tutto il tempo',
-    range: () => ({ from: '', to: '', label: 'Tutto il tempo' }),
+    label: '全部时间',
+    range: () => ({ from: '', to: '', label: '全部时间' }),
   },
 ];
 
@@ -154,7 +154,7 @@ export function DateRangePicker({ value, onChange }: Props) {
   const [viewYear,  setViewYear]  = useState(now.getFullYear());
   const [viewMonth, setViewMonth] = useState(now.getMonth());
 
-  // Pending selection (not yet confirmed by "Seleziona")
+  // Pending selection (not yet confirmed by "确定")
   const [pendingFrom, setPendingFrom] = useState(value.from);
   const [pendingTo,   setPendingTo]   = useState(value.to);
   const [pickingEnd,  setPickingEnd]  = useState(false);
@@ -226,7 +226,7 @@ export function DateRangePicker({ value, onChange }: Props) {
     const isDefaultTimes = ft === '00:00:00' && tt === '23:59:59';
     let label: string;
     if (!fromDate) {
-      label = 'Tutto il tempo';
+      label = '全部时间';
     } else if (fromDate === toDate && isDefaultTimes) {
       label = fromDate;
     } else if (fromDate === toDate) {
@@ -277,12 +277,12 @@ export function DateRangePicker({ value, onChange }: Props) {
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <Calendar size={13} />
-          {value.label || 'Seleziona periodo'}
+          {value.label || '选择时间段'}
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {(value.from || value.to) ? (
             <X size={12} style={{ opacity: 0.5 }}
-              onClick={e => { e.stopPropagation(); onChange({ from: '', to: '', label: 'Tutto il tempo' }); }} />
+              onClick={e => { e.stopPropagation(); onChange({ from: '', to: '', label: '全部时间' }); }} />
           ) : null}
           <ChevronDown size={13} style={{ opacity: 0.5 }} />
         </span>
@@ -495,7 +495,7 @@ export function DateRangePicker({ value, onChange }: Props) {
               {/* Time inputs */}
               <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
-                  <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Da</label>
+                  <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>从</label>
                   <input type="time" step="1" value={pendingFromTime}
                     onChange={e => { let t = e.target.value; if (t.length === 5) t += ':00'; setPendingFromTime(t || '00:00:00'); }}
                     style={{
@@ -505,7 +505,7 @@ export function DateRangePicker({ value, onChange }: Props) {
                   />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
-                  <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>A</label>
+                  <label style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>至</label>
                   <input type="time" step="1" value={pendingToTime}
                     onChange={e => { let t = e.target.value; if (t.length === 5) t += ':00'; setPendingToTime(t || '23:59:59'); }}
                     style={{
@@ -520,8 +520,8 @@ export function DateRangePicker({ value, onChange }: Props) {
 
           {/* Footer */}
           <div style={{ borderTop: '1px solid var(--border)', padding: '10px 16px', display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
-            <button className="btn btn-secondary btn-sm" onClick={handleCancel}>Annulla</button>
-            <button className="btn btn-primary btn-sm" onClick={handleConfirm}>Seleziona</button>
+            <button className="btn btn-secondary btn-sm" onClick={handleCancel}>取消</button>
+            <button className="btn btn-primary btn-sm" onClick={handleConfirm}>确定</button>
           </div>
         </div>
       )}

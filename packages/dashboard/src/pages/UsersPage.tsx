@@ -31,7 +31,7 @@ export function UsersPage() {
       setShowAdd(false);
       setAddForm({ email: '', password: '', roleId: 'viewer' });
       await load();
-    } catch (e) { setAddErr(e instanceof Error ? e.message : 'Error'); }
+    } catch (e) { setAddErr(e instanceof Error ? e.message : '错误'); }
     finally { setAddSaving(false); }
   }
 
@@ -48,7 +48,7 @@ export function UsersPage() {
 
   function handleReset2fa(id: string, email: string) {
     setConfirmState({
-      message: `Reset 2FA for ${email}? They will need to re-enroll.`,
+      message: `重置 2FA for ${email}? They will need to re-enroll.`,
       onConfirm: async () => {
         setConfirmState(null);
         await reset2faForUser(id);
@@ -69,18 +69,18 @@ export function UsersPage() {
       {loading ? (
         <div className="loading-center"><div className="spinner" /></div>
       ) : users.length === 0 ? (
-        <div className="empty-state"><Users size={40} /><p>No users yet.</p></div>
+        <div className="empty-state"><Users size={40} /><p>暂无用户。</p></div>
       ) : (
         <div className="table-wrap">
           <table>
-            <thead><tr><th>Email</th><th>Role</th><th>Projects</th><th></th></tr></thead>
+            <thead><tr><th>邮箱</th><th>角色</th><th>项目</th><th></th></tr></thead>
             <tbody>
               {users.map(u => (
                 <tr key={u.id}>
                   <td><strong style={{ color: 'var(--text-primary)' }}>{u.email}</strong></td>
                   <td><span className={`badge ${u.roleId === 'admin' ? 'badge-success' : 'badge-ollama'}`}>{u.roleId}</span></td>
                   <td style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
-                    {u.projectIds.length === 0 ? 'All' : u.projectIds.join(', ')}
+                    {u.projectIds.length === 0 ? '全部' : u.projectIds.join(', ')}
                   </td>
                   <td style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', alignItems: 'center' }}>
                     {u.totpEnabled && (
@@ -106,30 +106,30 @@ export function UsersPage() {
       {showAdd && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowAdd(false)}>
           <div className="modal">
-            <h2 className="modal-title">Add User</h2>
+            <h2 className="modal-title">添加用户</h2>
             <form onSubmit={handleAdd}>
               {addErr && <div className="form-error">{addErr}</div>}
               <div className="form-group">
-                <label className="form-label">Email</label>
+                <label className="form-label">邮箱</label>
                 <input className="form-input" type="email" value={addForm.email}
                   onChange={e => setAddForm(f => ({ ...f, email: e.target.value }))} placeholder="user@example.com" required />
               </div>
               <div className="form-group">
-                <label className="form-label">Password</label>
+                <label className="form-label">密码</label>
                 <input className="form-input" type="password" value={addForm.password}
                   onChange={e => setAddForm(f => ({ ...f, password: e.target.value }))} placeholder="••••••••" required />
               </div>
               <div className="form-group">
-                <label className="form-label">Role</label>
+                <label className="form-label">角色</label>
                 <select className="form-input" value={addForm.roleId} onChange={e => setAddForm(f => ({ ...f, roleId: e.target.value }))}>
-                  <option value="admin">Admin</option>
-                  <option value="viewer">Viewer</option>
+                  <option value="admin">管理员</option>
+                  <option value="viewer">查看者</option>
                 </select>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowAdd(false)}>Cancel</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowAdd(false)}>取消</button>
                 <button type="submit" className="btn btn-primary" disabled={addSaving}>
-                  {addSaving ? <span className="spinner" /> : 'Add User'}
+                  {addSaving ? <span className="spinner" /> : '添加用户'}
                 </button>
               </div>
             </form>

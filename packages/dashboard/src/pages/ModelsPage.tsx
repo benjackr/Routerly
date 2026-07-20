@@ -36,11 +36,11 @@ const STATUS_SEVERITY: Record<ExtendedStatus, number> = {
 };
 
 const STATUS_META: Record<ExtendedStatus, { label: string; color: string }> = {
-  healthy:     { label: 'Healthy',     color: 'var(--success)' },
-  degraded:    { label: 'Degraded',    color: 'var(--warning)' },
+  healthy:     { label: '健康',     color: 'var(--success)' },
+  degraded:    { label: '降级',    color: 'var(--warning)' },
   unavailable: { label: 'Unavailable', color: 'var(--danger)' },
-  cooldown:    { label: 'Cooldown',    color: 'var(--text-muted)' },
-  nodata:      { label: 'No data',     color: 'var(--text-muted)' },
+  cooldown:    { label: '冷却',    color: 'var(--text-muted)' },
+  nodata:      { label: '无数据',     color: 'var(--text-muted)' },
 };
 
 function StatusBadge({ status }: { status: ExtendedStatus }) {
@@ -185,7 +185,7 @@ export function ModelsPage() {
         apiKey: fetchApiKey,
         modelIds: Array.from(selectedModels),
       });
-      alert(`Imported ${result.imported} of ${result.total} models`);
+      alert(`导入ed ${result.imported} of ${result.total} models`);
       setShowFetchModal(false);
       setFetchEndpoint('');
       setFetchApiKey('');
@@ -208,7 +208,7 @@ export function ModelsPage() {
 
   function handleDelete(id: string) {
     setConfirmState({
-      message: `Remove model "${id}"?`,
+      message: `移除 model "${id}"?`,
       onConfirm: async () => {
         setConfirmState(null);
         await deleteModel(id);
@@ -326,11 +326,11 @@ export function ModelsPage() {
   return (
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
-        <h1>Models</h1>
+        <h1>模型</h1>
         <p>LLM providers registered with Routerly</p>
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border)', marginTop: 12 }}>
-          <button style={tabStyle('models')} onClick={() => setTab('models')}>Models</button>
-          <button style={tabStyle('health')} onClick={() => setTab('health')}>Health</button>
+          <button style={tabStyle('models')} onClick={() => setTab('models')}>模型</button>
+          <button style={tabStyle('health')} onClick={() => setTab('health')}>健康</button>
         </div>
       </div>
       <div className="page-body" style={{ paddingTop: 24 }}>
@@ -360,7 +360,7 @@ export function ModelsPage() {
                   <input
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    placeholder="Filter models…"
+                    placeholder="筛选模型…"
                     style={{ paddingLeft: 28, paddingRight: search ? 28 : 10, height: 32, fontSize: '0.85rem', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', outline: 'none', width: 200 }}
                   />
                   {search && (
@@ -383,9 +383,9 @@ export function ModelsPage() {
             {loading ? (
               <div className="loading-center"><div className="spinner" /></div>
             ) : models.length === 0 ? (
-              <div className="empty-state"><Server size={40} /><p>No models yet. Add one to get started.</p></div>
+              <div className="empty-state"><Server size={40} /><p>暂无模型，添加一个开始使用。</p></div>
             ) : sorted.length === 0 ? (
-              <div className="empty-state"><Search size={40} /><p>No models match the active filters.</p></div>
+              <div className="empty-state"><Search size={40} /><p>没有符合筛选条件的模型。</p></div>
             ) : (
               <>
                 <div className="table-wrap" style={{ overflowX: 'auto' }}>
@@ -393,12 +393,12 @@ export function ModelsPage() {
                     <thead>
                       <tr>
                         <th style={thStyle}>{thInner('ID', 'id')}</th>
-                        <th style={thStyle}>{thInner('Provider', 'provider')}</th>
-                        <th style={thStyle}>{thInner('Endpoint', 'endpoint')}</th>
-                        <th style={thStyle}>{thInner('Input $/1M', 'input')}</th>
-                        <th style={thStyle}>{thInner('Output $/1M', 'output')}</th>
-                        <th style={thStyle}>{thInner('Cache $/1M', 'cache')}</th>
-                        <th style={thStyle}>{thInner('Context Size', 'context')}</th>
+                        <th style={thStyle}>{thInner('提供商', 'provider')}</th>
+                        <th style={thStyle}>{thInner('端点', 'endpoint')}</th>
+                        <th style={thStyle}>{thInner('输入 $/百万', 'input')}</th>
+                        <th style={thStyle}>{thInner('输出 $/百万', 'output')}</th>
+                        <th style={thStyle}>{thInner('缓存 $/百万', 'cache')}</th>
+                        <th style={thStyle}>{thInner('上下文大小', 'context')}</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -423,16 +423,16 @@ export function ModelsPage() {
                                 );
                                 return null;
                               })()}
-                              <button className="btn-icon" onClick={() => handleTest(m.id)} title="Test">
+                              <button className="btn-icon" onClick={() => handleTest(m.id)} title="测试">
                                 <FlaskConical size={15} />
                               </button>
-                              <Link to={`/dashboard/models/new?clone=${encodeURIComponent(m.id)}`} className="btn-icon" title="Clone">
+                              <Link to={`/dashboard/models/new?clone=${encodeURIComponent(m.id)}`} className="btn-icon" title="克隆">
                                 <Copy size={15} />
                               </Link>
-                              <Link to={`/dashboard/models/${encodeURIComponent(m.id)}`} className="btn-icon" title="Edit">
+                              <Link to={`/dashboard/models/${encodeURIComponent(m.id)}`} className="btn-icon" title="编辑">
                                 <Edit2 size={15} />
                               </Link>
-                              <button className="btn-icon danger" onClick={() => handleDelete(m.id)} title="Remove">
+                              <button className="btn-icon danger" onClick={() => handleDelete(m.id)} title="移除">
                                 <Trash2 size={15} />
                               </button>
                             </td>
@@ -467,7 +467,7 @@ export function ModelsPage() {
           loading ? (
             <div className="loading-center"><div className="spinner" /></div>
           ) : models.length === 0 ? (
-            <div className="empty-state"><Server size={40} /><p>No models configured.</p></div>
+            <div className="empty-state"><Server size={40} /><p>尚未配置任何模型。</p></div>
           ) : (
             <>
               <div className="toolbar">
@@ -481,7 +481,7 @@ export function ModelsPage() {
                   <input
                     value={hSearch}
                     onChange={e => setHSearch(e.target.value)}
-                    placeholder="Filter models…"
+                    placeholder="筛选模型…"
                     style={{ paddingLeft: 28, paddingRight: hSearch ? 28 : 10, height: 32, fontSize: '0.85rem', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)', outline: 'none', width: 200 }}
                   />
                   {hSearch && (
@@ -492,21 +492,21 @@ export function ModelsPage() {
                 </div>
               </div>
               {hSorted.length === 0 ? (
-                <div className="empty-state"><Search size={40} /><p>No models match the filter.</p></div>
+                <div className="empty-state"><Search size={40} /><p>没有符合筛选条件的模型。</p></div>
               ) : (
                 <>
                   <div className="table-wrap">
                     <table>
                       <thead>
                         <tr>
-                          {hTh('Model', 'id')}
-                          {hTh('Provider', 'provider')}
-                          {hTh('Status', 'status')}
-                          {hTh('Error rate (5m)', 'errorRate', 'right')}
-                          {hTh('P95 latency (1h)', 'p95Latency', 'right')}
-                          {hTh('Requests (1h)', 'requests', 'right')}
-                          {hTh('Last success', 'lastSuccess', 'right')}
-                          {hTh('Cooldown', 'cooldown', 'right')}
+                          {hTh('模型', 'id')}
+                          {hTh('提供商', 'provider')}
+                          {hTh('状态', 'status')}
+                          {hTh('错误率(5分钟)', 'errorRate', 'right')}
+                          {hTh('P95 延迟(1小时)', 'p95Latency', 'right')}
+                          {hTh('请求数(1小时)', 'requests', 'right')}
+                          {hTh('最近成功', 'lastSuccess', 'right')}
+                          {hTh('冷却', 'cooldown', 'right')}
                         </tr>
                       </thead>
                       <tbody>
@@ -578,7 +578,7 @@ export function ModelsPage() {
             minWidth: 500, maxWidth: 700, maxHeight: '80vh', overflow: 'auto',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>Fetch Models from Endpoint</h2>
+            <h2 style={{ marginTop: 0, fontSize: '1.1rem' }}>从端点拉取模型</h2>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
               Enter an OpenAI-compatible endpoint URL to discover available models.
             </p>
@@ -607,7 +607,7 @@ export function ModelsPage() {
                 style={{ alignSelf: 'flex-start' }}
               >
                 {fetchLoading ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <DownloadCloud size={16} />}
-                {' '}{fetchLoading ? 'Discovering...' : 'Discover'}
+                {' '}{fetchLoading ? '发现中...' : '发现'}
               </button>
             </div>
             {fetchError && (
@@ -648,7 +648,7 @@ export function ModelsPage() {
                   </button>
                   <button className="btn btn-primary" onClick={handleImport}
                     disabled={selectedModels.size === 0 || importLoading}>
-                    {importLoading ? 'Importing...' : `Import Selected (${selectedModels.size})`}
+                    {importLoading ? '导入中...' : `导入选中模型 (${selectedModels.size})`}
                   </button>
                 </div>
               </>

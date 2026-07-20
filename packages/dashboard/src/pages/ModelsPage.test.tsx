@@ -19,7 +19,7 @@ vi.mock('../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <span>{message}</span>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -168,7 +168,7 @@ describe('ModelsPage — models list', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('z-model'));
-    const providerHeader = screen.getByText('Provider');
+    const providerHeader = screen.getByText('提供商');
     await userEvent.click(providerHeader);
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('anthropic');
@@ -181,7 +181,7 @@ describe('ModelsPage — models list', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('z-model'));
-    const providerHeader = screen.getByText('Provider');
+    const providerHeader = screen.getByText('提供商');
     await userEvent.click(providerHeader); // asc
     await userEvent.click(providerHeader); // desc
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -196,7 +196,7 @@ describe('ModelsPage — delete with ConfirmDialog', () => {
     mockGetModels.mockResolvedValue([makeModel()]);
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
-    const deleteBtn = screen.getByTitle('Remove');
+    const deleteBtn = screen.getByTitle('移除');
     await userEvent.click(deleteBtn);
     expect(screen.getByTestId('confirm-dialog')).toBeTruthy();
     expect(screen.getByText(/Remove model "gpt-4o"/)).toBeTruthy();
@@ -206,8 +206,8 @@ describe('ModelsPage — delete with ConfirmDialog', () => {
     mockGetModels.mockResolvedValue([makeModel()]);
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
-    await userEvent.click(screen.getByTitle('Remove'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByTitle('移除'));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     expect(screen.queryByTestId('confirm-dialog')).toBeNull();
     expect(mockDeleteModel).not.toHaveBeenCalled();
   });
@@ -217,7 +217,7 @@ describe('ModelsPage — delete with ConfirmDialog', () => {
     mockDeleteModel.mockResolvedValue(undefined);
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
-    await userEvent.click(screen.getByTitle('Remove'));
+    await userEvent.click(screen.getByTitle('移除'));
     await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
     await waitFor(() => expect(mockDeleteModel).toHaveBeenCalledWith('gpt-4o'));
     await waitFor(() => expect(screen.queryByText('gpt-4o')).toBeNull());
@@ -274,7 +274,7 @@ describe('ModelsPage — pagination', () => {
 
 // helper: switch to the Health tab
 async function switchToHealthTab() {
-  const healthTabBtn = screen.getByRole('button', { name: 'Health' });
+  const healthTabBtn = screen.getByRole('button', { name: '健康' });
   await userEvent.click(healthTabBtn);
 }
 
@@ -284,8 +284,8 @@ describe('ModelsPage — health columns (merged table)', () => {
   it('shows both Models and Health tab buttons', async () => {
     renderPage();
     await waitFor(() => screen.queryByText(/No models yet/) || screen.queryByText(/model/));
-    expect(screen.getByRole('button', { name: 'Models' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Health' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '模型' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '健康' })).toBeTruthy();
   });
 
   it('shows health columns headers in the health tab', async () => {
@@ -293,7 +293,7 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    expect(screen.getByText('Status')).toBeTruthy();
+    expect(screen.getByText('状态')).toBeTruthy();
     expect(screen.getByText(/Error rate/)).toBeTruthy();
     expect(screen.getByText(/P95 latency/)).toBeTruthy();
     expect(screen.getByText(/Requests/)).toBeTruthy();
@@ -307,7 +307,7 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getByText('Healthy')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('健康')).toBeTruthy());
   });
 
   it('shows No data badge for model with no health entry', async () => {
@@ -316,7 +316,7 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getByText('No data')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('无数据')).toBeTruthy());
   });
 
   it('shows dashes in health columns when no health entry', async () => {
@@ -340,7 +340,7 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Cooldown').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('冷却').length).toBeGreaterThan(0));
   });
 
   it('shows dash for null p95LatencyMs', async () => {
@@ -351,7 +351,7 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => screen.getByText('Healthy'));
+    await waitFor(() => screen.getByText('健康'));
     const dashes = Array.from(document.querySelectorAll('td')).filter(td => td.textContent === '—');
     expect(dashes.length).toBeGreaterThan(0);
   });
@@ -399,9 +399,9 @@ describe('ModelsPage — health columns (merged table)', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getByText('Healthy')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('健康')).toBeTruthy());
     expect(screen.getByText('local-model')).toBeTruthy();
-    expect(screen.getByText('No data')).toBeTruthy();
+    expect(screen.getByText('无数据')).toBeTruthy();
   });
 });
 
@@ -416,7 +416,7 @@ describe('ModelsPage — sortable health and endpoint columns', () => {
     // Endpoint sort lives under the Models tab (default tab)
     renderPage();
     await waitFor(() => screen.getByText('b-model'));
-    const endpointHeader = screen.getByText('Endpoint');
+    const endpointHeader = screen.getByText('端点');
     await userEvent.click(endpointHeader);
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     // asc: a.com before z.com
@@ -439,7 +439,7 @@ describe('ModelsPage — sortable health and endpoint columns', () => {
     await switchToHealthTab();
     // Default hSortKey='status', hSortDir='asc' already orders healthy first.
     // Clicking once flips to desc (degraded first); click twice to restore asc.
-    const statusHeader = screen.getByText('Status');
+    const statusHeader = screen.getByText('状态');
     await userEvent.click(statusHeader); // desc: degraded first
     await userEvent.click(statusHeader); // asc again: healthy first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -457,7 +457,7 @@ describe('ModelsPage — sortable health and endpoint columns', () => {
     renderPage();
     await waitFor(() => screen.getByText('no-health'));
     await switchToHealthTab();
-    const statusHeader = screen.getByText('Status');
+    const statusHeader = screen.getByText('状态');
     await userEvent.click(statusHeader); // asc
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[rows.length - 1]?.textContent).toContain('no-health');
@@ -508,8 +508,8 @@ describe('ModelsPage — test button', () => {
     mockTestModel.mockReturnValueOnce(new Promise(r => { resolveTest = r; }));
     mockGetModels.mockResolvedValue([makeModel()]);
     renderPage();
-    await waitFor(() => screen.getByTitle('Test'));
-    await userEvent.click(screen.getByTitle('Test'));
+    await waitFor(() => screen.getByTitle('测试'));
+    await userEvent.click(screen.getByTitle('测试'));
     // loading indicator appears
     await waitFor(() => expect(document.querySelector('[style*="text-muted"]')).toBeTruthy());
     resolveTest({ ok: true, latencyMs: 99 });
@@ -520,8 +520,8 @@ describe('ModelsPage — test button', () => {
     mockTestModel.mockResolvedValueOnce({ ok: false, latencyMs: 0, error: 'connection refused' });
     mockGetModels.mockResolvedValue([makeModel()]);
     renderPage();
-    await waitFor(() => screen.getByTitle('Test'));
-    await userEvent.click(screen.getByTitle('Test'));
+    await waitFor(() => screen.getByTitle('测试'));
+    await userEvent.click(screen.getByTitle('测试'));
     await waitFor(() => expect(screen.getByText(/✗/)).toBeTruthy());
   });
 });
@@ -536,7 +536,7 @@ describe('ModelsPage — models tab sort keys', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('cheap'));
-    const header = screen.getByText('Input $/1M');
+    const header = screen.getByText('输入 $/百万');
     await userEvent.click(header); // asc: cheap first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('cheap');
@@ -549,7 +549,7 @@ describe('ModelsPage — models tab sort keys', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('cheap-out'));
-    await userEvent.click(screen.getByText('Output $/1M')); // asc: cheap-out first
+    await userEvent.click(screen.getByText('输出 $/百万')); // asc: cheap-out first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('cheap-out');
   });
@@ -561,7 +561,7 @@ describe('ModelsPage — models tab sort keys', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('no-cache'));
-    await userEvent.click(screen.getByText('Cache $/1M')); // asc: has-cache (0.5) before no-cache (Inf)
+    await userEvent.click(screen.getByText('缓存 $/百万')); // asc: has-cache (0.5) before no-cache (Inf)
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('has-cache');
   });
@@ -579,7 +579,7 @@ describe('ModelsPage — models tab sort keys', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('small-ctx'));
-    await userEvent.click(screen.getByText('Context Size')); // asc: small-ctx first
+    await userEvent.click(screen.getByText('上下文大小')); // asc: small-ctx first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('small-ctx');
   });
@@ -732,7 +732,7 @@ describe('ModelsPage — health tab sort remaining keys', () => {
     // scope to thead to avoid matching the status badge cells
     await waitFor(() => document.querySelector('thead'));
     const cooldownTh = Array.from(document.querySelectorAll('thead th span')).find(el =>
-      el.textContent?.trim().startsWith('Cooldown')
+      el.textContent?.trim().startsWith('冷却')
     );
     expect(cooldownTh).toBeTruthy();
     await userEvent.click(cooldownTh!); // asc: model-x (sooner) first
@@ -763,8 +763,8 @@ describe('ModelsPage — health tab sort remaining keys', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-x'));
     await switchToHealthTab();
-    await waitFor(() => screen.getByText('Model'));
-    await userEvent.click(screen.getByText('Model')); // asc: model-x before model-y
+    await waitFor(() => screen.getByText('模型'));
+    await userEvent.click(screen.getByText('模型')); // asc: model-x before model-y
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('model-x');
   });
@@ -783,8 +783,8 @@ describe('ModelsPage — health tab sort remaining keys', () => {
     renderPage();
     await waitFor(() => screen.getByText('a-model'));
     await switchToHealthTab();
-    await waitFor(() => screen.getByText('Provider'));
-    await userEvent.click(screen.getByText('Provider')); // asc: aaa first → b-model
+    await waitFor(() => screen.getByText('提供商'));
+    await userEvent.click(screen.getByText('提供商')); // asc: aaa first → b-model
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('b-model');
   });
@@ -927,7 +927,7 @@ describe('ModelsPage — numOrInfinity via cache/context sort', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('a'));
-    await userEvent.click(screen.getByText('Cache $/1M'));
+    await userEvent.click(screen.getByText('缓存 $/百万'));
     // Both null → both Infinity → equal; order stable. No crash.
     expect(document.querySelectorAll('tbody tr').length).toBe(2);
   });
@@ -939,7 +939,7 @@ describe('ModelsPage — numOrInfinity via cache/context sort', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('a'));
-    await userEvent.click(screen.getByText('Context Size'));
+    await userEvent.click(screen.getByText('上下文大小'));
     expect(document.querySelectorAll('tbody tr').length).toBe(2);
   });
 });
@@ -964,7 +964,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab(); // setTab('health') — branch t==='health' TRUE
-    await userEvent.click(screen.getByRole('button', { name: 'Models' })); // setTab('models') — branch t==='health' FALSE
+    await userEvent.click(screen.getByRole('button', { name: '模型' })); // setTab('models') — branch t==='health' FALSE
     await waitFor(() => expect(screen.getByText('gpt-4o')).toBeTruthy());
   });
 
@@ -991,7 +991,7 @@ describe('ModelsPage — branch coverage', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getByText('z-model'));
-    const providerHeader = screen.getByText('Provider');
+    const providerHeader = screen.getByText('提供商');
     await userEvent.click(providerHeader); // sets sortKey='provider', dir='asc'
     await userEvent.click(providerHeader); // same key: d='asc' → 'desc' (branch 0)
     await userEvent.click(providerHeader); // same key: d='desc' → 'asc' (branch 1 — uncovered)
@@ -1012,7 +1012,7 @@ describe('ModelsPage — branch coverage', () => {
     await userEvent.click(screen.getByRole('button', { name: /Next/ }));
     await waitFor(() => screen.getByText(/Page 2 of 2/));
     // model-20 is on page 2; delete it
-    const deleteBtn = screen.getByTitle('Remove');
+    const deleteBtn = screen.getByTitle('移除');
     await userEvent.click(deleteBtn);
     await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
     // Now 20 models → 1 page; page was 2 → effect fires → resets to 1
@@ -1028,7 +1028,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('gpt-4o'));
     await switchToHealthTab();
-    await waitFor(() => screen.getByText('Healthy')); // no cooldown → status = healthy
+    await waitFor(() => screen.getByText('健康')); // no cooldown → status = healthy
     // cooldownTimer(past) returns null → no cooldown displayed
     const cdTds = Array.from(document.querySelectorAll('tbody td')).filter(
       td => /^\d+[sm]$/.test(td.textContent?.trim() ?? '')
@@ -1053,7 +1053,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-a'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Healthy').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('健康').length).toBeGreaterThan(0));
     await userEvent.click(screen.getByText(/P95 latency/));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     // asc: model-b (50ms) first
@@ -1075,7 +1075,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-a'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Healthy').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('健康').length).toBeGreaterThan(0));
     await userEvent.click(screen.getByText(/P95 latency/));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[rows.length - 1]?.textContent).toContain('model-a');
@@ -1101,7 +1101,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-a'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Healthy').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('健康').length).toBeGreaterThan(0));
     await userEvent.click(screen.getByText(/Last success/));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     // asc: oldest (model-a) first
@@ -1124,7 +1124,7 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-a'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Healthy').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('健康').length).toBeGreaterThan(0));
     await userEvent.click(screen.getByText(/Last success/));
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     // null → -Infinity < any timestamp → model-a first in asc
@@ -1151,9 +1151,9 @@ describe('ModelsPage — branch coverage', () => {
     renderPage();
     await waitFor(() => screen.getByText('model-a'));
     await switchToHealthTab();
-    await waitFor(() => expect(screen.getAllByText('Cooldown').length).toBeGreaterThan(0));
+    await waitFor(() => expect(screen.getAllByText('冷却').length).toBeGreaterThan(0));
     const cooldownTh = Array.from(document.querySelectorAll('thead th span')).find(el =>
-      el.textContent?.trim().startsWith('Cooldown')
+      el.textContent?.trim().startsWith('冷却')
     );
     await userEvent.click(cooldownTh!);
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -1179,7 +1179,7 @@ describe('ModelsPage — branch coverage', () => {
     await switchToHealthTab();
     await waitFor(() => screen.getAllByText(/Healthy|Cooldown/).length > 0);
     const cooldownTh = Array.from(document.querySelectorAll('thead th span')).find(el =>
-      el.textContent?.trim().startsWith('Cooldown')
+      el.textContent?.trim().startsWith('冷却')
     );
     await userEvent.click(cooldownTh!);
     // model-a (null→0) < model-b (future time) → model-a first in asc
@@ -1204,10 +1204,10 @@ describe('ModelsPage — branch coverage', () => {
     await userEvent.click(screen.getByRole('button', { name: /Next/ }));
     await waitFor(() => screen.getByText(/Page 2 of/));
     // Switch back to models tab (hPage stays at 2)
-    await userEvent.click(screen.getByRole('button', { name: 'Models' }));
+    await userEvent.click(screen.getByRole('button', { name: '模型' }));
     await waitFor(() => screen.getByText('hm-00'));
     // Delete a model (now 20 models → hTotalPages=1)
-    const allDeleteBtns = screen.getAllByTitle('Remove');
+    const allDeleteBtns = screen.getAllByTitle('移除');
     await userEvent.click(allDeleteBtns[0]!);
     await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
     await waitFor(() => expect(screen.queryByText('hm-00')).toBeNull());

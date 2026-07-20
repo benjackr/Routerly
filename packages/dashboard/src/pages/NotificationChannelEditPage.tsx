@@ -126,7 +126,7 @@ export function NotificationChannelEditPage() {
           onClick={() => navigate('/dashboard/settings/notifications')}
         >
           <ArrowLeft size={16} />
-          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>Back</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>返回</span>
         </button>
         <div className="form-error">{error}</div>
       </>
@@ -159,7 +159,7 @@ export function NotificationChannelEditPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} autoComplete="off" style={{ maxWidth: 600 }}>
+      <form onSubmit={handleSubmit} autoComplete="关闭" style={{ maxWidth: 600 }}>
         {error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
 
         {/* Tab bar */}

@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import { DateRangePicker, PRESETS, RECENT_PRESETS, type DateRange } from './DateRangePicker';
 
-function mkRange(from = '', to = '', label = 'Tutto il tempo'): DateRange {
+function mkRange(from = '', to = '', label = '全部时间'): DateRange {
   return { from, to, label };
 }
 
@@ -24,7 +24,7 @@ describe('DateRangePicker — trigger button', () => {
     renderPicker();
     expect(screen.getByRole('button')).toBeTruthy();
     // label shows the value.label
-    expect(screen.getByText('Tutto il tempo')).toBeTruthy();
+    expect(screen.getByText('全部时间')).toBeTruthy();
   });
 
   it('shows X clear icon when value has from/to set', () => {
@@ -43,7 +43,7 @@ describe('DateRangePicker — trigger button', () => {
     const xSpan = document.querySelector('[style*="opacity: 0.5"]');
     if (xSpan) {
       await userEvent.click(xSpan as HTMLElement);
-      expect(onChange).toHaveBeenCalledWith({ from: '', to: '', label: 'Tutto il tempo' });
+      expect(onChange).toHaveBeenCalledWith({ from: '', to: '', label: '全部时间' });
     }
   });
 
@@ -52,121 +52,121 @@ describe('DateRangePicker — trigger button', () => {
     const btn = screen.getAllByRole('button')[0]!;
     await userEvent.click(btn);
     // Calendar header visible
-    await waitFor(() => expect(screen.getByText('Seleziona')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('确定')).toBeTruthy());
     await userEvent.click(btn);
-    await waitFor(() => expect(screen.queryByText('Seleziona')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('确定')).toBeNull());
   });
 
-  it('shows fallback "Seleziona periodo" when value.label is empty string', () => {
+  it('shows fallback "选择时间段" when value.label is empty string', () => {
     renderPicker({ from: '', to: '', label: '' });
-    expect(screen.getByText('Seleziona periodo')).toBeTruthy();
+    expect(screen.getByText('选择时间段')).toBeTruthy();
   });
 });
 
 // ── Preset selection ──────────────────────────────────────────────────────────
 
 describe('DateRangePicker — preset selection (lines 91-256)', () => {
-  it('clicking "Oggi" preset calls onChange and closes picker', async () => {
+  it('clicking "今天" preset calls onChange and closes picker', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Oggi'));
-    await userEvent.click(screen.getByText('Oggi'));
+    await waitFor(() => screen.getByText('今天'));
+    await userEvent.click(screen.getByText('今天'));
     expect(onChange).toHaveBeenCalledTimes(1);
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Oggi');
+    expect(arg.label).toBe('今天');
     expect(arg.from).toBeTruthy();
     // Picker closed
-    await waitFor(() => expect(screen.queryByText('Seleziona')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('确定')).toBeNull());
   });
 
-  it('clicking "Ieri" preset calls onChange with yesterday', async () => {
+  it('clicking "昨天" preset calls onChange with yesterday', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Ieri'));
-    await userEvent.click(screen.getByText('Ieri'));
+    await waitFor(() => screen.getByText('昨天'));
+    await userEvent.click(screen.getByText('昨天'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Ieri');
+    expect(arg.label).toBe('昨天');
   });
 
-  it('clicking "Questa settimana" preset calls onChange', async () => {
+  it('clicking "本周" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Questa settimana'));
-    await userEvent.click(screen.getByText('Questa settimana'));
+    await waitFor(() => screen.getByText('本周'));
+    await userEvent.click(screen.getByText('本周'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Questa settimana');
+    expect(arg.label).toBe('本周');
   });
 
-  it('clicking "Questo mese" preset calls onChange', async () => {
+  it('clicking "本月" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Questo mese'));
-    await userEvent.click(screen.getByText('Questo mese'));
+    await waitFor(() => screen.getByText('本月'));
+    await userEvent.click(screen.getByText('本月'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Questo mese');
+    expect(arg.label).toBe('本月');
   });
 
-  it('clicking "Questo trimestre" preset calls onChange', async () => {
+  it('clicking "本季度" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Questo trimestre'));
-    await userEvent.click(screen.getByText('Questo trimestre'));
+    await waitFor(() => screen.getByText('本季度'));
+    await userEvent.click(screen.getByText('本季度'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Questo trimestre');
+    expect(arg.label).toBe('本季度');
   });
 
   it("clicking \"Quest'anno\" preset calls onChange", async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText("Quest'anno"));
-    await userEvent.click(screen.getByText("Quest'anno"));
+    await waitFor(() => screen.getByText("今年"));
+    await userEvent.click(screen.getByText("今年"));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe("Quest'anno");
+    expect(arg.label).toBe("今年");
   });
 
-  it('clicking "Ultimi 7 giorni" preset calls onChange', async () => {
+  it('clicking "最近7天" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Ultimi 7 giorni'));
-    await userEvent.click(screen.getByText('Ultimi 7 giorni'));
+    await waitFor(() => screen.getByText('最近7天'));
+    await userEvent.click(screen.getByText('最近7天'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Ultimi 7 giorni');
+    expect(arg.label).toBe('最近7天');
   });
 
-  it('clicking "Ultimi 30 giorni" preset calls onChange', async () => {
+  it('clicking "最近30天" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Ultimi 30 giorni'));
-    await userEvent.click(screen.getByText('Ultimi 30 giorni'));
+    await waitFor(() => screen.getByText('最近30天'));
+    await userEvent.click(screen.getByText('最近30天'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Ultimi 30 giorni');
+    expect(arg.label).toBe('最近30天');
   });
 
-  it('clicking "Ultimi 12 mesi" preset calls onChange', async () => {
+  it('clicking "最近12个月" preset calls onChange', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Ultimi 12 mesi'));
-    await userEvent.click(screen.getByText('Ultimi 12 mesi'));
+    await waitFor(() => screen.getByText('最近12个月'));
+    await userEvent.click(screen.getByText('最近12个月'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Ultimi 12 mesi');
+    expect(arg.label).toBe('最近12个月');
   });
 
-  it('clicking "Tutto il tempo" preset calls onChange with empty from/to', async () => {
+  it('clicking "全部时间" preset calls onChange with empty from/to', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange('2024-01-01', '2024-01-31', 'Gennaio')} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getAllByText('Tutto il tempo'));
-    // There might be multiple "Tutto il tempo" elements; click the button
-    const tuttoBtn = screen.getAllByText('Tutto il tempo').find(el => el.tagName === 'BUTTON' || el.closest('button'));
+    await waitFor(() => screen.getAllByText('全部时间'));
+    // There might be multiple "全部时间" elements; click the button
+    const tuttoBtn = screen.getAllByText('全部时间').find(el => el.tagName === 'BUTTON' || el.closest('button'));
     if (tuttoBtn) {
       await userEvent.click(tuttoBtn.closest('button') ?? tuttoBtn);
     }
@@ -191,10 +191,10 @@ describe('DateRangePicker — preset selection (lines 91-256)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Ultima ora'));
-    await userEvent.click(screen.getByText('Ultima ora'));
+    await waitFor(() => screen.getByText('最近1小时'));
+    await userEvent.click(screen.getByText('最近1小时'));
     const arg = onChange.mock.calls[0]![0] as DateRange;
-    expect(arg.label).toBe('Ultima ora');
+    expect(arg.label).toBe('最近1小时');
     // ISO datetime format
     expect(arg.from).toMatch(/T/);
     expect(arg.to).toMatch(/T/);
@@ -202,12 +202,12 @@ describe('DateRangePicker — preset selection (lines 91-256)', () => {
 
   it('active preset is highlighted (active = label match)', async () => {
     // When value.label matches a preset, that button should use accent bg
-    const oggi = PRESETS.find(p => p.label === 'Oggi')!.range();
+    const oggi = PRESETS.find(p => p.label === '今天')!.range();
     render(<DateRangePicker value={oggi} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getAllByText('Oggi'));
-    // Multiple "Oggi" could appear; the preset button inside the list has accent bg
-    const oggiBtn = screen.getAllByText('Oggi').find(el => (el as HTMLElement).closest('button'));
+    await waitFor(() => screen.getAllByText('今天'));
+    // Multiple "今天" could appear; the preset button inside the list has accent bg
+    const oggiBtn = screen.getAllByText('今天').find(el => (el as HTMLElement).closest('button'));
     expect(oggiBtn).toBeTruthy();
   });
 });
@@ -218,7 +218,7 @@ describe('DateRangePicker — month navigation (lines 190-197)', () => {
   it('prev button navigates to previous month (including December wrap)', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const navBtns = screen.getAllByRole('button').filter(b =>
       b.querySelector('svg')
@@ -234,20 +234,20 @@ describe('DateRangePicker — month navigation (lines 190-197)', () => {
     if (iconBtns[0]) {
       await userEvent.click(iconBtns[0]);
       // Month header should change — just verify it doesn't crash
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 
   it('next button navigates to next month (including January wrap)', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const calBtns = screen.getAllByRole('button');
     const iconBtns = calBtns.filter(b => !b.textContent?.trim());
     if (iconBtns[1]) {
       await userEvent.click(iconBtns[1]);
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 
@@ -256,7 +256,7 @@ describe('DateRangePicker — month navigation (lines 190-197)', () => {
     // Render with a fixed value so viewYear/Month init to current
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const iconBtns = screen.getAllByRole('button').filter(b => !b.textContent?.trim());
     const prevBtn = iconBtns[0];
@@ -265,14 +265,14 @@ describe('DateRangePicker — month navigation (lines 190-197)', () => {
       for (let i = 0; i < 13; i++) {
         await userEvent.click(prevBtn);
       }
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 
   it('nextMonth wraps from December to January of next year', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const iconBtns = screen.getAllByRole('button').filter(b => !b.textContent?.trim());
     const nextBtn = iconBtns[1];
@@ -280,7 +280,7 @@ describe('DateRangePicker — month navigation (lines 190-197)', () => {
       for (let i = 0; i < 13; i++) {
         await userEvent.click(nextBtn);
       }
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 });
@@ -291,7 +291,7 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
   it('clicking a day starts picking end date', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click on day "15"
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
@@ -304,7 +304,7 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
       if (day20) {
         await userEvent.click(day20);
         // Range is set; picking done
-        expect(screen.getByText('Seleziona')).toBeTruthy();
+        expect(screen.getByText('确定')).toBeTruthy();
       }
     }
   });
@@ -312,7 +312,7 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
   it('clicking end before start swaps from/to (line 207-209)', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day20 = Array.from(dayCells).find(d => d.textContent?.trim() === '20') as HTMLElement | undefined;
@@ -320,14 +320,14 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
     if (day20 && day10) {
       await userEvent.click(day20); // pick start = 20
       await userEvent.click(day10); // pick end = 10 < 20 → should swap
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 
   it('hovering over day while picking end shows preview', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day10 = Array.from(dayCells).find(d => d.textContent?.trim() === '10') as HTMLElement | undefined;
@@ -338,7 +338,7 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
       if (day15) {
         await userEvent.hover(day15); // triggers onMouseEnter → setHovered
         await userEvent.unhover(day15); // triggers onMouseLeave → setHovered('')
-        expect(screen.getByText('Seleziona')).toBeTruthy();
+        expect(screen.getByText('确定')).toBeTruthy();
       }
     }
   });
@@ -347,20 +347,20 @@ describe('DateRangePicker — day click / range selection (lines 199-213)', () =
 // ── Confirm / cancel (lines 216-249) ─────────────────────────────────────────
 
 describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
-  it('Seleziona with no dates calls onChange with empty from/to and "Tutto il tempo" label', async () => {
+  it('Seleziona with no dates calls onChange with empty from/to and "全部时间" label', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
-    await userEvent.click(screen.getByText('Seleziona'));
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ label: 'Tutto il tempo' }));
+    await waitFor(() => screen.getByText('确定'));
+    await userEvent.click(screen.getByText('确定'));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ label: '全部时间' }));
   });
 
   it('Seleziona with single date and default times produces plain-date label', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click day 15 (start), then same day 15 (end = same)
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
@@ -369,7 +369,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       await userEvent.click(day15);
       await userEvent.click(day15);
     }
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       // Same-day + default times → label is the date string only
@@ -381,7 +381,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click day 15 twice to set same start/end
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
@@ -391,14 +391,14 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       await userEvent.click(day15);
     }
 
-    // Change the "Da" time input to 09:00
+    // Change the "从" time input to 09:00
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[0]) {
       await userEvent.clear(timeInputs[0] as HTMLElement);
       await userEvent.type(timeInputs[0] as HTMLElement, '09:00');
     }
 
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       expect(typeof arg.label).toBe('string');
@@ -409,7 +409,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day10 = Array.from(dayCells).find(d => d.textContent?.trim() === '10') as HTMLElement | undefined;
@@ -418,7 +418,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       await userEvent.click(day10);
       await userEvent.click(day20);
     }
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       expect(arg.label).toMatch(/—/);
@@ -429,7 +429,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day10 = Array.from(dayCells).find(d => d.textContent?.trim() === '10') as HTMLElement | undefined;
@@ -446,7 +446,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       await userEvent.type(timeInputs[0] as HTMLElement, '08:00');
     }
 
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       expect(typeof arg.label).toBe('string');
@@ -457,7 +457,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day5 = Array.from(dayCells).find(d => d.textContent?.trim() === '5') as HTMLElement | undefined;
@@ -466,7 +466,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       await userEvent.click(day5);
     }
 
-    // Change "A" time input; browser may emit 5-char "HH:MM" without seconds
+    // Change "至" time input; browser may emit 5-char "HH:MM" without seconds
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[1]) {
       // fire a change event with a 5-char value
@@ -475,7 +475,7 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
       input.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     // The ft/tt used in onChange should have :00 appended → length 8
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
@@ -487,17 +487,17 @@ describe('DateRangePicker — confirm / cancel (lines 216-249)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange('2024-06-01', '2024-06-15', '1-15 Jun')} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click a day to change pending state
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day5 = Array.from(dayCells).find(d => d.textContent?.trim() === '5') as HTMLElement | undefined;
     if (day5) await userEvent.click(day5);
 
-    await userEvent.click(screen.getByText('Annulla'));
+    await userEvent.click(screen.getByText('取消'));
     // onChange not called; picker closed
     expect(onChange).not.toHaveBeenCalled();
-    await waitFor(() => expect(screen.queryByText('Seleziona')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('确定')).toBeNull());
   });
 });
 
@@ -512,11 +512,11 @@ describe('DateRangePicker — outside click closes picker (lines 174-188)', () =
       </div>
     );
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click outside
     await userEvent.click(screen.getByTestId('outside'));
-    await waitFor(() => expect(screen.queryByText('Seleziona')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('确定')).toBeNull());
   });
 });
 
@@ -529,14 +529,14 @@ describe('DateRangePicker — value prop changes sync pending state (lines 166-1
     );
     // Open picker to see the pending state
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Update value prop — triggers the useEffect that calls setPendingFrom/To
     rerender(
       <DateRangePicker value={mkRange('2024-06-01', '2024-06-30', 'Giugno')} onChange={vi.fn()} />
     );
     // Picker still open; pending state has been reset to new value
-    expect(screen.getByText('Seleziona')).toBeTruthy();
+    expect(screen.getByText('确定')).toBeTruthy();
   });
 
   it('parseTimeFromISO extracts time when ISO value has time component', async () => {
@@ -548,10 +548,10 @@ describe('DateRangePicker — value prop changes sync pending state (lines 166-1
       />
     );
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const timeInputs = document.querySelectorAll('input[type="time"]') as NodeListOf<HTMLInputElement>;
-    // The "Da" time input should reflect 08:30:00
+    // The "从" time input should reflect 08:30:00
     if (timeInputs.length >= 2) {
       expect(timeInputs[0]!.value).toBe('08:30');
       expect(timeInputs[1]!.value).toBe('20:15');
@@ -584,13 +584,13 @@ describe('PRESETS and RECENT_PRESETS exports', () => {
 // ── startOfWeek Sunday branch (line 34) ───────────────────────────────────────
 
 describe('startOfWeek Sunday branch', () => {
-  it('PRESETS "Questa settimana" from a Sunday covers getDay()===0 → subtract 6 path', () => {
+  it('PRESETS "本周" from a Sunday covers getDay()===0 → subtract 6 path', () => {
     // Use a local Sunday (2024-07-07 = Sunday in local time).
     vi.setSystemTime(new Date(2024, 6, 7)); // July 7 2024, local Sunday
-    const r = PRESETS.find(p => p.label === 'Questa settimana')!.range();
+    const r = PRESETS.find(p => p.label === '本周')!.range();
     // Branch covered: getDay()===0 path executed (subtract 6 instead of getDay()-1).
     // Result: from <= to (week start <= today), label correct.
-    expect(r.label).toBe('Questa settimana');
+    expect(r.label).toBe('本周');
     expect(r.from <= r.to).toBe(true);
     vi.useRealTimers();
   });
@@ -606,7 +606,7 @@ describe('parseTimeFromISO branches', () => {
       <DateRangePicker value={mkRange('2024-06-01', '2024-06-30', 'Giugno')} onChange={vi.fn()} />
     );
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const timeInputs = document.querySelectorAll('input[type="time"]') as NodeListOf<HTMLInputElement>;
     // Da defaults to 00:00:00 (shown as "00:00" or "00:00:00" depending on happy-dom)
     expect(timeInputs[0]!.value).toMatch(/^00:00/);
@@ -615,9 +615,9 @@ describe('parseTimeFromISO branches', () => {
   });
 
   it('returns defaultTime when iso is empty string', async () => {
-    render(<DateRangePicker value={mkRange('', '', 'Tutto il tempo')} onChange={vi.fn()} />);
+    render(<DateRangePicker value={mkRange('', '', '全部时间')} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const timeInputs = document.querySelectorAll('input[type="time"]') as NodeListOf<HTMLInputElement>;
     expect(timeInputs[0]!.value).toMatch(/^00:00/);
     expect(timeInputs[1]!.value).toMatch(/^23:59/);
@@ -644,23 +644,23 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Pick a day so pendingFrom is set — click day 15 twice to set from+to
     const day15 = findDayCell(15);
     if (day15) { await userEvent.click(day15); await userEvent.click(day15); }
 
-    // Fire a 5-char value on the "Da" time input via fireEvent (simulates browser emitting HH:MM)
+    // Fire a 5-char value on the "从" time input via fireEvent (simulates browser emitting HH:MM)
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[0]) {
       fireEvent.change(timeInputs[0], { target: { value: '09:30' } });
     }
-    // Fire a 5-char value on the "A" time input
+    // Fire a 5-char value on the "至" time input
     if (timeInputs[1]) {
       fireEvent.change(timeInputs[1], { target: { value: '18:45' } });
     }
 
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       // from should contain T09:30:00 (seconds appended)
@@ -674,7 +674,7 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click day 10, then day 20 to set from=10, to=20
     const day10 = findDayCell(10);
@@ -683,7 +683,7 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
       await userEvent.click(day10); // sets pendingFrom, clears pendingTo, pickingEnd=true
       await userEvent.click(day20); // sets pendingTo=20
     }
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       // from and to should be different dates
@@ -696,12 +696,12 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const day15 = findDayCell(15);
     if (day15) { await userEvent.click(day15); await userEvent.click(day15); }
 
-    // Fire an 8-char value on "Da" time input → false branch (length !== 5)
+    // Fire an 8-char value on "从" time input → false branch (length !== 5)
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[0]) {
       fireEvent.change(timeInputs[0], { target: { value: '09:30:00' } });
@@ -709,7 +709,7 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
     if (timeInputs[1]) {
       fireEvent.change(timeInputs[1], { target: { value: '18:45:00' } });
     }
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       expect(arg.from).toContain('T09:30:00');
@@ -722,18 +722,18 @@ describe('handleConfirm — 5-char time inputs (lines 219-220)', () => {
 describe('handleCancel — empty value.from and value.to', () => {
   it('resets to empty string when value has no from/to set', async () => {
     const onChange = vi.fn();
-    render(<DateRangePicker value={mkRange('', '', 'Tutto il tempo')} onChange={onChange} />);
+    render(<DateRangePicker value={mkRange('', '', '全部时间')} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     // Click a day to dirty pending state
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const day5 = Array.from(dayCells).find(d => d.textContent?.trim() === '5') as HTMLElement | undefined;
     if (day5) await userEvent.click(day5);
 
-    await userEvent.click(screen.getByText('Annulla'));
+    await userEvent.click(screen.getByText('取消'));
     expect(onChange).not.toHaveBeenCalled();
-    await waitFor(() => expect(screen.queryByText('Seleziona')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('确定')).toBeNull());
   });
 });
 
@@ -757,7 +757,7 @@ describe('"From now" button — active state hover (lines 277, 323-324)', () => 
   });
 
   it('changes background on hover when "From now" is not active', async () => {
-    render(<DateRangePicker value={mkRange('', '', 'Tutto il tempo')} onChange={vi.fn()} />);
+    render(<DateRangePicker value={mkRange('', '', '全部时间')} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
     await waitFor(() => screen.getByText('From now'));
     const fromNowBtn = screen.getByText('From now').closest('button') as HTMLButtonElement;
@@ -774,15 +774,15 @@ describe('"From now" button — active state hover (lines 277, 323-324)', () => 
 describe('RECENT_PRESETS button — hover when active (lines 345-346)', () => {
   it('is a no-op on hover when the RECENT_PRESET button is active', async () => {
     // active=true → if(!active) is false → no-op (covers the false branch)
-    render(<DateRangePicker value={mkRange('', '', 'Ultima ora')} onChange={vi.fn()} />);
+    render(<DateRangePicker value={mkRange('', '', '最近1小时')} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getAllByText('Ultima ora'));
-    // Trigger also shows "Ultima ora" — find the preset button (last match)
-    const allMatches = screen.getAllByText('Ultima ora');
+    await waitFor(() => screen.getAllByText('最近1小时'));
+    // Trigger also shows "最近1小时" — find the preset button (last match)
+    const allMatches = screen.getAllByText('最近1小时');
     const btn = (allMatches.find(el => el.tagName === 'BUTTON') ?? allMatches[allMatches.length - 1]!.closest('button')) as HTMLButtonElement;
     fireEvent.mouseEnter(btn);
     fireEvent.mouseLeave(btn);
-    expect(screen.getAllByText('Ultima ora').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('最近1小时').length).toBeGreaterThan(0);
   });
 });
 
@@ -790,21 +790,21 @@ describe('RECENT_PRESETS button — hover when active (lines 345-346)', () => {
 
 describe('PRESETS button — hover when active (lines 374-375)', () => {
   it('is a no-op on hover when the PRESET button is active', async () => {
-    const oggi = PRESETS.find(p => p.label === 'Oggi')!.range();
+    const oggi = PRESETS.find(p => p.label === '今天')!.range();
     render(<DateRangePicker value={oggi} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getAllByText('Oggi'));
-    const btn = screen.getAllByText('Oggi').find(el => el.closest('button'))!.closest('button') as HTMLButtonElement;
+    await waitFor(() => screen.getAllByText('今天'));
+    const btn = screen.getAllByText('今天').find(el => el.closest('button'))!.closest('button') as HTMLButtonElement;
     fireEvent.mouseEnter(btn);
     fireEvent.mouseLeave(btn);
-    expect(screen.getAllByText('Oggi').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('今天').length).toBeGreaterThan(0);
   });
 
   it('sets background on mouseEnter when PRESET button is not active', async () => {
     render(<DateRangePicker value={mkRange()} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Oggi'));
-    const btn = screen.getAllByText('Oggi').find(el => el.closest('button'))!.closest('button') as HTMLButtonElement;
+    await waitFor(() => screen.getByText('今天'));
+    const btn = screen.getAllByText('今天').find(el => el.closest('button'))!.closest('button') as HTMLButtonElement;
     fireEvent.mouseEnter(btn);
     expect(btn.style.background).toBe('var(--bg-elevated)');
     fireEvent.mouseLeave(btn);
@@ -819,26 +819,26 @@ describe('Month navigation buttons — hover (lines 391, 401)', () => {
   it('prev month button responds to mouseEnter/mouseLeave', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const iconBtns = screen.getAllByRole('button').filter(b => !b.textContent?.trim());
     const prevBtn = iconBtns[0];
     if (prevBtn) {
       fireEvent.mouseEnter(prevBtn);
       fireEvent.mouseLeave(prevBtn);
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 
   it('next month button responds to mouseEnter/mouseLeave', async () => {
     renderPicker();
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const iconBtns = screen.getAllByRole('button').filter(b => !b.textContent?.trim());
     const nextBtn = iconBtns[1];
     if (nextBtn) {
       fireEvent.mouseEnter(nextBtn);
       fireEvent.mouseLeave(nextBtn);
-      expect(screen.getByText('Seleziona')).toBeTruthy();
+      expect(screen.getByText('确定')).toBeTruthy();
     }
   });
 });
@@ -852,7 +852,7 @@ describe('Day cell — today is endpoint (line 437 isEndpoint branch)', () => {
     const todayStr = new Date().toISOString().slice(0, 10); // mirrors fmt(new Date())
     render(<DateRangePicker value={mkRange(todayStr, todayStr, todayStr)} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     // pendingFrom===pendingTo===todayStr; the matching calendar cell has isEndpoint=true
     // → circleBg = 'var(--accent, #6366f1)'. happy-dom may store the background as the
     // CSS variable string or as the fallback color.
@@ -879,7 +879,7 @@ describe('Day cell — isOtherMon prevents click (line 465)', () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     // isOtherMon cells have cursor:'default'
     const allCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     const otherMonthCell = Array.from(allCells).find(d =>
@@ -901,7 +901,7 @@ describe('Day cell — onMouseOver/onMouseOut (lines 471, 475)', () => {
     const todayStr = new Date().toISOString().slice(0, 10);
     render(<DateRangePicker value={mkRange(todayStr, todayStr, todayStr)} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     // Find the endpoint cell — accent background or #fff color (happy-dom CSS var handling varies)
     const endpointCell = Array.from(dayCells).find(d => {
@@ -924,7 +924,7 @@ describe('Day cell — onMouseOver/onMouseOut (lines 471, 475)', () => {
     vi.setSystemTime(new Date(2024, 5, 15)); // June 2024
     render(<DateRangePicker value={mkRange()} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const dayCells = document.querySelectorAll('[style*="border-radius: 50%"]');
     // Day 5 — not endpoint, cursor=pointer
     const day5 = Array.from(dayCells).find(d =>
@@ -941,17 +941,17 @@ describe('Day cell — onMouseOver/onMouseOut (lines 471, 475)', () => {
   });
 });
 
-// ── "A" time input onChange (line 501) ───────────────────────────────────────
+// ── "至" time input onChange (line 501) ───────────────────────────────────────
 
-describe('"A" time input onChange handler (line 501)', () => {
-  it('updates pendingToTime when "A" time input changes', async () => {
+describe('"至" time input onChange handler (line 501)', () => {
+  it('updates pendingToTime when "至" time input changes', async () => {
     const onChange = vi.fn();
     render(<DateRangePicker value={mkRange()} onChange={onChange} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
 
     const timeInputs = document.querySelectorAll('input[type="time"]');
-    // Second input is "A" (to time)
+    // Second input is "至" (to time)
     if (timeInputs[1]) {
       fireEvent.change(timeInputs[1], { target: { value: '20:30:00' } });
     }
@@ -964,33 +964,33 @@ describe('"A" time input onChange handler (line 501)', () => {
       await userEvent.click(day10);
       await userEvent.click(day10);
     }
-    await userEvent.click(screen.getByText('Seleziona'));
+    await userEvent.click(screen.getByText('确定'));
     if (onChange.mock.calls.length > 0) {
       const arg = onChange.mock.calls[onChange.mock.calls.length - 1]![0] as DateRange;
       expect(arg.to).toContain('T20:30:00');
     }
   });
 
-  it('sets pendingToTime to "23:59:59" when "A" input is cleared (falsy branch)', async () => {
+  it('sets pendingToTime to "23:59:59" when "至" input is cleared (falsy branch)', async () => {
     render(<DateRangePicker value={mkRange()} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[1]) {
       fireEvent.change(timeInputs[1], { target: { value: '' } });
     }
     // No crash — empty string triggers the `|| '23:59:59'` fallback
-    expect(screen.getByText('Seleziona')).toBeTruthy();
+    expect(screen.getByText('确定')).toBeTruthy();
   });
 
-  it('sets pendingToTime to "23:59:59" when "Da" input is cleared (falsy branch)', async () => {
+  it('sets pendingToTime to "23:59:59" when "从" input is cleared (falsy branch)', async () => {
     render(<DateRangePicker value={mkRange()} onChange={vi.fn()} />);
     await userEvent.click(screen.getAllByRole('button')[0]!);
-    await waitFor(() => screen.getByText('Seleziona'));
+    await waitFor(() => screen.getByText('确定'));
     const timeInputs = document.querySelectorAll('input[type="time"]');
     if (timeInputs[0]) {
       fireEvent.change(timeInputs[0], { target: { value: '' } });
     }
-    expect(screen.getByText('Seleziona')).toBeTruthy();
+    expect(screen.getByText('确定')).toBeTruthy();
   });
 });

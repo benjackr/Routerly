@@ -143,7 +143,7 @@ export function ModelDiscoveryPage() {
           {/* Row 1: search + provider */}
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, maxWidth: 300 }}>
-              <FilterLabel>Search</FilterLabel>
+              <FilterLabel>搜索</FilterLabel>
               <div style={{ position: 'relative' }}>
                 <Search size={13} style={{ position: 'absolute', left: 9, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
                 <input
@@ -162,7 +162,7 @@ export function ModelDiscoveryPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, maxWidth: 320 }}>
-              <FilterLabel>Provider</FilterLabel>
+              <FilterLabel>提供商</FilterLabel>
               <MultiSelect
                 options={providerOptions}
                 value={selectedProviders}
@@ -188,7 +188,7 @@ export function ModelDiscoveryPage() {
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'small', 'medium', 'large', 'xl'] as CtxFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${ctxFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setCtxFilter(f)}>
-                    {{ all: 'All', small: '< 32k', medium: '32k–200k', large: '200k–1M', xl: '> 1M' }[f]}
+                    {{ all: '全部', small: '< 32k', medium: '32k–200k', large: '200k–1M', xl: '> 1M' }[f]}
                   </button>
                 ))}
               </div>
@@ -199,7 +199,7 @@ export function ModelDiscoveryPage() {
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'free', 'low', 'mid', 'high'] as PriceFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${priceFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setPriceFilter(f)}>
-                    {{ all: 'All', free: 'Free', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
+                    {{ all: '全部', free: 'Free', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
                   </button>
                 ))}
               </div>
@@ -243,8 +243,8 @@ export function ModelDiscoveryPage() {
                 <thead>
                   <tr>
                     {([
-                      { col: 'model' as SortCol, label: 'Model' },
-                      { col: 'provider' as SortCol, label: 'Provider' },
+                      { col: 'model' as SortCol, label: '模型' },
+                      { col: 'provider' as SortCol, label: '提供商' },
                       { col: 'context' as SortCol, label: 'Context' },
                       { col: 'input' as SortCol, label: 'Input / 1M' },
                       { col: 'output' as SortCol, label: 'Output / 1M' },

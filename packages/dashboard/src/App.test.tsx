@@ -262,15 +262,15 @@ describe('ProtectedLayout — telemetry banner', () => {
 describe('Sidebar', () => {
   it('renders nav links', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
-    expect(screen.getByText('Models')).toBeTruthy();
-    expect(screen.getByText('Projects')).toBeTruthy();
-    expect(screen.getByText('Usage')).toBeTruthy();
+    await waitFor(() => screen.getByText('概览'));
+    expect(screen.getByText('模型')).toBeTruthy();
+    expect(screen.getByText('项目')).toBeTruthy();
+    expect(screen.getByText('用量')).toBeTruthy();
   });
 
   it('toggles collapsed state on toggle button click', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     const appShell = document.querySelector('.app-shell');
     expect(appShell?.classList.contains('sidebar-collapsed')).toBe(false);
     const toggleBtn = document.querySelector('.sidebar-toggle');
@@ -281,7 +281,7 @@ describe('Sidebar', () => {
 
   it('persists collapsed state to localStorage', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     const toggleBtn = document.querySelector('.sidebar-toggle');
     await userEvent.click(toggleBtn!);
     expect(localStorage.getItem('lr-sidebar')).toBe('collapsed');
@@ -290,7 +290,7 @@ describe('Sidebar', () => {
   it('reads collapsed state from localStorage on mount', async () => {
     localStorage.setItem('lr-sidebar', 'collapsed');
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     const appShell = document.querySelector('.app-shell');
     expect(appShell?.classList.contains('sidebar-collapsed')).toBe(true);
   });
@@ -298,7 +298,7 @@ describe('Sidebar', () => {
   it('sets localStorage to "expanded" when uncollapsing sidebar', async () => {
     localStorage.setItem('lr-sidebar', 'collapsed');
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     const toggleBtn = document.querySelector('.sidebar-toggle');
     await userEvent.click(toggleBtn!); // collapse → expand
     expect(localStorage.getItem('lr-sidebar')).toBe('expanded');
@@ -307,7 +307,7 @@ describe('Sidebar', () => {
   it('shows ThemeCycleButton when collapsed', async () => {
     localStorage.setItem('lr-sidebar', 'collapsed');
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     // ThemeCycleButton shows a nav-item button with theme title
     const themeBtn = document.querySelector('button[title^="Theme:"]');
     expect(themeBtn).toBeTruthy();
@@ -320,7 +320,7 @@ describe('Sidebar — ThemeCycleButton', () => {
   it('cycles theme when ThemeCycleButton clicked (collapsed sidebar)', async () => {
     localStorage.setItem('lr-sidebar', 'collapsed');
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     const themeBtn = document.querySelector('button[title^="Theme:"]') as HTMLButtonElement;
     expect(themeBtn).toBeTruthy();
     // Click it to cycle theme (auto → dark)
@@ -334,19 +334,19 @@ describe('Sidebar — ThemeCycleButton', () => {
 describe('Sidebar — ThemeSelector', () => {
   it('renders theme selector buttons when sidebar is expanded', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     // ThemeSelector renders Auto/Dark/Light buttons
     expect(screen.getByTitle('Auto')).toBeTruthy();
-    expect(screen.getByTitle('Dark')).toBeTruthy();
-    expect(screen.getByTitle('Light')).toBeTruthy();
+    expect(screen.getByTitle('深色')).toBeTruthy();
+    expect(screen.getByTitle('浅色')).toBeTruthy();
   });
 
   it('sets theme when ThemeSelector button clicked', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
-    await userEvent.click(screen.getByTitle('Dark'));
+    await waitFor(() => screen.getByText('概览'));
+    await userEvent.click(screen.getByTitle('深色'));
     // Dark button becomes active
-    expect(screen.getByTitle('Dark').classList.contains('active')).toBe(true);
+    expect(screen.getByTitle('深色').classList.contains('active')).toBe(true);
   });
 });
 
@@ -355,9 +355,9 @@ describe('Sidebar — ThemeSelector', () => {
 describe('Sidebar — Settings and Help NavLink active class', () => {
   it('Settings NavLink gets active class when on settings route (line 151 true branch)', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     // sidebar is expanded → title is undefined, use nav-label text
-    const settingsLink = Array.from(document.querySelectorAll('a.nav-item')).find(el => el.textContent?.includes('Settings')) as HTMLElement | undefined;
+    const settingsLink = Array.from(document.querySelectorAll('a.nav-item')).find(el => el.textContent?.includes('设置')) as HTMLElement | undefined;
     expect(settingsLink).toBeTruthy();
     await userEvent.click(settingsLink!);
     await waitFor(() => expect(settingsLink!.className).toContain('active'));
@@ -365,8 +365,8 @@ describe('Sidebar — Settings and Help NavLink active class', () => {
 
   it('Help NavLink gets active class when on help route (line 159 true branch)', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
-    const helpLink = Array.from(document.querySelectorAll('a.nav-item')).find(el => el.textContent?.includes('Help')) as HTMLElement | undefined;
+    await waitFor(() => screen.getByText('概览'));
+    const helpLink = Array.from(document.querySelectorAll('a.nav-item')).find(el => el.textContent?.includes('帮助')) as HTMLElement | undefined;
     expect(helpLink).toBeTruthy();
     await userEvent.click(helpLink!);
     await waitFor(() => expect(helpLink!.className).toContain('active'));
@@ -376,7 +376,7 @@ describe('Sidebar — Settings and Help NavLink active class', () => {
 describe('Sidebar — Sign Out', () => {
   it('calls logout and navigates to login on Sign Out click', async () => {
     renderApp();
-    await waitFor(() => screen.getByText('Overview'));
+    await waitFor(() => screen.getByText('概览'));
     await userEvent.click(screen.getByTitle('Sign Out'));
     expect(logoutFn).toHaveBeenCalled();
     // After logout, LoginPage (mocked) should render

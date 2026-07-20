@@ -83,7 +83,7 @@ function renderNew() {
 beforeEach(() => {
   mockGetSettings.mockResolvedValue({ publicUrl: 'https://api.example.com', port: 3000 });
   mockUpdateProject.mockResolvedValue({ ...mockProject });
-  mockCreateProject.mockResolvedValue({ id: 'proj-new', name: 'New', models: [], token: 'sk-rt-abc123' });
+  mockCreateProject.mockResolvedValue({ id: 'proj-new', name: '新建', models: [], token: 'sk-rt-abc123' });
   mockUseUnsavedChanges.mockReturnValue({ isBlocked: false, proceed: vi.fn(), reset: vi.fn() });
 });
 
@@ -182,7 +182,7 @@ describe('ProjectGeneralTab — edit mode render', () => {
     renderTab();
     await waitFor(() => screen.getByPlaceholderText('My App'));
     await userEvent.clear(screen.getByPlaceholderText('My App'));
-    await userEvent.type(screen.getByPlaceholderText('My App'), 'New');
+    await userEvent.type(screen.getByPlaceholderText('My App'), '新建');
     await userEvent.click(screen.getByRole('button', { name: /Save Changes/i }));
     await waitFor(() => expect(mockUpdateProject).toHaveBeenCalledWith(
       'proj-1',

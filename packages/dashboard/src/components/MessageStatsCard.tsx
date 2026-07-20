@@ -219,7 +219,7 @@ export function MessageStatsCard({ stats, turnNumber, completionModel }: Message
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>Tokens</div>
+                <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>Token</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <FileText size={11} style={{ color: 'var(--text-muted)' }} />
                   <span style={{ fontSize: '0.82rem', fontVariantNumeric: 'tabular-nums', fontWeight: 500 }}>

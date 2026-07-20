@@ -106,7 +106,7 @@ export function SetupPage() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="setup-password">Password</label>
+            <label className="form-label" htmlFor="setup-password">密码</label>
             <input
               id="setup-password"
               type="password"
@@ -118,7 +118,7 @@ export function SetupPage() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="setup-confirm">Confirm Password</label>
+            <label className="form-label" htmlFor="setup-confirm">确认密码</label>
             <input
               id="setup-confirm"
               type="password"

@@ -133,7 +133,7 @@ export function LoginPage() {
         <form onSubmit={handleSubmit}>
           {error && <div className="form-error">{error}</div>}
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Email</label>
+            <label className="form-label" htmlFor="email">邮箱</label>
             <input
               id="email"
               type="email"
@@ -145,7 +145,7 @@ export function LoginPage() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">密码</label>
             <input
               id="password"
               type="password"
@@ -162,7 +162,7 @@ export function LoginPage() {
             disabled={loading}
             style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
           >
-            {loading ? <span className="spinner" /> : 'Sign In'}
+            {loading ? <span className="spinner" /> : '登录'}
           </button>
         </form>
       </div>

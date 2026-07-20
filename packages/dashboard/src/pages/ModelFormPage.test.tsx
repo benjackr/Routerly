@@ -496,7 +496,7 @@ describe('ModelFormPage — provider-specific fields', () => {
 
     // Subscription provider shows instructions — text also appears in <option> so use getAllByText
     expect(screen.getAllByText(/ChatGPT Plus\/Pro subscription/i).length).toBeGreaterThan(0);
-    // openai-oauth has a "Test" button
+    // openai-oauth has a "测试" button
     const testBtn = screen.getByRole('button', { name: /Test/ });
     expect(testBtn).toBeTruthy();
   });
@@ -751,7 +751,7 @@ describe('ModelFormPage — limits', () => {
 
     // Metric select should appear
     await waitFor(() => {
-      expect(screen.getByText('Cost (USD)')).toBeTruthy();
+      expect(screen.getByText('消耗(美元)')).toBeTruthy();
     });
   });
 
@@ -767,8 +767,8 @@ describe('ModelFormPage — limits', () => {
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
 
-    // 'Cost (USD)' appears in multiple <option> elements; just confirm at least one exists
-    await waitFor(() => expect(screen.getAllByText('Cost (USD)').length).toBeGreaterThan(0));
+    // '消耗(美元)' appears in multiple <option> elements; just confirm at least one exists
+    await waitFor(() => expect(screen.getAllByText('消耗(美元)').length).toBeGreaterThan(0));
 
     // Find the limit row delete button: it's the sole <button> inside the limit row grid container
     // (the grid has 5 columns; the button is the last child).
@@ -795,9 +795,9 @@ describe('ModelFormPage — limits', () => {
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
 
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
-    // Find window type select (the one with "Period"/"Rolling" options)
+    // Find window type select (the one with "时间段"/"Rolling" options)
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const windowTypeSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'rolling'));
     expect(windowTypeSelect).toBeTruthy();
@@ -805,8 +805,8 @@ describe('ModelFormPage — limits', () => {
     await user.selectOptions(windowTypeSelect!, 'rolling');
 
     await waitFor(() => {
-      // Rolling shows "hours", "minutes" etc.
-      expect(screen.getByText('hours')).toBeTruthy();
+      // Rolling shows "小时", "分钟" etc.
+      expect(screen.getByText('小时')).toBeTruthy();
     });
   });
 
@@ -822,7 +822,7 @@ describe('ModelFormPage — limits', () => {
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
 
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const metricSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'calls'));
@@ -847,7 +847,7 @@ describe('ModelFormPage — limits', () => {
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
 
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const metricSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'input_tokens'));
@@ -915,7 +915,7 @@ describe('ModelFormPage — save create', () => {
     await user.click(screen.getByRole('button', { name: /Create Model/ }));
 
     await waitFor(() => {
-      expect(screen.getByText('Error')).toBeTruthy();
+      expect(screen.getByText('错误')).toBeTruthy();
     });
   });
 
@@ -1043,7 +1043,7 @@ describe('ModelFormPage — save create', () => {
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
 
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     // Fill in max value
     const maxInput = screen.getByPlaceholderText('10.00') as HTMLInputElement;
@@ -1067,13 +1067,13 @@ describe('ModelFormPage — save create', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const windowTypeSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'rolling'));
     await user.selectOptions(windowTypeSelect!, 'rolling');
 
-    await waitFor(() => expect(screen.getByText('hours')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('小时')).toBeTruthy());
 
     // Fill value
     const maxInput = screen.getByPlaceholderText('10.00') as HTMLInputElement;
@@ -1224,7 +1224,7 @@ describe('ModelFormPage — save edit', () => {
       expect(screen.getByRole('heading', { name: /Edit Model/ })).toBeTruthy()
     );
 
-    // There are two "Test" buttons: the tab button from the edit page and the form test button
+    // There are two "测试" buttons: the tab button from the edit page and the form test button
     const testBtns = screen.getAllByRole('button', { name: /Test/ });
     await user.click(testBtns[testBtns.length - 1]!);
 
@@ -1410,7 +1410,7 @@ describe('ModelFormPage — edit provider-specific models', () => {
 
     // Limits section opens automatically when model has limits
     await waitFor(() => {
-      expect(screen.getByText('Cost (USD)')).toBeTruthy();
+      expect(screen.getByText('消耗(美元)')).toBeTruthy();
     });
   });
 
@@ -1429,7 +1429,7 @@ describe('ModelFormPage — edit provider-specific models', () => {
 
     await waitFor(() => {
       // 3 threshold rows converted to limit rows
-      const allCostTexts = screen.getAllByText('Cost (USD)');
+      const allCostTexts = screen.getAllByText('消耗(美元)');
       expect(allCostTexts.length).toBeGreaterThanOrEqual(3);
     });
   });
@@ -1758,7 +1758,7 @@ describe('ModelFormPage — FieldBadge', () => {
     });
 
     // The Reset button's accessible name includes the surrounding label text, so find by text
-    const resetBtn = screen.getByText('Reset');
+    const resetBtn = screen.getByText('重置');
     await user.click(resetBtn);
 
     // After reset, Override badge should be gone
@@ -1788,7 +1788,7 @@ describe('ModelFormPage — FieldBadge', () => {
       expect(screen.getByText('Override')).toBeTruthy();
     });
 
-    const resetBtn = screen.getByText('Reset');
+    const resetBtn = screen.getByText('重置');
     await user.click(resetBtn);
 
     await waitFor(() => {
@@ -1819,7 +1819,7 @@ describe('ModelFormPage — FieldBadge', () => {
     const block = (e: Event) => e.preventDefault();
     label?.addEventListener('click', block, true); // capture phase, before label activates input
 
-    const resetBtn = screen.getByText('Reset');
+    const resetBtn = screen.getByText('重置');
     fireEvent.click(resetBtn);
 
     label?.removeEventListener('click', block, true);
@@ -2182,7 +2182,7 @@ describe('ModelFormPage — limit period select', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const periodSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'monthly'));
@@ -2203,12 +2203,12 @@ describe('ModelFormPage — limit period select', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const windowTypeSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'rolling'));
     await user.selectOptions(windowTypeSelect!, 'rolling');
-    await waitFor(() => expect(screen.getByText('hours')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('小时')).toBeTruthy());
 
     const rollingUnitSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'day'));
     if (rollingUnitSelect) {
@@ -2254,7 +2254,7 @@ describe('ModelFormPage — limits count badge', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const maxInput = screen.getByPlaceholderText('10.00') as HTMLInputElement;
     await user.type(maxInput, '100');
@@ -2396,7 +2396,7 @@ describe('ModelFormPage — limitToRow legacy window field', () => {
 
     // Legacy 'day' maps to 'daily' period
     await waitFor(() => {
-      expect(screen.getByText('Cost (USD)')).toBeTruthy();
+      expect(screen.getByText('消耗(美元)')).toBeTruthy();
     });
   });
 });
@@ -2421,7 +2421,7 @@ describe('ModelFormPage — CopyCode button (anthropic-oauth)', () => {
     });
 
     // CopyCode renders the "claude setup-token" command with a Copy button
-    const copyBtn = screen.getByTitle('Copy to clipboard');
+    const copyBtn = screen.getByTitle('复制到剪贴板');
     await user.click(copyBtn);
 
     expect(writeText).toHaveBeenCalledWith('claude setup-token');
@@ -2662,7 +2662,7 @@ describe('ModelFormPage — rolling limit amount and unit onChange', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     // Switch to rolling window type
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
@@ -2696,7 +2696,7 @@ describe('ModelFormPage — rolling limit amount and unit onChange', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const windowTypeSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'rolling'));
@@ -2729,11 +2729,11 @@ describe('ModelFormPage — limit row delete button', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     // Find the X button inside the limit row by querying all spinbutton-adjacent buttons
     // The delete button is the last button inside the limits section
-    const costLabel = screen.getByText('Cost (USD)');
+    const costLabel = screen.getByText('消耗(美元)');
     const limitRow = costLabel.closest('div[style*="grid"]') ?? costLabel.closest('div');
     // Traverse up to find the grid container that holds the X button
     let container: Element | null = limitRow;
@@ -2747,7 +2747,7 @@ describe('ModelFormPage — limit row delete button', () => {
     if (deleteBtn) {
       await user.click(deleteBtn);
       await waitFor(() => {
-        expect(screen.queryByText('Cost (USD)')).toBeNull();
+        expect(screen.queryByText('消耗(美元)')).toBeNull();
       });
     }
   });
@@ -2894,7 +2894,7 @@ describe('ModelFormPage — CopyCode copied state resets', () => {
     // Switch to fake timers only after page is loaded
     vi.useFakeTimers();
 
-    const copyBtn = screen.getByTitle('Copy to clipboard');
+    const copyBtn = screen.getByTitle('复制到剪贴板');
     fireEvent.click(copyBtn);
     await writeText.mock.results[0]!.value; // await the promise
 
@@ -3055,7 +3055,7 @@ describe('ModelFormPage — rowToLimit rollingAmount zero fallback', () => {
 
     await user.click(screen.getByText(/^Limits$/));
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
 
     const selects = screen.getAllByRole('combobox') as HTMLSelectElement[];
     const windowTypeSelect = selects.find(s => Array.from(s.options).some(o => o.value === 'rolling'));
@@ -3360,10 +3360,10 @@ describe('ModelFormPage — limitRows multiple rows update', () => {
     await user.click(screen.getByText(/^Limits$/));
     // Add two limit rows
     await user.click(screen.getByText(/Add limit/));
-    await waitFor(() => expect(screen.getByText('Cost (USD)')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('消耗(美元)')).toBeTruthy());
     await user.click(screen.getByText(/Add limit/));
     await waitFor(() => {
-      expect(screen.getAllByText('Cost (USD)').length).toBeGreaterThanOrEqual(2);
+      expect(screen.getAllByText('消耗(美元)').length).toBeGreaterThanOrEqual(2);
     });
 
     // Change value of first row's max input — this triggers upd() for idx=0

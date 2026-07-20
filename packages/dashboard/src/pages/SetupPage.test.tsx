@@ -87,8 +87,8 @@ describe('SetupPage — renders form', () => {
   it('renders all three fields and submit button', async () => {
     renderSetup();
     expect(screen.getByLabelText('Admin Email')).toBeTruthy();
-    expect(screen.getByLabelText('Password')).toBeTruthy();
-    expect(screen.getByLabelText('Confirm Password')).toBeTruthy();
+    expect(screen.getByLabelText('密码')).toBeTruthy();
+    expect(screen.getByLabelText('确认密码')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Create Admin Account' })).toBeTruthy();
   });
 });
@@ -99,8 +99,8 @@ describe('SetupPage — validation', () => {
   it('shows error when passwords do not match', async () => {
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'password1');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'password2');
+    await userEvent.type(screen.getByLabelText('密码'), 'password1');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'password2');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(screen.queryByText('Passwords do not match')).not.toBeNull());
     expect(mockSetupAdmin).not.toHaveBeenCalled();
@@ -109,8 +109,8 @@ describe('SetupPage — validation', () => {
   it('shows error when password is too short', async () => {
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'short');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'short');
+    await userEvent.type(screen.getByLabelText('密码'), 'short');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'short');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(screen.queryByText('Password must be at least 8 characters')).not.toBeNull());
     expect(mockSetupAdmin).not.toHaveBeenCalled();
@@ -123,8 +123,8 @@ describe('SetupPage — submit success', () => {
   it('calls setupFirstAdmin and navigates to overview', async () => {
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'validpassword');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('密码'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'validpassword');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(mockSetupAdmin).toHaveBeenCalledWith('admin@x.com', 'validpassword'));
     await waitFor(() => expect(loginDirectFn).toHaveBeenCalled());
@@ -136,8 +136,8 @@ describe('SetupPage — submit success', () => {
     mockSetupAdmin.mockReturnValue(new Promise(r => { resolve = r; }));
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'validpassword');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('密码'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'validpassword');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(document.querySelector('.spinner')).toBeTruthy());
     resolve({ token: 'tok', user: { id: 'u1', email: 'admin@x.com', role: 'admin' } });
@@ -151,8 +151,8 @@ describe('SetupPage — submit failure', () => {
     mockSetupAdmin.mockRejectedValue(new Error('Email already in use'));
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'validpassword');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('密码'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'validpassword');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(screen.queryByText('Email already in use')).not.toBeNull());
   });
@@ -161,8 +161,8 @@ describe('SetupPage — submit failure', () => {
     mockSetupAdmin.mockRejectedValue('oops');
     renderSetup();
     await userEvent.type(screen.getByLabelText('Admin Email'), 'admin@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'validpassword');
-    await userEvent.type(screen.getByLabelText('Confirm Password'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('密码'), 'validpassword');
+    await userEvent.type(screen.getByLabelText('确认密码'), 'validpassword');
     await userEvent.click(screen.getByRole('button', { name: 'Create Admin Account' }));
     await waitFor(() => expect(screen.queryByText('Setup failed')).not.toBeNull());
   });

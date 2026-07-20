@@ -93,7 +93,7 @@ export function ProjectTokenCreatePage() {
                 </div>
                 <button className="btn btn-secondary" onClick={() => copyToClipboard(revealedToken)} style={{ flexShrink: 0 }}>
                   {copied ? <Check size={15} /> : <Copy size={15} />}
-                  {copied ? 'Copied!' : 'Copy'}
+                  {copied ? 'Copied!' : '复制'}
                 </button>
               </div>
             </div>

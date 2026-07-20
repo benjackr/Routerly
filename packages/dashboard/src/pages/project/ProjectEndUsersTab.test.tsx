@@ -10,7 +10,7 @@ vi.mock('../../api', () => ({
 import { getEndUsers } from '../../api';
 const mockGetEndUsers = vi.mocked(getEndUsers);
 
-const mockProject = { id: 'proj-1', name: 'Test', models: [], tokens: [] };
+const mockProject = { id: 'proj-1', name: '测试', models: [], tokens: [] };
 
 function renderTab() {
   function LayoutWrapper() {

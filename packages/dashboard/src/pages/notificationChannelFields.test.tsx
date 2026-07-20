@@ -230,17 +230,17 @@ describe('ChannelDetailFields — smtp', () => {
     expect(screen.getByText('From Name')).toBeTruthy();
     expect(screen.getByText('Host')).toBeTruthy();
     expect(screen.getByText('Port')).toBeTruthy();
-    expect(screen.getByText('Disabled')).toBeTruthy(); // TLS/SSL=false → Disabled
+    expect(screen.getByText('已禁用')).toBeTruthy(); // TLS/SSL=false → Disabled
     expect(screen.getByText('Username')).toBeTruthy();
-    // password is set → "Configured"
-    expect(screen.getByText('Configured')).toBeTruthy();
+    // password is set → "已配置"
+    expect(screen.getByText('已配置')).toBeTruthy();
   });
 
   it('shows TLS Enabled when secure=true', () => {
     render(<ChannelDetailFields channel={{
       provider: 'smtp', fromAddress: 'a@b.com', host: 'h', port: 465, secure: true,
     }} />);
-    expect(screen.getByText('Enabled')).toBeTruthy();
+    expect(screen.getByText('已启用')).toBeTruthy();
   });
 
   it('shows "Not set" for missing password', () => {
@@ -263,14 +263,14 @@ describe('ChannelDetailFields — ses', () => {
     render(<ChannelDetailFields channel={{
       provider: 'ses',
       fromAddress: 'a@b.com',
-      fromName: 'Test',
+      fromName: '测试',
       region: 'us-east-1',
       accessKeyId: 'AKID',
       secretAccessKey: '********',
     }} />);
     expect(screen.getByText('AWS Region')).toBeTruthy();
     expect(screen.getByText('Access Key ID')).toBeTruthy();
-    expect(screen.getByText('Configured')).toBeTruthy();
+    expect(screen.getByText('已配置')).toBeTruthy();
   });
 
   it('omits Access Key ID when falsy', () => {
@@ -286,8 +286,8 @@ describe('ChannelDetailFields — sendgrid', () => {
     render(<ChannelDetailFields channel={{
       provider: 'sendgrid', fromAddress: 'a@b.com', apiKey: '********',
     }} />);
-    expect(screen.getByText('API Key')).toBeTruthy();
-    expect(screen.getByText('Configured')).toBeTruthy();
+    expect(screen.getByText('API 密钥')).toBeTruthy();
+    expect(screen.getByText('已配置')).toBeTruthy();
   });
 });
 
@@ -311,7 +311,7 @@ describe('ChannelDetailFields — google', () => {
       refreshToken: '********',
     }} />);
     expect(screen.getByText('Client ID')).toBeTruthy();
-    expect(screen.getAllByText('Configured')).toHaveLength(2);
+    expect(screen.getAllByText('已配置')).toHaveLength(2);
   });
 });
 
@@ -433,7 +433,7 @@ describe('ChannelEditFields — ses (lines 474-484)', () => {
 describe('ChannelEditFields — sendgrid (lines 486-491)', () => {
   it('renders sendgrid API key field', () => {
     renderEditFields('sendgrid', { fromAddress: 'a@b.com' });
-    expect(screen.getByText('API Key')).toBeTruthy();
+    expect(screen.getByText('API 密钥')).toBeTruthy();
   });
 });
 
@@ -559,8 +559,8 @@ describe('RoutingEditFields', () => {
   it('renders events, projects, and cooldown sections', async () => {
     render(<RoutingEditFields form={{ events: [], cooldownSeconds: 0 }} onChange={vi.fn()} />);
     expect(screen.getByText('Events')).toBeTruthy();
-    expect(screen.getByText('Projects')).toBeTruthy();
-    expect(screen.getByText('Cooldown')).toBeTruthy();
+    expect(screen.getByText('项目')).toBeTruthy();
+    expect(screen.getByText('冷却')).toBeTruthy();
   });
 
   it('onChange fires when events MultiSelect changes', async () => {
@@ -610,7 +610,7 @@ describe('RoutingEditFields', () => {
 // ── RecipientsEditFields ──────────────────────────────────────────────────────
 
 describe('RecipientsEditFields', () => {
-  const roles = [{ id: 'r1', name: 'Admin' }, { id: 'r2', name: 'Editor' }] as unknown as import('../api').Role[];
+  const roles = [{ id: 'r1', name: '管理员' }, { id: 'r2', name: '编辑者' }] as unknown as import('../api').Role[];
   const users = [{ id: 'u1', email: 'alice@example.com' }] as unknown as import('../api').User[];
 
   it('renders roles, permissions, and users sections', () => {
@@ -621,7 +621,7 @@ describe('RecipientsEditFields', () => {
       users={users}
     />);
     expect(screen.getByText('Recipients / Targets')).toBeTruthy();
-    expect(screen.getByText('Roles')).toBeTruthy();
+    expect(screen.getByText('角色')).toBeTruthy();
     expect(screen.getByText('Permissions')).toBeTruthy();
     expect(screen.getByText('Individual users')).toBeTruthy();
   });
@@ -902,7 +902,7 @@ describe('RecipientsEditFields — targets undefined', () => {
     render(<RecipientsEditFields
       form={{ provider: 'smtp', targets: { roles: ['r1'] } }}
       onChange={vi.fn()}
-      roles={[{ id: 'r1', name: 'Admin' }] as unknown as import('../api').Role[]}
+      roles={[{ id: 'r1', name: '管理员' }] as unknown as import('../api').Role[]}
       users={[{ id: 'u1', email: 'a@b.com' }] as unknown as import('../api').User[]}
     />);
     expect(screen.getByText('Individual users')).toBeTruthy();

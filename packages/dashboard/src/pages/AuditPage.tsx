@@ -35,7 +35,7 @@ export function AuditPage() {
   const [emailFilter, setEmail]   = useFilterState<string>({ key: 'audit-filter-email', defaultValue: '' });
   const [actionFilter, setAction] = useFilterState<string>({ key: 'audit-filter-action', defaultValue: '' });
   const [resultFilter, setResult] = useFilterState<'all' | AuditEntry['result']>({ key: 'audit-filter-result', defaultValue: 'all' });
-  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'audit-filter-dateRange', defaultValue: { from: '', to: '', label: 'All time' } });
+  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'audit-filter-dateRange', defaultValue: { from: '', to: '', label: '全部时间' } });
 
   const load = useCallback(async (p: number) => {
     setLoading(true);
@@ -74,12 +74,12 @@ export function AuditPage() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' }}>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Period</FilterLabel>
+            <FilterLabel>时间段</FilterLabel>
             <DateRangePicker value={dateRange} onChange={setDateRange} />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 180 }}>
-            <FilterLabel>User</FilterLabel>
+            <FilterLabel>用户</FilterLabel>
             <input
               className="form-input"
               placeholder="Email or user ID"
@@ -90,7 +90,7 @@ export function AuditPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 180 }}>
-            <FilterLabel>Action</FilterLabel>
+            <FilterLabel>操作</FilterLabel>
             <input
               className="form-input"
               placeholder="e.g. model:create"
@@ -109,7 +109,7 @@ export function AuditPage() {
                   className={`btn btn-sm ${resultFilter === r ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setResult(r)}
                 >
-                  {r === 'all' ? 'All' : r.charAt(0).toUpperCase() + r.slice(1)}
+                  {r === 'all' ? '全部' : r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
               ))}
             </div>
@@ -139,7 +139,7 @@ export function AuditPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
               <thead>
                 <tr style={{ background: 'var(--bg-secondary)' }}>
-                  {['Timestamp', 'User', 'Action', 'Endpoint', 'Result', 'Details'].map(h => (
+                  {['时间', '用户', '操作', '端点', 'Result', '详情'].map(h => (
                     <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
                 </tr>

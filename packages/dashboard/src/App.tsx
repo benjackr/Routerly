@@ -42,8 +42,8 @@ import { ProfileNotificationBadge } from './components/NotificationBell';
 
 const THEME_OPTIONS: { value: Theme; icon: ReactNode; label: string }[] = [
   { value: 'auto',  icon: <Monitor size={14} />, label: 'Auto' },
-  { value: 'dark',  icon: <Moon size={14} />, label: 'Dark' },
-  { value: 'light', icon: <Sun size={14} />, label: 'Light' },
+  { value: 'dark',  icon: <Moon size={14} />, label: '深色' },
+  { value: 'light', icon: <Sun size={14} />, label: '浅色' },
 ];
 
 function ThemeSelector() {
@@ -78,7 +78,7 @@ function ThemeCycleButton() {
     setTheme(next);
   }
   return (
-    <button className="nav-item" title={`Theme: ${theme}`} onClick={cycle}>
+    <button className="nav-item" title={`主题: ${theme}`} onClick={cycle}>
       {icons[theme]}
     </button>
   );
@@ -92,10 +92,10 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   function handleLogout() { logout(); navigate('/dashboard/login'); }
 
   const navItems = [
-    { to: '/dashboard/overview', icon: <LayoutDashboard size={17} />, label: 'Overview' },
-    { to: '/dashboard/models', icon: <Cpu size={17} />, label: 'Models' },
-    { to: '/dashboard/projects', icon: <FolderOpen size={17} />, label: 'Projects' },
-    { to: '/dashboard/usage', icon: <BarChart2 size={17} />, label: 'Usage' },
+    { to: '/dashboard/overview', icon: <LayoutDashboard size={17} />, label: '概览' },
+    { to: '/dashboard/models', icon: <Cpu size={17} />, label: '模型' },
+    { to: '/dashboard/projects', icon: <FolderOpen size={17} />, label: '项目' },
+    { to: '/dashboard/usage', icon: <BarChart2 size={17} />, label: '用量' },
     { to: '/dashboard/test', icon: <FlaskConical size={17} />, label: 'Playground' },
   ];
 
@@ -147,19 +147,19 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
         </div>
         <NavLink
           to="/dashboard/settings"
-          title={collapsed ? 'Settings' : undefined}
+          title={collapsed ? '设置' : undefined}
           className={({ isActive }) => `nav-item${/* v8 ignore next */ isActive ? ' active' : ''}`}
         >
           <SettingsIcon size={15} />
-          <span className="nav-label">Settings</span>
+          <span className="nav-label">设置</span>
         </NavLink>
         <NavLink
           to="/dashboard/help"
-          title={collapsed ? 'Help' : undefined}
+          title={collapsed ? '帮助' : undefined}
           className={({ isActive }) => `nav-item${/* v8 ignore next */ isActive ? ' active' : ''}`}
         >
           <HelpCircle size={15} />
-          <span className="nav-label">Help</span>
+          <span className="nav-label">帮助</span>
         </NavLink>
         <button className="nav-item sign-out" title="Sign Out" onClick={handleLogout}>
           <LogOut size={15} />

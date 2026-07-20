@@ -114,7 +114,7 @@ describe('NotificationChannelEditPage — error state', () => {
     mockGet.mockRejectedValue(new Error('Not found'));
     renderPage();
     await waitFor(() => expect(screen.getByText('Not found')).toBeTruthy());
-    expect(screen.getByText('Back')).toBeTruthy();
+    expect(screen.getByText('返回')).toBeTruthy();
   });
 
   it('shows fallback error for non-Error throws', async () => {
@@ -126,8 +126,8 @@ describe('NotificationChannelEditPage — error state', () => {
   it('Back button in error view fires navigate (line 145)', async () => {
     mockGet.mockRejectedValue(new Error('Not found'));
     renderPage();
-    await waitFor(() => screen.getByText('Back'));
-    await userEvent.click(screen.getByText('Back'));
+    await waitFor(() => screen.getByText('返回'));
+    await userEvent.click(screen.getByText('返回'));
     // MemoryRouter absorbs navigation; no error = handler executed
   });
 
@@ -216,8 +216,8 @@ describe('NotificationChannelEditPage — form rendering', () => {
 
   it('Cancel button fires navigate (line 265)', async () => {
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Cancel' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => screen.getByRole('button', { name: '取消' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
   });
 
   it('buildInitialForm strips secrets (provider with secrets)', async () => {

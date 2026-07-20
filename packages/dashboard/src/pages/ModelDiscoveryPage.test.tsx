@@ -164,10 +164,10 @@ describe('ModelDiscoveryPage — loaded state', () => {
     expect(nameCells.length).toBeGreaterThan(0);
   });
 
-  it('shows "Configured" badge when isConfigured=true', async () => {
+  it('shows "已配置" badge when isConfigured=true', async () => {
     mockGetCatalog.mockResolvedValue([makeEntry({ isConfigured: true })]);
     renderPage();
-    await waitFor(() => expect(screen.queryByText('Configured')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('已配置')).not.toBeNull());
   });
 
   it('shows "embedding" badge when embedding=true', async () => {
@@ -460,9 +460,9 @@ describe('ModelDiscoveryPage — toggle filters', () => {
       makeEntry({ id: 'unconfigured', isConfigured: false }),
     ]);
     renderPage();
-    // 'Configured' appears in both filter button and row badge; target the button by role
-    await waitFor(() => screen.getByRole('button', { name: 'Configured' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Configured' }));
+    // '已配置' appears in both filter button and row badge; target the button by role
+    await waitFor(() => screen.getByRole('button', { name: '已配置' }));
+    await userEvent.click(screen.getByRole('button', { name: '已配置' }));
     await waitFor(() => {
       expect(screen.queryByText('configured')).not.toBeNull();
       expect(screen.queryByText('unconfigured')).toBeNull();
@@ -489,8 +489,8 @@ describe('ModelDiscoveryPage — toggle filters', () => {
 describe('ModelDiscoveryPage — reset filters', () => {
   it('Reset filters button appears when any filter is active', async () => {
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Configured' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Configured' }));
+    await waitFor(() => screen.getByRole('button', { name: '已配置' }));
+    await userEvent.click(screen.getByRole('button', { name: '已配置' }));
     // There may be two Reset buttons (filter-bar + empty-state); either means it appeared
     await waitFor(() => expect(screen.queryAllByRole('button', { name: 'Reset filters' }).length).toBeGreaterThan(0));
   });
@@ -501,8 +501,8 @@ describe('ModelDiscoveryPage — reset filters', () => {
       makeEntry({ id: 'unconfigured', isConfigured: false }),
     ]);
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Configured' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Configured' }));
+    await waitFor(() => screen.getByRole('button', { name: '已配置' }));
+    await userEvent.click(screen.getByRole('button', { name: '已配置' }));
     await waitFor(() => screen.queryAllByRole('button', { name: 'Reset filters' }).length > 0);
     // Click the first Reset filters button (filter-bar one)
     await userEvent.click(screen.getAllByRole('button', { name: 'Reset filters' })[0]!);
@@ -532,7 +532,7 @@ describe('ModelDiscoveryPage — sorting', () => {
     ]);
     renderPage();
     await waitFor(() => document.querySelector('thead'));
-    await clickTh('Provider');
+    await clickTh('提供商');
     // anthropic should come before openai in asc order
     await waitFor(() => {
       const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -548,8 +548,8 @@ describe('ModelDiscoveryPage — sorting', () => {
     ]);
     renderPage();
     await waitFor(() => document.querySelector('thead'));
-    await clickTh('Provider');
-    await clickTh('Provider');
+    await clickTh('提供商');
+    await clickTh('提供商');
     await waitFor(() => {
       const rows = Array.from(document.querySelectorAll('tbody tr'));
       const firstProvider = rows[0]?.querySelector('.badge')?.textContent;
@@ -610,8 +610,8 @@ describe('ModelDiscoveryPage — sorting', () => {
     renderPage();
     await waitFor(() => document.querySelector('thead'));
     // Default sort is already model/asc; click Provider first to change col, then click Model to get asc
-    await clickTh('Provider');
-    await clickTh('Model');
+    await clickTh('提供商');
+    await clickTh('模型');
     await waitFor(() => {
       const rows = Array.from(document.querySelectorAll('tbody tr'));
       const firstId = rows[0]?.querySelector('.mono')?.textContent;

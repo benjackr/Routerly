@@ -154,7 +154,7 @@ describe('NotificationChannelListPage', () => {
     const rowsBefore = screen.getAllByRole('row');
     expect(rowsBefore[1]).toHaveTextContent('Alpha');
     // Click Name header to reverse to desc — Zulu should be first
-    await user.click(screen.getByText('Name'));
+    await user.click(screen.getByText('名称'));
     const rowsAfter = screen.getAllByRole('row');
     expect(rowsAfter[1]).toHaveTextContent('Zulu');
   });
@@ -167,7 +167,7 @@ describe('NotificationChannelListPage', () => {
     const trashBtns = screen.getAllByTitle('Delete channel');
     await user.click(trashBtns[0]!);
     expect(screen.getByText(/Delete/i)).toBeInTheDocument();
-    await user.click(screen.getByText('Cancel'));
+    await user.click(screen.getByText('取消'));
     expect(screen.getByText('My SMTP')).toBeInTheDocument();
   });
 
@@ -179,7 +179,7 @@ describe('NotificationChannelListPage', () => {
     await waitFor(() => screen.getByText('My SMTP'));
     const trashBtns = screen.getAllByTitle('Delete channel');
     await user.click(trashBtns[0]!);
-    const deleteBtn = screen.getByRole('button', { name: 'Delete' });
+    const deleteBtn = screen.getByRole('button', { name: '删除' });
     await user.click(deleteBtn);
     await waitFor(() => expect(deleteNotificationChannel).toHaveBeenCalledWith('ch1'));
     expect(screen.queryByText('My SMTP')).toBeNull();

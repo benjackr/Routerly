@@ -85,7 +85,7 @@ describe('UsagePage — per-model table enriched columns', () => {
     });
     renderPage();
     await waitFor(() => {
-      expect(screen.getByText('Provider')).toBeTruthy();
+      expect(screen.getByText('提供商')).toBeTruthy();
       expect(screen.getByText('Success rate')).toBeTruthy();
       expect(screen.getByText('Avg latency')).toBeTruthy();
       expect(screen.getByText('P95 latency')).toBeTruthy();
@@ -286,7 +286,7 @@ describe('UsagePage — Rank column and sortable per-model table', () => {
     renderPage();
     await waitFor(() => screen.getByText('Rank'));
     // click Cost header to re-sort
-    const costHeader = screen.getByText('Cost (USD)');
+    const costHeader = screen.getByText('消耗(美元)');
     await userEvent.click(costHeader);
     // rows are now sorted by cost but Rank column value on cheap-model row is still 1
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -318,9 +318,9 @@ describe('UsagePage — Rank column and sortable per-model table', () => {
     vi.mocked(getUsage).mockResolvedValue({ ...makeStats(), byModel: makeByModel() });
     renderPage();
     await waitFor(() => screen.getAllByText('cheap-model'));
-    // find the th>span that contains "Model" text (not the filter label)
+    // find the th>span that contains "模型" text (not the filter label)
     const modelTh = Array.from(document.querySelectorAll('th span')).find(
-      el => el.textContent?.trim().startsWith('Model')
+      el => el.textContent?.trim().startsWith('模型')
     );
     expect(modelTh).toBeTruthy();
     await userEvent.click(modelTh!); // asc: c before e
@@ -337,8 +337,8 @@ describe('UsagePage — Rank column and sortable per-model table', () => {
       },
     });
     renderPage();
-    await waitFor(() => screen.getByText('Calls'));
-    const callsHeader = screen.getByText('Calls');
+    await waitFor(() => screen.getByText('调用次数'));
+    const callsHeader = screen.getByText('调用次数');
     await userEvent.click(callsHeader); // asc: few first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
     expect(rows[0]?.textContent).toContain('few-calls');
@@ -349,7 +349,7 @@ describe('UsagePage — Rank column and sortable per-model table', () => {
     renderPage();
     await waitFor(() => screen.getAllByText('cheap-model'));
     const modelTh = Array.from(document.querySelectorAll('th span')).find(
-      el => el.textContent?.trim().startsWith('Model')
+      el => el.textContent?.trim().startsWith('模型')
     );
     expect(modelTh).toBeTruthy();
     await userEvent.click(modelTh!); // asc
@@ -656,7 +656,7 @@ describe('UsagePage — reset filters button', () => {
   it('Success filter button activates filter', async () => {
     vi.mocked(getUsage).mockResolvedValue(makeStats());
     renderPage();
-    const btn = await screen.findByRole('button', { name: 'Success' });
+    const btn = await screen.findByRole('button', { name: '操作成功' });
     await userEvent.click(btn);
     expect(btn.className).toContain('btn-primary');
   });
@@ -664,7 +664,7 @@ describe('UsagePage — reset filters button', () => {
   it('Error filter button activates filter', async () => {
     vi.mocked(getUsage).mockResolvedValue(makeStats());
     renderPage();
-    const btn = await screen.findByRole('button', { name: 'Error' });
+    const btn = await screen.findByRole('button', { name: '错误' });
     await userEvent.click(btn);
     expect(btn.className).toContain('btn-primary');
   });
@@ -766,7 +766,7 @@ describe('UsagePage — model table sort keys', () => {
     ]);
     renderPage();
     await waitFor(() => screen.getAllByText(/model-alpha/).length > 0);
-    const header = Array.from(document.querySelectorAll('th span')).find(el => el.textContent?.trim() === 'Provider');
+    const header = Array.from(document.querySelectorAll('th span')).find(el => el.textContent?.trim() === '提供商');
     expect(header).toBeTruthy();
     await userEvent.click(header!); // asc: aa-prov first → model-beta row first
     const rows = Array.from(document.querySelectorAll('tbody tr'));
@@ -887,7 +887,7 @@ describe('UsagePage — prevMax new-row detection', () => {
     vi.mocked(getUsage).mockResolvedValue(makeStats());
     renderPage();
     await waitFor(() => screen.getByText('LIVE'));
-    const offBtn = screen.getByRole('button', { name: 'Off' });
+    const offBtn = screen.getByRole('button', { name: '关闭' });
     await userEvent.click(offBtn); // sets liveMode=false, pollInterval=0
     expect(screen.getByTitle('Refresh now')).toBeTruthy();
   });
@@ -963,7 +963,7 @@ describe('UsagePage — model sort same-key desc→asc toggle', () => {
     });
     renderPage();
     await waitFor(() => screen.getAllByText(/aaa/).length > 0);
-    const modelTh = Array.from(document.querySelectorAll('th span')).find(el => el.textContent?.trim().startsWith('Model'));
+    const modelTh = Array.from(document.querySelectorAll('th span')).find(el => el.textContent?.trim().startsWith('模型'));
     expect(modelTh).toBeTruthy();
     await userEvent.click(modelTh!); // click 1: asc → p/aaa first
     await userEvent.click(modelTh!); // click 2: desc → p/zzz first
@@ -1397,7 +1397,7 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
 
   it('stale range to >= today: dateRange.to.slice(0,10) < today is false (no re-apply)', async () => {
     const today = new Date().toISOString().slice(0, 10);
-    const mockPreset = { label: 'Today', range: () => ({ from: today, to: today, label: 'Today' }) };
+    const mockPreset = { label: '今天', range: () => ({ from: today, to: today, label: '今天' }) };
 
     vi.doMock('../components/DateRangePicker', () => ({
       DateRangePicker: ({ value }: { value: { label?: string } }) => <div data-testid="date-picker">{value.label}</div>,
@@ -1421,7 +1421,7 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
           callIndex++;
           if (callIndex === 1) {
             // to=today → to.slice(0,10) < today is FALSE → else-if branch not taken
-            return react.useState({ from: today, to: today, label: 'Today' });
+            return react.useState({ from: today, to: today, label: '今天' });
           }
           return react.useState(defaultValue);
         },
@@ -1436,11 +1436,11 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
     await wf(() => expect(s.getByTestId('date-picker')).toBeTruthy());
   });
 
-  it('stale range with label="This month" gets remapped to "Questo mese"', async () => {
+  it('stale range with label="This month" gets remapped to "本月"', async () => {
     const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
     const today = new Date().toISOString().slice(0, 10);
-    // PRESETS must contain 'Questo mese' for the remap to find it
-    const mockPreset = { label: 'Questo mese', range: () => ({ from: yesterday, to: today, label: 'Questo mese' }) };
+    // PRESETS must contain '本月' for the remap to find it
+    const mockPreset = { label: '本月', range: () => ({ from: yesterday, to: today, label: '本月' }) };
 
     vi.doMock('../components/DateRangePicker', () => ({
       DateRangePicker: ({ value }: { value: { label?: string } }) => <div data-testid="date-picker">{value.label}</div>,
@@ -1463,7 +1463,7 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
         useFilterState: ({ defaultValue }: { defaultValue: unknown }) => {
           callIndex++;
           if (callIndex === 1) {
-            // label 'This month' → code remaps to 'Questo mese' then finds the preset
+            // label 'This month' → code remaps to '本月' then finds the preset
             return react.useState({ from: yesterday, to: yesterday, label: 'This month' });
           }
           return react.useState(defaultValue);
@@ -1482,7 +1482,7 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
   it('fetchStats: recentPreset found — uses preset range for from/to', async () => {
     const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
     const today = new Date().toISOString().slice(0, 10);
-    const mockRecentPreset = { label: 'Today', range: () => ({ from: today, to: today, label: 'Today' }) };
+    const mockRecentPreset = { label: '今天', range: () => ({ from: today, to: today, label: '今天' }) };
 
     vi.doMock('../components/DateRangePicker', () => ({
       DateRangePicker: ({ value }: { value: { label?: string } }) => <div data-testid="date-picker">{value.label}</div>,
@@ -1507,7 +1507,7 @@ describe('UsagePage — dateRange init: stale preset re-apply (line 87-91)', () 
           callIndex++;
           if (callIndex === 1) {
             // dateRange label matches RECENT_PRESETS[0].label → recentPreset found in fetchStats
-            return react.useState({ from: yesterday, to: yesterday, label: 'Today' });
+            return react.useState({ from: yesterday, to: yesterday, label: '今天' });
           }
           return react.useState(defaultValue);
         },

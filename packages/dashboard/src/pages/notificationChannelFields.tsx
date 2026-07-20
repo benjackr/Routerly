@@ -137,21 +137,21 @@ function DetailField({ label, value }: { label: string; value: string | React.Re
 
 function SecretDetailField({ label, value }: { label: string; value: unknown }) {
   const display = (value && typeof value === 'string' && value.length > 0)
-    ? 'Configured'
+    ? '已配置'
     : 'Not set';
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: 2 }}>{label}</div>
       <div style={{
         fontSize: '0.875rem',
-        color: display === 'Configured' ? 'var(--text-secondary)' : 'var(--text-muted)',
+        color: display === '已配置' ? 'var(--text-secondary)' : 'var(--text-muted)',
         fontStyle: display === 'Not set' ? 'italic' : undefined,
       }}>{display}</div>
     </div>
   );
 }
 
-/** Read-only view of provider-specific fields. Secrets shown as "Configured" / "Not set". */
+/** Read-only view of provider-specific fields. Secrets shown as "已配置" / "Not set". */
 export function ChannelDetailFields({ channel }: { channel: Record<string, unknown> }) {
   const provider = channel['provider'] as ChannelProvider;
   switch (provider) {
@@ -168,9 +168,9 @@ export function ChannelDetailFields({ channel }: { channel: Record<string, unkno
           {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
           <DetailField label="Host" value={str(channel, 'host')} />
           <DetailField label="Port" value={String(channel['port'] ?? '')} />
-          <DetailField label="TLS/SSL" value={channel['secure'] ? 'Enabled' : 'Disabled'} />
+          <DetailField label="TLS/SSL" value={channel['secure'] ? '已启用' : '已禁用'} />
           {channel['username'] && <DetailField label="Username" value={str(channel, 'username')} />}
-          <SecretDetailField label="Password" value={channel['password']} />
+          <SecretDetailField label="密码" value={channel['password']} />
         </>
       );
     case 'ses':
@@ -188,7 +188,7 @@ export function ChannelDetailFields({ channel }: { channel: Record<string, unkno
         <>
           <DetailField label="From Address" value={str(channel, 'fromAddress')} />
           {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
-          <SecretDetailField label="API Key" value={channel['apiKey']} />
+          <SecretDetailField label="API 密钥" value={channel['apiKey']} />
         </>
       );
     case 'azure':
@@ -360,7 +360,7 @@ export function RoutingEditFields({
         </p>
       </div>
       <div>
-        <div style={sectionLabel}>Cooldown</div>
+        <div style={sectionLabel}>冷却</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <input
             className="form-input"
@@ -398,7 +398,7 @@ export function RecipientsEditFields({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <div style={sectionLabel}><Users size={11} /> Recipients / Targets</div>
       <div>
-        <label className="form-label" style={{ fontSize: '0.78rem' }}>Roles</label>
+        <label className="form-label" style={{ fontSize: '0.78rem' }}>角色</label>
         <MultiSelect
           options={roleOptions}
           value={targets.roles ?? []}
@@ -475,7 +475,7 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <EditInput label="Username" fieldKey="username" form={form} onChange={onChange} />
-            <SecretEditInput label="Password" fieldKey="password" form={form} onChange={onChange} isEdit={isEdit} />
+            <SecretEditInput label="密码" fieldKey="password" form={form} onChange={onChange} isEdit={isEdit} />
           </div>
         </>
       );
@@ -495,7 +495,7 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
       return (
         <>
           <EmailBaseFields form={form} onChange={onChange} isEdit={isEdit} />
-          <SecretEditInput label="API Key" fieldKey="apiKey" form={form} onChange={onChange} isEdit={isEdit} placeholder="SG.…" />
+          <SecretEditInput label="API 密钥" fieldKey="apiKey" form={form} onChange={onChange} isEdit={isEdit} placeholder="SG.…" />
         </>
       );
     case 'azure':

@@ -31,7 +31,7 @@ const mockToken = {
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [
     { modelId: 'openai/gpt-4o', limits: [] },
     { modelId: 'openai/gpt-3.5', limits: [] },
@@ -205,8 +205,8 @@ describe('ProjectTokenEditPage — navigation', () => {
 
   it('Cancel button navigates to token list', async () => {
     renderPage();
-    await waitFor(() => screen.getByRole('button', { name: 'Cancel' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => screen.getByRole('button', { name: '取消' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.getByTestId('token-list')).toBeTruthy());
   });
 
@@ -386,7 +386,7 @@ describe('ProjectTokenEditPage — limit row selects', () => {
 
   it('changing period select updates row', async () => {
     renderPage();
-    // 'Period' appears in both a column label and a <option> element; use Metric label as load indicator
+    // '时间段' appears in both a column label and a <option> element; use Metric label as load indicator
     await waitFor(() => screen.getByText('Metric'));
     const periodSelect = document.querySelectorAll('select')[2] as HTMLSelectElement;
     await userEvent.selectOptions(periodSelect, 'daily');
@@ -629,7 +629,7 @@ describe('ProjectTokenEditPage — fmtLimit all metric labels', () => {
   ];
 
   metricCases.forEach(({ metric, expected }) => {
-    it(`shows "${metric}" metric in inherited label via fmtLimit`, async () => {
+    it(`shows "${metric}" metric in inherited label via fmt限制`, async () => {
       const proj = {
         ...mockProject,
         models: [
@@ -1413,7 +1413,7 @@ describe('ProjectTokenEditPage — getModels rejection catch (line 149)', () => 
 describe('ProjectTokenEditPage — project.tokens undefined fallback (line 159)', () => {
   it('handles project without tokens property gracefully', () => {
     // project.tokens undefined → || [] branch
-    const noTokensProj = { id: 'proj-1', name: 'Test', models: mockProject.models };
+    const noTokensProj = { id: 'proj-1', name: '测试', models: mockProject.models };
     function LayoutWrapper() {
       return <Outlet context={{ project: noTokensProj, setProject: vi.fn() }} />;
     }

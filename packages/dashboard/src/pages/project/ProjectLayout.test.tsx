@@ -72,11 +72,11 @@ describe('ProjectLayout — loaded state', () => {
   it('renders all 7 tabs', async () => {
     renderLayout('/dashboard/projects/proj-1/general');
     await waitFor(() => {
-      expect(screen.getByText('General')).toBeTruthy();
+      expect(screen.getByText('通用')).toBeTruthy();
       expect(screen.getByText('Routing')).toBeTruthy();
-      expect(screen.getByText('Security')).toBeTruthy();
+      expect(screen.getByText('安全')).toBeTruthy();
       expect(screen.getByText('Token')).toBeTruthy();
-      expect(screen.getByText('Users')).toBeTruthy();
+      expect(screen.getByText('用户')).toBeTruthy();
       expect(screen.getByText('Logs')).toBeTruthy();
       expect(screen.getByText('End Users')).toBeTruthy();
     });
@@ -162,11 +162,11 @@ describe('ProjectLayout — back button navigation', () => {
 describe('ProjectLayout — active tab highlighting', () => {
   it('currentTab matches last path segment', async () => {
     renderLayout('/dashboard/projects/proj-1/general');
-    await waitFor(() => screen.getByText('General'));
+    await waitFor(() => screen.getByText('通用'));
     // The General tab link should show primary color (active). We check it's a NavLink, not a div.
     // NavLink is rendered only for non-disabled tabs.
     const links = document.querySelectorAll('a');
-    const generalLink = Array.from(links).find(a => a.textContent?.includes('General'));
+    const generalLink = Array.from(links).find(a => a.textContent?.includes('通用'));
     expect(generalLink).toBeTruthy();
   });
 });

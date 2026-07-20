@@ -13,7 +13,7 @@ const mockCreateProjectToken = vi.mocked(createProjectToken as (...a: unknown[])
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [],
   tokens: [
     { id: 'tok-existing', tokenSnippet: 'sk-rt-ex', labels: ['production'], createdAt: '2024-01-01T00:00:00Z' },
@@ -84,7 +84,7 @@ describe('ProjectTokenCreatePage — initial render', () => {
 
   it('shows Cancel button', () => {
     renderPage();
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '取消' })).toBeTruthy();
   });
 
   it('shows Labels section', () => {
@@ -114,7 +114,7 @@ describe('ProjectTokenCreatePage — navigation', () => {
 
   it('Cancel button navigates to token list', async () => {
     renderPage();
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.getByTestId('token-list')).toBeTruthy());
   });
 });

@@ -122,7 +122,7 @@ export function ProjectGeneralTab() {
           </div>
           <button type="button" className="btn btn-secondary" onClick={() => copyToken(revealedToken.token)} style={{ flexShrink: 0 }}>
             {copied ? <Check size={15} /> : <Copy size={15} />}
-            {copied ? 'Copied!' : 'Copy'}
+            {copied ? 'Copied!' : '复制'}
           </button>
         </div>
 
@@ -167,7 +167,7 @@ export function ProjectGeneralTab() {
                 style={{ flexShrink: 0, padding: '5px 10px', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: 5 }}
               >
                 {copiedEndpoint === baseUrl ? <Check size={13} /> : <Copy size={13} />}
-                {copiedEndpoint === baseUrl ? 'Copied!' : 'Copy'}
+                {copiedEndpoint === baseUrl ? 'Copied!' : '复制'}
               </button>
             </div>
           </div>
@@ -178,7 +178,7 @@ export function ProjectGeneralTab() {
         {err && <div className="form-error" style={{ marginBottom: 16 }}>{err}</div>}
 
         <div className="form-group">
-          <label className="form-label">Project Name</label>
+          <label className="form-label">项目名称</label>
           <input
             className="form-input"
             value={form.name}

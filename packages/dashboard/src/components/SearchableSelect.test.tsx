@@ -21,7 +21,7 @@ function setup(value = '', onChange = vi.fn(), disabled = false) {
 describe('SearchableSelect — closed state', () => {
   it('shows placeholder when no value selected', () => {
     setup();
-    expect(screen.getByText('Select...')).toBeTruthy();
+    expect(screen.getByText('请选择...')).toBeTruthy();
   });
 
   it('shows custom placeholder', () => {
@@ -82,12 +82,12 @@ describe('SearchableSelect — search filtering', () => {
     expect(screen.queryByText('Beta')).toBeNull();
   });
 
-  it('shows "No results" when nothing matches', async () => {
+  it('shows "无结果" when nothing matches', async () => {
     setup();
     const trigger = document.querySelector('div[style*="border"]') as HTMLElement;
     await userEvent.click(trigger);
     await userEvent.type(screen.getByPlaceholderText('Search...'), 'zzz');
-    expect(screen.getByText('No results')).toBeTruthy();
+    expect(screen.getByText('无结果')).toBeTruthy();
   });
 
   it('search input click does not close dropdown (stopPropagation)', async () => {

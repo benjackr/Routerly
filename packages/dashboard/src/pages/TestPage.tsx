@@ -229,7 +229,7 @@ function ComparePanel({
   }
 
   const cols = [
-    { label: 'A', model: compareModelA, setModel: setCompareModelA, msgs: messagesA, loading: loadingA, error: errorA, abortRef: abortARef, params: paramsA, setParams: setParamsA, traceHistory: traceHistoryA },
+    { label: '至', model: compareModelA, setModel: setCompareModelA, msgs: messagesA, loading: loadingA, error: errorA, abortRef: abortARef, params: paramsA, setParams: setParamsA, traceHistory: traceHistoryA },
     { label: 'B', model: compareModelB, setModel: setCompareModelB, msgs: messagesB, loading: loadingB, error: errorB, abortRef: abortBRef, params: paramsB, setParams: setParamsB, traceHistory: traceHistoryB },
   ];
 
@@ -858,7 +858,7 @@ export function TestPage() {
                   onKeyDown={e => { if (e.key === 'Enter') savePreset(); }}
                   autoFocus
                 />
-                <button className="btn btn-primary" style={{ padding: '4px 8px', fontSize: '0.72rem' }} onClick={savePreset} disabled={!savePresetName.trim()}>Save</button>
+                <button className="btn btn-primary" style={{ padding: '4px 8px', fontSize: '0.72rem' }} onClick={savePreset} disabled={!savePresetName.trim()}>保存</button>
               </div>
             )}
             <div style={{ flex: 1, overflowY: 'auto', padding: '6px 8px' }}>
@@ -927,7 +927,7 @@ export function TestPage() {
                 )}
                 <div style={{ padding: '6px 16px 10px', display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Model</label>
+                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>模型</label>
                     <select className="form-input" style={{ padding: '4px 8px', fontSize: '0.78rem' }}
                       value={selectedModelId} onChange={e => setSelectedModelId(e.target.value)}>
                       <option value="">Auto (project default)</option>
@@ -961,7 +961,7 @@ export function TestPage() {
                     )}
                   </label>
                   {messages.length > 0 && (
-                    <button className="btn" style={{ fontSize: '0.73rem', marginLeft: 'auto' }} onClick={() => { setMessages([]); setShowRaw({}); setDebugTraceHistory([]); }}>Clear</button>
+                    <button className="btn" style={{ fontSize: '0.73rem', marginLeft: 'auto' }} onClick={() => { setMessages([]); setShowRaw({}); setDebugTraceHistory([]); }}>清空</button>
                   )}
                 </div>
               </div>
@@ -1132,7 +1132,7 @@ export function TestPage() {
                   <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>Debug</h3>
                   <div style={{ display: 'flex', gap: 6 }}>
                     {debugTraceHistory.length > 0 && (
-                      <button onClick={() => setDebugTraceHistory([])} style={{ fontSize: '0.7rem', color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}>Clear</button>
+                      <button onClick={() => setDebugTraceHistory([])} style={{ fontSize: '0.7rem', color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}>清空</button>
                     )}
                     <button onClick={() => setShowDebugSidebar(false)} className="btn-icon" style={{ padding: 4 }} title="Hide debug"><ChevronRight size={15} /></button>
                   </div>

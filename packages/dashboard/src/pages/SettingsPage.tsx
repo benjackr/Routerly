@@ -610,7 +610,7 @@ export function SettingsNotificationsTab() {
           <div style={sectionLabelStyle}><Users size={11} /> Recipients / Targets</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div>
-              <label className="form-label" style={{ fontSize: '0.78rem' }}>Roles</label>
+              <label className="form-label" style={{ fontSize: '0.78rem' }}>角色</label>
               <MultiSelect
                 options={roleOptions}
                 value={ch.targets?.roles ?? []}
@@ -727,7 +727,7 @@ export function SettingsNotificationsTab() {
         <>
           {emailBaseFields(ch)}
           <div className="form-group">
-            <label className="form-label">API Key</label>
+            <label className="form-label">API 密钥</label>
             <input className="form-input" type="password" value={ch.apiKey} onChange={e => uf(ch.id, 'apiKey', e.target.value)} required />
           </div>
           {eventsAndTargetsFields(ch)}
@@ -911,7 +911,7 @@ export function SettingsNotificationsTab() {
                 style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: '0.85rem', color: 'var(--text-primary)' }} />
             </div>
             {filteredToAdd.length === 0
-              ? <div style={{ padding: '10px 14px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>No results</div>
+              ? <div style={{ padding: '10px 14px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>无结果</div>
               : filteredToAdd.map((ch, i) => (
                   <button key={ch.key} type="button" onClick={() => addChannel(ch.key)}
                     style={{
@@ -1038,7 +1038,7 @@ function integrationFormFields(
       return (
         <>
           <div className="form-group">
-            <label className="form-label">API Key</label>
+            <label className="form-label">API 密钥</label>
             <input className="form-input" type="password"
               placeholder="Your Datadog API key"
               value={(form.apiKey as string) ?? ''}
@@ -1356,7 +1356,7 @@ export function SettingsIntegrationsTab() {
                     onClick={() => handleTest(integration.id)}>
                     {testResult === 'testing'
                       ? <><div className="spinner" style={{ width: 10, height: 10 }} /> Testing…</>
-                      : 'Test'}
+                      : '测试'}
                   </button>
                   {/* Delete */}
                   {pendingDelete === integration.id ? (
@@ -1615,7 +1615,7 @@ export function SettingsCatalogTab() {
             style={{ fontSize: '0.78rem', padding: '4px 12px', display: 'flex', alignItems: 'center', gap: 5 }}
             disabled={refreshing}
             onClick={() => void handleRefresh()}>
-            {refreshing ? <><div className="spinner" style={{ width: 10, height: 10 }} /> Refreshing…</> : 'Refresh'}
+            {refreshing ? <><div className="spinner" style={{ width: 10, height: 10 }} /> Refreshing…</> : '刷新'}
           </button>
           {nextRefreshLabel && (
             <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Next: {nextRefreshLabel}</span>
@@ -1636,7 +1636,7 @@ export function SettingsCatalogTab() {
       <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 20 }}>
         {/* Header */}
         <div style={{ display: 'grid', gridTemplateColumns: COL, gap: 0, background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)', padding: '6px 14px' }}>
-          {['#', 'URL', 'Updated', 'Last Check', 'Status', ''].map(h => (
+          {['#', 'URL', 'Updated', 'Last Check', '状态', ''].map(h => (
             <span key={h} style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
           ))}
         </div>
@@ -1664,8 +1664,8 @@ export function SettingsCatalogTab() {
                     Enabled
                   </label>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button type="submit" className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '4px 14px' }}>Save</button>
-                    <button type="button" className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '4px 14px' }} onClick={() => setEditIdx(null)}>Cancel</button>
+                    <button type="submit" className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '4px 14px' }}>保存</button>
+                    <button type="button" className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '4px 14px' }} onClick={() => setEditIdx(null)}>取消</button>
                   </div>
                 </form>
               ) : (
@@ -1691,12 +1691,12 @@ export function SettingsCatalogTab() {
                   {/* Status */}
                   <span style={{ fontSize: '0.75rem', color: st?.error ? '#ef4444' : repo.enabled ? '#22c55e' : 'var(--text-muted)' }}
                     title={st?.error ?? ''}>
-                    {st?.error ? 'Error' : repo.enabled ? 'Active' : 'Disabled'}
+                    {st?.error ? '错误' : repo.enabled ? '活跃' : '已禁用'}
                   </span>
                   {/* Actions */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <button type="button" className="btn btn-secondary" style={{ fontSize: '0.72rem', padding: '2px 8px' }} onClick={() => startEdit(idx)}>Edit</button>
-                    <button type="button" onClick={() => setConfirmRemoveIdx(idx)} title="Remove"
+                    <button type="button" className="btn btn-secondary" style={{ fontSize: '0.72rem', padding: '2px 8px' }} onClick={() => startEdit(idx)}>编辑</button>
+                    <button type="button" onClick={() => setConfirmRemoveIdx(idx)} title="移除"
                       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4, display: 'flex', alignItems: 'center' }}>
                       <Trash2 size={14} />
                     </button>
@@ -1722,10 +1722,10 @@ export function SettingsCatalogTab() {
 
       {confirmRemoveIdx !== null && (
         <ConfirmDialog
-          message={`Remove repository "${repos[confirmRemoveIdx]?.url}"?`}
+          message={`移除 repository "${repos[confirmRemoveIdx]?.url}"?`}
           onConfirm={() => void confirmRemove(confirmRemoveIdx)}
           onCancel={() => setConfirmRemoveIdx(null)}
-          confirmLabel="Remove"
+          confirmLabel="移除"
           danger={true}
         />
       )}
@@ -1992,7 +1992,7 @@ export function SettingsAboutTab() {
               disabled={updating}
               style={{ fontSize: '0.83rem' }}
             >
-              {updating ? <><span className="spinner" style={{ width: 12, height: 12, marginRight: 6 }} />Updating…</> : `Update to v${updateInfo.latestVersion}`}
+              {updating ? <><span className="spinner" style={{ width: 12, height: 12, marginRight: 6 }} />Updating…</> : `更新 to v${updateInfo.latestVersion}`}
             </button>
           )}
           {info.isDocker && (
@@ -2018,13 +2018,13 @@ export function SettingsAboutTab() {
 // ── Page layout ───────────────────────────────────────────────────────────────
 
 const TABS = [
-  { path: 'general',       label: 'General' },
-  { path: 'notifications', label: 'Notifications' },
+  { path: 'general',       label: '通用' },
+  { path: 'notifications', label: '通知' },
   { path: 'integrations',  label: 'Integrations' },
   { path: 'catalog',       label: 'Provider Catalog' },
-  { path: 'users',         label: 'Users' },
-  { path: 'roles',         label: 'Roles' },
-  { path: 'audit',         label: 'Audit Log' },
+  { path: 'users',         label: '用户' },
+  { path: 'roles',         label: '角色' },
+  { path: 'audit',         label: '审计日志' },
   { path: 'about',         label: 'About' },
 ];
 
@@ -2032,7 +2032,7 @@ export function SettingsPage() {
   return (
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
-        <h1>Settings</h1>
+        <h1>设置</h1>
         <p>Configuration for Routerly</p>
 
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border)', marginTop: 16 }}>

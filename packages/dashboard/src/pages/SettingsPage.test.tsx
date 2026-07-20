@@ -454,13 +454,13 @@ describe('SettingsNotificationsTab', () => {
     expect(screen.queryByText('SMTP')).toBeNull();
   });
 
-  it('searching with no match shows "No results"', async () => {
+  it('searching with no match shows "无结果"', async () => {
     renderNotif();
     await waitFor(() => screen.getByRole('button', { name: /Add Channel/i }));
     await userEvent.click(screen.getByRole('button', { name: /Add Channel/i }));
     await waitFor(() => screen.getByPlaceholderText(/Search channels/i));
     await userEvent.type(screen.getByPlaceholderText(/Search channels/i), 'zzznomatch');
-    await waitFor(() => expect(screen.queryByText('No results')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('无结果')).not.toBeNull());
   });
 
   it('clicking a provider option adds the channel card', async () => {
@@ -501,7 +501,7 @@ describe('SettingsNotificationsTab', () => {
     await userEvent.click(screen.getByRole('button', { name: /Add Channel/i }));
     await waitFor(() => screen.getByText('SendGrid'));
     await userEvent.click(screen.getByText('SendGrid'));
-    await waitFor(() => expect(screen.queryByText('API Key')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('API 密钥')).not.toBeNull());
   });
 
   it('adding azure channel shows connection string field', async () => {
@@ -794,7 +794,7 @@ describe('SettingsNotificationsTab', () => {
       ...baseSettings,
       notifications: { channels: [{ id: 'ch1', provider: 'dashboard' as const }] },
     } as never);
-    mockGetRoles.mockResolvedValue([{ id: 'admin', name: 'Admin', permissions: [], builtin: true }] as never);
+    mockGetRoles.mockResolvedValue([{ id: 'admin', name: '管理员', permissions: [], builtin: true }] as never);
     renderNotif();
     // summary text is "All events · Everyone" — use regex
     await waitFor(() => screen.getByText(/All events/));
@@ -1362,23 +1362,23 @@ describe('SettingsCatalogTab', () => {
     await waitFor(() => expect(screen.queryByText(/Next:/)).not.toBeNull());
   });
 
-  it('status with error shows "Error" in status column', async () => {
+  it('status with error shows "错误" in status column', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     mockGetCatalogStatus.mockResolvedValue([{ url: defaultRepo.url, lastChecked: null, updatedAt: null, error: 'fetch failed' }] as never);
     renderCatalog();
-    await waitFor(() => expect(screen.queryByText('Error')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('错误')).not.toBeNull());
   });
 
-  it('status with no error and enabled shows "Active"', async () => {
+  it('status with no error and enabled shows "活跃"', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     renderCatalog();
-    await waitFor(() => expect(screen.queryByText('Active')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('活跃')).not.toBeNull());
   });
 
-  it('status with disabled shows "Disabled"', async () => {
+  it('status with disabled shows "已禁用"', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [{ ...defaultRepo, enabled: false }] } as never);
     renderCatalog();
-    await waitFor(() => expect(screen.queryByText('Disabled')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('已禁用')).not.toBeNull());
   });
 
   it('Edit button opens inline form with repo URL pre-filled', async () => {
@@ -1453,31 +1453,31 @@ describe('SettingsCatalogTab', () => {
   it('Trash icon triggers confirm dialog', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     renderCatalog();
-    await waitFor(() => screen.getByTitle('Remove'));
-    await userEvent.click(screen.getByTitle('Remove'));
+    await waitFor(() => screen.getByTitle('移除'));
+    await userEvent.click(screen.getByTitle('移除'));
     await waitFor(() => screen.getByText(/Remove repository/));
   });
 
   it('ConfirmDialog cancel dismisses dialog', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     renderCatalog();
-    await waitFor(() => screen.getByTitle('Remove'));
-    await userEvent.click(screen.getByTitle('Remove'));
-    await waitFor(() => screen.getByText('Cancel'));
-    await userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => screen.getByTitle('移除'));
+    await userEvent.click(screen.getByTitle('移除'));
+    await waitFor(() => screen.getByText('取消'));
+    await userEvent.click(screen.getByText('取消'));
     await waitFor(() => expect(screen.queryByText(/Remove repository/)).toBeNull());
   });
 
   it('ConfirmDialog confirm calls updateSettings to remove repo', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     renderCatalog();
-    await waitFor(() => screen.getByTitle('Remove'));
-    await userEvent.click(screen.getByTitle('Remove'));
+    await waitFor(() => screen.getByTitle('移除'));
+    await userEvent.click(screen.getByTitle('移除'));
     // ConfirmDialog shows message "Remove repository "url"?" — use regex
-    // Scope button click to dialog .card to avoid ambiguity with trash button (also named "Remove")
+    // Scope button click to dialog .card to avoid ambiguity with trash button (also named "移除")
     await waitFor(() => expect(screen.queryByText(/Remove repository/)).not.toBeNull());
     const dialog = document.querySelector('.card') as HTMLElement;
-    await userEvent.click(within(dialog).getByRole('button', { name: 'Remove' }));
+    await userEvent.click(within(dialog).getByRole('button', { name: '移除' }));
     await waitFor(() => expect(mockUpdateSettings).toHaveBeenCalled());
     const call = mockUpdateSettings.mock.calls[0]![0] as { providerRepos: unknown[] };
     expect(call.providerRepos).toHaveLength(0);
@@ -1486,12 +1486,12 @@ describe('SettingsCatalogTab', () => {
   it('remove when editIdx matches the removed repo resets editIdx', async () => {
     mockGetSettings.mockResolvedValue({ ...baseSettings, providerRepos: [defaultRepo] } as never);
     renderCatalog();
-    // trash button (title="Remove") only exists in non-edit row; clicking it opens ConfirmDialog
-    await waitFor(() => screen.getByTitle('Remove'));
-    await userEvent.click(screen.getByTitle('Remove'));
+    // trash button (title="移除") only exists in non-edit row; clicking it opens ConfirmDialog
+    await waitFor(() => screen.getByTitle('移除'));
+    await userEvent.click(screen.getByTitle('移除'));
     await waitFor(() => expect(screen.queryByText(/Remove repository/)).not.toBeNull());
     const dialog = document.querySelector('.card') as HTMLElement;
-    await userEvent.click(within(dialog).getByRole('button', { name: 'Remove' }));
+    await userEvent.click(within(dialog).getByRole('button', { name: '移除' }));
     await waitFor(() => expect(mockUpdateSettings).toHaveBeenCalled());
     // repo removed; URL input (edit form) was never open so it stays absent
     await waitFor(() => expect(screen.queryByLabelText('URL')).toBeNull());
@@ -1525,7 +1525,7 @@ describe('SettingsCatalogTab', () => {
     const allBtns = Array.from(document.querySelectorAll('button'));
     const moveDownBtn = allBtns.find(btn =>
       !btn.disabled && btn.querySelector('svg') && btn.style.background === 'none' &&
-      btn.getAttribute('title') !== 'Remove',
+      btn.getAttribute('title') !== '移除',
     );
     if (moveDownBtn) {
       await userEvent.click(moveDownBtn);
@@ -1815,8 +1815,8 @@ describe('SettingsAboutTab', () => {
     renderAbout();
     await waitFor(() => screen.getByText(/Update to v0.4.0/));
     await userEvent.click(screen.getByText(/Update to v0.4.0/));
-    await waitFor(() => screen.getByText('Cancel'));
-    await userEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => screen.getByText('取消'));
+    await userEvent.click(screen.getByText('取消'));
     await waitFor(() => expect(screen.queryByText(/download and install/)).toBeNull());
   });
 
@@ -2116,7 +2116,7 @@ describe('SettingsNotificationsTab — channel field onChange handlers', () => {
     renderNotif();
     await addChannel(/^SMTP$/);
     await waitFor(() => screen.getByPlaceholderText('smtp.example.com'));
-    // There are two password inputs: one might be "Password" labeled
+    // There are two password inputs: one might be "密码" labeled
     const pwInputs = Array.from(document.querySelectorAll('input[type="password"]')) as HTMLInputElement[];
     if (pwInputs.length > 0) {
       // Use the last password input (smtp password field)
@@ -2160,7 +2160,7 @@ describe('SettingsNotificationsTab — channel field onChange handlers', () => {
   it('sendgrid: apiKey onChange updates field', async () => {
     renderNotif();
     await addChannel('SendGrid');
-    await waitFor(() => screen.getByText('API Key'));
+    await waitFor(() => screen.getByText('API 密钥'));
     const pwInputs = Array.from(document.querySelectorAll('input[type="password"]')) as HTMLInputElement[];
     if (pwInputs.length > 0) {
       await userEvent.type(pwInputs[0]!, 'SG.abc123');
@@ -2793,20 +2793,20 @@ describe('SettingsPage', () => {
     );
   }
 
-  it('renders "Settings" heading', () => {
+  it('renders "设置" heading', () => {
     renderPage();
-    expect(screen.getByText('Settings')).toBeTruthy();
+    expect(screen.getByText('设置')).toBeTruthy();
   });
 
   it('renders all tab links', () => {
     renderPage();
-    expect(screen.getByText('General')).toBeTruthy();
-    expect(screen.getByText('Notifications')).toBeTruthy();
+    expect(screen.getByText('通用')).toBeTruthy();
+    expect(screen.getByText('通知')).toBeTruthy();
     expect(screen.getByText('Integrations')).toBeTruthy();
     expect(screen.getByText('Provider Catalog')).toBeTruthy();
-    expect(screen.getByText('Users')).toBeTruthy();
-    expect(screen.getByText('Roles')).toBeTruthy();
-    expect(screen.getByText('Audit Log')).toBeTruthy();
+    expect(screen.getByText('用户')).toBeTruthy();
+    expect(screen.getByText('角色')).toBeTruthy();
+    expect(screen.getByText('审计日志')).toBeTruthy();
     expect(screen.getByText('About')).toBeTruthy();
   });
 
@@ -2819,7 +2819,7 @@ describe('SettingsPage', () => {
     renderPage();
     const links = screen.getAllByRole('link');
     const tabLabels = links.map(l => l.textContent);
-    expect(tabLabels).toContain('General');
+    expect(tabLabels).toContain('通用');
     expect(tabLabels).toContain('About');
   });
 });
@@ -2832,8 +2832,8 @@ describe('SettingsNotificationsTab — MultiSelect onChange and direct field cov
   beforeEach(() => {
     mockGetSettings.mockResolvedValue({ ...baseSettings } as never);
     mockUpdateSettings.mockResolvedValue({ ...baseSettings } as never);
-    mockGetRoles.mockResolvedValue([{ id: 'r1', name: 'Admin', permissions: [], builtin: true }] as never);
-    mockGetUsers.mockResolvedValue([{ id: 'u1', email: 'user@example.com', name: 'User' }] as never);
+    mockGetRoles.mockResolvedValue([{ id: 'r1', name: '管理员', permissions: [], builtin: true }] as never);
+    mockGetUsers.mockResolvedValue([{ id: 'u1', email: 'user@example.com', name: '用户' }] as never);
   });
 
   function renderNotif() {
@@ -3036,7 +3036,7 @@ describe('SettingsCatalogTab — move buttons (corrected selector)', () => {
     await waitFor(() => expect(screen.queryByText('https://r1.example.com/')).not.toBeNull());
     const chevs = getChevronButtons();
     // Order: [up_idx0(disabled), down_idx0(enabled), up_idx1(enabled), down_idx1(disabled)]
-    // minus Trash buttons which have title="Remove"
+    // minus Trash buttons which have title="移除"
     const arrowBtns = chevs.filter(b => !b.title);
     // First enabled arrow button is the down for idx=0 (or up for idx=1 — depends on order)
     // Actually layout: row0=(up_disabled, down_enabled), row1=(up_enabled, down_disabled)
@@ -3431,14 +3431,14 @@ describe('SettingsCatalogTab — refreshCatalog catch + persist branches', () =>
     await userEvent.click(screen.getAllByRole('button', { name: /Edit/i })[0]!);
     await waitFor(() => screen.getByLabelText('URL'));
     // Remove the second repo (idx=1) — editIdx=0 !== 1 → setEditIdx not called
-    const trashBtns = screen.getAllByTitle('Remove');
+    const trashBtns = screen.getAllByTitle('移除');
     // There might not be a trash button visible since idx=1 is in view, but editIdx=0 is in edit mode
     // Actually idx=0 is in edit form, idx=1 is in grid with Trash button
     if (trashBtns.length > 0) {
       await userEvent.click(trashBtns[0]!);
       await waitFor(() => screen.getByText(/Remove repository/));
       const dialog = document.querySelector('.card') as HTMLElement;
-      await userEvent.click(within(dialog).getByRole('button', { name: 'Remove' }));
+      await userEvent.click(within(dialog).getByRole('button', { name: '移除' }));
       await waitFor(() => expect(mockUpdateSettings).toHaveBeenCalled());
     }
   });
@@ -3817,7 +3817,7 @@ describe('SettingsGeneralTab — null field fallback branches', () => {
 
 describe('SettingsNotificationsTab — ch.targets field nullish branch coverage', () => {
   beforeEach(() => {
-    mockGetRoles.mockResolvedValue([{ id: 'admin', name: 'Admin' }] as never);
+    mockGetRoles.mockResolvedValue([{ id: 'admin', name: '管理员' }] as never);
     mockGetUsers.mockResolvedValue([{ id: 'u1', email: 'a@b.com' }] as never);
     mockUpdateSettings.mockResolvedValue({} as never);
   });
@@ -4529,8 +4529,8 @@ describe('SettingsNotificationsTab — sendTest non-empty to (L474)', () => {
 
 describe('SettingsNotificationsTab — onChange callbacks fire empty-value branch', () => {
   beforeEach(() => {
-    mockGetRoles.mockResolvedValue([{ id: 'r1', name: 'Admin', permissions: [], builtin: true }] as never);
-    mockGetUsers.mockResolvedValue([{ id: 'u1', email: 'a@b.com', name: 'User' }] as never);
+    mockGetRoles.mockResolvedValue([{ id: 'r1', name: '管理员', permissions: [], builtin: true }] as never);
+    mockGetUsers.mockResolvedValue([{ id: 'u1', email: 'a@b.com', name: '用户' }] as never);
     mockUpdateSettings.mockResolvedValue({} as never);
   });
 
@@ -4677,7 +4677,7 @@ describe('SettingsCatalogTab — non-Error rejection + confirmRemove + move same
     await userEvent.click(screen.getAllByRole('button', { name: /Edit/i })[0]!);
     await waitFor(() => screen.getByLabelText('URL'));
     // Click Remove trash icon on repo[0] → sets confirmRemoveIdx=0
-    const trashBtns = Array.from(document.querySelectorAll('button[title="Remove"]')) as HTMLButtonElement[];
+    const trashBtns = Array.from(document.querySelectorAll('button[title="移除"]')) as HTMLButtonElement[];
     await userEvent.click(trashBtns[0]!);
     // ConfirmDialog appears — confirm via .btn-danger button (avoids ambiguity with trash icon)
     await waitFor(() => expect(document.querySelector('button.btn-danger')).not.toBeNull());

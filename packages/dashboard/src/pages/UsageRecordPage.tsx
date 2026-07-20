@@ -122,7 +122,7 @@ export function UsageRecordPage() {
         </div>
         <div className="page-body">
           <div className="empty-state">
-            <p>{loadError ?? `Usage record ${id} could not be loaded.`}</p>
+            <p>{loadError ?? `用量 record ${id} could not be loaded.`}</p>
           </div>
         </div>
       </>
@@ -154,7 +154,7 @@ export function UsageRecordPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
               <Field label="Record ID" value={record.id} mono />
               <Field label="Project" value={project ? project.name : <span className="mono" style={{ fontSize: '0.82rem' }}>{record.projectId}</span>} />
-              <Field label="Model" value={record.modelId} mono />
+              <Field label="模型" value={record.modelId} mono />
               <Field
                 label="Call Type"
                 value={
@@ -177,10 +177,10 @@ export function UsageRecordPage() {
               Tokens & Cost
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 20 }}>
-              <Field label="Input Tokens" value={record.inputTokens.toLocaleString()} />
-              <Field label="Output Tokens" value={record.outputTokens.toLocaleString()} />
-              <Field label="Total Tokens" value={totalTokens.toLocaleString()} />
-              <Field label="Cost (USD)" value={<span className="mono">${record.cost.toFixed(8)}</span>} />
+              <Field label="输入 Token" value={record.inputTokens.toLocaleString()} />
+              <Field label="输出 Token" value={record.outputTokens.toLocaleString()} />
+              <Field label="总 Token 数" value={totalTokens.toLocaleString()} />
+              <Field label="消耗(美元)" value={<span className="mono">${record.cost.toFixed(8)}</span>} />
             </div>
           </div>
 
@@ -201,7 +201,7 @@ export function UsageRecordPage() {
                   </span>
                 }
               />
-              <Field label="Timestamp" value={new Date(record.timestamp).toISOString()} mono />
+              <Field label="时间" value={new Date(record.timestamp).toISOString()} mono />
               {record.guardrailTriggered && (
                 <Field label="Guardrail Triggered" value={record.guardrailTriggered} mono />
               )}

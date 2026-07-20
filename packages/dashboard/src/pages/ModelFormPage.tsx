@@ -107,7 +107,7 @@ function CopyCode({ text }: { text: string }) {
       <button
         type="button"
         onClick={handleCopy}
-        title={copied ? 'Copied!' : 'Copy to clipboard'}
+        title={copied ? 'Copied!' : '复制到剪贴板'}
         style={{
           background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.08)',
           border: '1px solid ' + (copied ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.18)'),
@@ -186,7 +186,7 @@ type LimitRow = {
 };
 
 const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
-  { value: 'cost',          label: 'Cost (USD)'      },
+  { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
   { value: 'input_tokens',  label: 'Input tokens'    },
   { value: 'output_tokens', label: 'Output tokens'   },
@@ -194,20 +194,20 @@ const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
 ];
 
 const PERIOD_OPTIONS: { value: LimitPeriod; label: string }[] = [
-  { value: 'hourly',   label: 'Hourly'   },
-  { value: 'daily',    label: 'Daily'    },
-  { value: 'weekly',   label: 'Weekly'   },
-  { value: 'monthly',  label: 'Monthly'  },
-  { value: 'yearly',   label: 'Yearly'   },
+  { value: 'hourly',   label: '每小时'   },
+  { value: 'daily',    label: '每日'    },
+  { value: 'weekly',   label: '每周'   },
+  { value: 'monthly',  label: '每月'  },
+  { value: 'yearly',   label: '每年'   },
 ];
 
 const ROLLING_UNIT_OPTIONS: { value: RollingUnit; label: string }[] = [
-  { value: 'second', label: 'seconds' },
-  { value: 'minute', label: 'minutes' },
-  { value: 'hour',   label: 'hours'   },
-  { value: 'day',    label: 'days'    },
-  { value: 'week',   label: 'weeks'   },
-  { value: 'month',  label: 'months'  },
+  { value: 'second', label: '秒' },
+  { value: 'minute', label: '分钟' },
+  { value: 'hour',   label: '小时'   },
+  { value: 'day',    label: '天'    },
+  { value: 'week',   label: '周'   },
+  { value: 'month',  label: '月'  },
 ];
 
 const EMPTY_LIMIT_ROW: LimitRow = {
@@ -671,7 +671,7 @@ export function ModelFormPage() {
       const res = await testOpenAIOAuth(form.apiKey || undefined);
       if (res.ok) {
         const expStr = res.expiresAt ? new Date(res.expiresAt).toLocaleString() : 'unknown';
-        setOauthTest({ status: 'ok', msg: `Account: ${res.accountId} — expires ${expStr}` });
+        setOauthTest({ status: 'ok', msg: `至ccount: ${res.accountId} — expires ${expStr}` });
       } else {
         setOauthTest({ status: 'error', msg: res.error ?? 'Unknown error' });
       }
@@ -688,7 +688,7 @@ export function ModelFormPage() {
       : form.provider;
     const finalId = form.customId.trim() || generateId(idPrefix, form.id, models.filter(m => m.id !== editingModelId).map(m => m.id));
     if (!finalId) { setErr('Model ID required'); setSaving(false); return; }
-    if (isCloning && models.some(m => m.id === finalId)) { setErr(`Model "${finalId}" already exists — set a different Custom ID`); setSaving(false); return; }
+    if (isCloning && models.some(m => m.id === finalId)) { setErr(`模型 "${finalId}" already exists — set a different Custom ID`); setSaving(false); return; }
 
     const pricingTiersPayload: PricingTier[] = tierRows
       .filter(t => t.above && t.input && t.output)
@@ -743,7 +743,7 @@ export function ModelFormPage() {
       }
       navigate('/dashboard/models');
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Error');
+      setErr(e instanceof Error ? e.message : '错误');
       setSaving(false);
     }
   }
@@ -771,12 +771,12 @@ export function ModelFormPage() {
         <button className="btn-icon" onClick={goBack} style={{ marginBottom: 16, display: 'inline-flex', padding: 4, width: 'fit-content' }}>
           <ArrowLeft size={16} /><span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>Back to Models</span>
         </button>
-        <h1>{editingModelId ? 'Edit Model' : isCloning ? 'Clone Model' : 'Add Model'}</h1>
+        <h1>{editingModelId ? 'Edit Model' : isCloning ? 'Clone Model' : '添加模型'}</h1>
         <p>{editingModelId ? `Modifying configuration for ${editingModelId}` : isCloning ? `Cloning from ${cloneSourceId} — assign a new ID to save` : 'Register a new LLM provider model'}</p>
       </div>
 
       <div className="page-body">
-        <form onSubmit={handleSave} autoComplete="off" style={{ maxWidth: 800 }}>
+        <form onSubmit={handleSave} autoComplete="关闭" style={{ maxWidth: 800 }}>
           {err && <div className="form-error">{err}</div>}
 
           {/* ── Section: Model Information ────────────────────── */}
@@ -787,14 +787,14 @@ export function ModelFormPage() {
               <label className="form-label">
                 Routerly ID <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional — default: <code style={{ fontSize: '0.78rem' }}>{autoId || `${autoIdPrefix}/model`}</code>)</span>
               </label>
-              <input className="form-input" value={form.customId} name="modelId" autoComplete="off"
+              <input className="form-input" value={form.customId} name="modelId" autoComplete="关闭"
                 onChange={e => setForm(f => ({ ...f, customId: e.target.value }))}
                 placeholder={autoId || `${autoIdPrefix}/model`} />
               <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The identifier used when referencing this model in Routerly API calls.</div>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Provider</label>
+              <label className="form-label">提供商</label>
               <select className="form-input" value={form.provider}
                 onChange={e => handleProviderChange(e.target.value as Provider)}>
                 {PROVIDERS.map(p => <option key={p} value={p}>{PROVIDER_LABELS[p] ?? p}</option>)}
@@ -900,7 +900,7 @@ export function ModelFormPage() {
                 <>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                     <input className="form-input" type="text"
-                      name="apiKey" autoComplete="off"
+                      name="apiKey" autoComplete="关闭"
                       value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: e.target.value })); setOauthTest({ status: 'idle' }); }}
                       placeholder={
                         (editingModelId || isCloning) ? 'Leave blank to keep existing path'
@@ -1065,12 +1065,12 @@ export function ModelFormPage() {
 
             <div className="grid-3">
               <div className="form-group">
-                <label className="form-label">Input $/1M<FieldBadge field="inputPerMillion" /></label>
+                <label className="form-label">输入 $/百万<FieldBadge field="inputPerMillion" /></label>
                 <input className="form-input" type="number" step="any" value={form.inputPerMillion}
                   onChange={e => { setForm(f => ({ ...f, inputPerMillion: e.target.value })); setOverride('inputPerMillion', true); }} placeholder="5.00" required />
               </div>
               <div className="form-group">
-                <label className="form-label">Output $/1M<FieldBadge field="outputPerMillion" /></label>
+                <label className="form-label">输出 $/百万<FieldBadge field="outputPerMillion" /></label>
                 <input className="form-input" type="number" step="any" value={form.outputPerMillion}
                   onChange={e => { setForm(f => ({ ...f, outputPerMillion: e.target.value })); setOverride('outputPerMillion', true); }} placeholder="15.00" required />
               </div>
@@ -1141,12 +1141,12 @@ export function ModelFormPage() {
                     {/* Tier pricing */}
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Override pricing</div>
                     <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.75rem' }}>Input $/1M</label>
+                      <label className="form-label" style={{ fontSize: '0.75rem' }}>输入 $/百万</label>
                       <input className="form-input" type="number" step="any" value={tier.input}
                         onChange={e => updateTier(idx, 'input', e.target.value)} placeholder="10.00" />
                     </div>
                     <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.75rem' }}>Output $/1M</label>
+                      <label className="form-label" style={{ fontSize: '0.75rem' }}>输出 $/百万</label>
                       <input className="form-input" type="number" step="any" value={tier.output}
                         onChange={e => updateTier(idx, 'output', e.target.value)} placeholder="37.50" />
                     </div>
@@ -1202,14 +1202,14 @@ export function ModelFormPage() {
                         <label className="form-label" style={{ fontSize: '0.75rem' }}>Type</label>
                         <select className="form-input" value={lim.windowType}
                           onChange={e => upd({ windowType: e.target.value as 'period' | 'rolling' })}>
-                          <option value="period">Period</option>
+                          <option value="period">时间段</option>
                           <option value="rolling">Rolling</option>
                         </select>
                       </div>
                       {/* Period selector OR rolling amount+unit */}
                       {lim.windowType === 'period' ? (
                         <div className="form-group" style={{ margin: 0 }}>
-                          <label className="form-label" style={{ fontSize: '0.75rem' }}>Period</label>
+                          <label className="form-label" style={{ fontSize: '0.75rem' }}>时间段</label>
                           <select className="form-input" value={lim.period}
                             onChange={e => upd({ period: e.target.value as LimitPeriod })}>
                             {PERIOD_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -1258,7 +1258,7 @@ export function ModelFormPage() {
           </div>
 
           <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-start', marginTop: 32, paddingTop: 16, borderTop: '1px solid var(--border)', alignItems: 'center' }}>
-            <button type="button" className="btn btn-secondary" onClick={goBack} disabled={saving}>Cancel</button>
+            <button type="button" className="btn btn-secondary" onClick={goBack} disabled={saving}>取消</button>
             <button type="submit" className="btn btn-primary" disabled={saving}>
               {saving ? <span className="spinner" /> : (editingModelId ? 'Save Changes' : isCloning ? 'Create Clone' : 'Create Model')}
             </button>

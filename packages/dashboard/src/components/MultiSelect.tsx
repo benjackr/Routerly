@@ -14,7 +14,7 @@ interface MultiSelectProps {
   disabled?: boolean;
 }
 
-export function MultiSelect({ options, value, onChange, placeholder = 'Select...', disabled }: MultiSelectProps) {
+export function MultiSelect({ options, value, onChange, placeholder = '请选择...', disabled }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -90,7 +90,7 @@ export function MultiSelect({ options, value, onChange, placeholder = 'Select...
           boxShadow: '0 4px 12px rgba(0,0,0,0.4)'
         }}>
           {unselectedOptions.length === 0 ? (
-            <div style={{ padding: '8px 12px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>No remaining options</div>
+            <div style={{ padding: '8px 12px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>无可选项</div>
           ) : (
             unselectedOptions.map(opt => (
               <div

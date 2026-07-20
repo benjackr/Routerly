@@ -57,7 +57,7 @@ export function UsagePage() {
   const navigate = useNavigate();
 
   const POLL_OPTIONS: { label: string; value: number }[] = [
-    { label: 'Off',  value: 0 },
+    { label: '关闭',  value: 0 },
     { label: '5s',   value: 5_000 },
     { label: '15s',  value: 15_000 },
     { label: '30s',  value: 30_000 },
@@ -83,10 +83,10 @@ export function UsagePage() {
     if (!dateRange.from && !dateRange.to) {
       const now = new Date();
       const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
-      setDateRange({ from, to: today, label: 'Questo mese' });
+      setDateRange({ from, to: today, label: '本月' });
     } else if (dateRange.to && dateRange.to.slice(0, 10) < today) {
       // ponytail: 'This month' is a legacy EN label stored in older localStorage entries
-      const label = dateRange.label === 'This month' ? 'Questo mese' : dateRange.label;
+      const label = dateRange.label === 'This month' ? '本月' : dateRange.label;
       const preset = PRESETS.find(p => p.label === label);
       if (preset) setDateRange(preset.range());
     }
@@ -324,7 +324,7 @@ export function UsagePage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' }}>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <FilterLabel>Period</FilterLabel>
+              <FilterLabel>时间段</FilterLabel>
               <DateRangePicker value={dateRange} onChange={setDateRange} />
             </div>
 
@@ -339,7 +339,7 @@ export function UsagePage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 200 }}>
-              <FilterLabel>Model</FilterLabel>
+              <FilterLabel>模型</FilterLabel>
               <MultiSelect
                 options={modelOptions}
                 value={modelIds}
@@ -354,19 +354,19 @@ export function UsagePage() {
                 {(['all', 'completion', 'routing', 'guardrail'] as const).map(f => (
                   <button key={f} className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => setCallTypeFilter(f)}>
-                    {f === 'all' ? 'All' : f === 'completion' ? 'Completion' : f === 'routing' ? 'Router' : 'Guardrail'}
+                    {f === 'all' ? '全部' : f === 'completion' ? 'Completion' : f === 'routing' ? 'Router' : 'Guardrail'}
                   </button>
                 ))}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <FilterLabel>Status</FilterLabel>
+              <FilterLabel>状态</FilterLabel>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['all', 'success', 'blocked', 'error'] as const).map(f => (
                   <button key={f} className={`btn btn-sm ${outcomeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => setOutcomeFilter(f)}>
-                    {f === 'all' ? 'All' : f === 'success' ? 'Success' : f === 'blocked' ? 'Blocked' : 'Error'}
+                    {f === 'all' ? '全部' : f === 'success' ? '操作成功' : f === 'blocked' ? 'Blocked' : '错误'}
                   </button>
                 ))}
               </div>
@@ -396,7 +396,7 @@ export function UsagePage() {
             {/* Summary */}
             <div className="stats-grid" style={{ marginBottom: 24 }}>
               <div className="stat-card">
-                <div className="stat-label">Total Cost</div>
+                <div className="stat-label">总消耗</div>
                 <div className="stat-value">${stats.summary.totalCost.toFixed(4)}</div>
               </div>
               <div className="stat-card">
@@ -465,9 +465,9 @@ export function UsagePage() {
                     <thead>
                       <tr>
                         {th('Rank', 'rank')}
-                        {th('Model', 'model')}
-                        {th('Provider', 'provider')}
-                        {th('Calls', 'calls', 'right')}
+                        {th('模型', 'model')}
+                        {th('提供商', 'provider')}
+                        {th('调用次数', 'calls', 'right')}
                         {th('Errors', 'errors', 'right')}
                         {th('Success rate', 'successRate', 'right')}
                         {th('Avg latency', 'avgLatency', 'right')}
@@ -475,7 +475,7 @@ export function UsagePage() {
                         {th('Input tokens', 'inputTokens', 'right')}
                         {th('Output tokens', 'outputTokens', 'right')}
                         {th('Cost / 1K', 'costPer1k', 'right')}
-                        {th('Cost (USD)', 'cost', 'right')}
+                        {th('消耗(美元)', 'cost', 'right')}
                       </tr>
                     </thead>
                     <tbody>
@@ -533,8 +533,8 @@ export function UsagePage() {
                   <table>
                     <thead>
                       <tr>
-                        <th>Time</th><th>Project</th><th>Model</th><th>Type</th><th>In</th><th>Out</th>
-                        <th>Cost</th><th>Latency</th><th>TTFT</th><th>Tok/s</th><th>Status</th>
+                        <th>Time</th><th>Project</th><th>模型</th><th>Type</th><th>In</th><th>Out</th>
+                        <th>Cost</th><th>Latency</th><th>TTFT</th><th>Tok/s</th><th>状态</th>
                       </tr>
                     </thead>
                     <tbody>

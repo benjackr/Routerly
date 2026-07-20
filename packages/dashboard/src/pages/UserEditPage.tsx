@@ -76,12 +76,12 @@ export function UserEditPage() {
               Account
             </h3>
             <div className="form-group">
-              <label className="form-label">Email</label>
+              <label className="form-label">邮箱</label>
               <input className="form-input" type="email" value={form.email} required
                 onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
             </div>
             <div className="form-group">
-              <label className="form-label">Role</label>
+              <label className="form-label">角色</label>
               <select className="form-input" value={form.roleId}
                 onChange={e => setForm(f => ({ ...f, roleId: e.target.value }))}>
                 {roles.map(r => (

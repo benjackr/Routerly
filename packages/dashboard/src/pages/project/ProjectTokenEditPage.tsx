@@ -17,7 +17,7 @@ type LimitRow = {
 };
 
 const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
-  { value: 'cost',          label: 'Cost (USD)'      },
+  { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
   { value: 'input_tokens',  label: 'Input tokens'    },
   { value: 'output_tokens', label: 'Output tokens'   },
@@ -25,20 +25,20 @@ const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
 ];
 
 const PERIOD_OPTIONS: { value: LimitPeriod; label: string }[] = [
-  { value: 'hourly',  label: 'Hourly'  },
-  { value: 'daily',   label: 'Daily'   },
-  { value: 'weekly',  label: 'Weekly'  },
-  { value: 'monthly', label: 'Monthly' },
-  { value: 'yearly',  label: 'Yearly'  },
+  { value: 'hourly',  label: '每小时'  },
+  { value: 'daily',   label: '每日'   },
+  { value: 'weekly',  label: '每周'  },
+  { value: 'monthly', label: '每月' },
+  { value: 'yearly',  label: '每年'  },
 ];
 
 const ROLLING_UNIT_OPTIONS: { value: RollingUnit; label: string }[] = [
-  { value: 'second', label: 'seconds' },
-  { value: 'minute', label: 'minutes' },
-  { value: 'hour',   label: 'hours'   },
-  { value: 'day',    label: 'days'    },
-  { value: 'week',   label: 'weeks'   },
-  { value: 'month',  label: 'months'  },
+  { value: 'second', label: '秒' },
+  { value: 'minute', label: '分钟' },
+  { value: 'hour',   label: '小时'   },
+  { value: 'day',    label: '天'    },
+  { value: 'week',   label: '周'   },
+  { value: 'month',  label: '月'  },
 ];
 
 const EMPTY_LIMIT_ROW: LimitRow = {
@@ -370,14 +370,14 @@ export function ProjectTokenEditPage() {
                                   <label className="form-label" style={{ fontSize: '0.72rem' }}>Type</label>
                                   <select className="form-input" value={lim.windowType}
                                     onChange={e => upd({ windowType: e.target.value as 'period' | 'rolling' })}>
-                                    <option value="period">Period</option>
+                                    <option value="period">时间段</option>
                                     <option value="rolling">Rolling</option>
                                   </select>
                                 </div>
                                 {/* Period or rolling */}
                                 {lim.windowType === 'period' ? (
                                   <div className="form-group" style={{ margin: 0 }}>
-                                    <label className="form-label" style={{ fontSize: '0.72rem' }}>Period</label>
+                                    <label className="form-label" style={{ fontSize: '0.72rem' }}>时间段</label>
                                     <select className="form-input" value={lim.period}
                                       onChange={e => upd({ period: e.target.value as LimitPeriod })}>
                                       {PERIOD_OPTIONS.map(o => {

@@ -138,7 +138,7 @@ describe('NotificationChannelCreatePage — form view', () => {
 
   it('Cancel button fires navigate (line 224)', async () => {
     await renderWithProvider();
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     // no error = onClick handler fired
   });
 

@@ -47,7 +47,7 @@ import { TestPage } from './TestPage';
 import { getProjects, getPlaygroundPresets, getTrace, createPlaygroundPreset, deletePlaygroundPreset } from '../api.js';
 
 const FAKE_PROJECT = {
-  id: 'proj-1', name: 'Test',
+  id: 'proj-1', name: '测试',
   models: [{ modelId: 'openai/gpt-4o' }],
   tokens: [{ id: 'tok-1', tokenSnippet: 'sk-rt-test', createdAt: '' }],
 };
@@ -88,7 +88,7 @@ async function setupWithToken() {
   await userEvent.clear(tokenInput);
   // Token snippet must match FAKE_PROJECT's tokenSnippet prefix
   await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-  await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+  await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 }
 
 // ── beforeEach ─────────────────────────────────────────────────────────────
@@ -238,7 +238,7 @@ describe('TestPage — cross-chunk SSE buffering (ComparePanel / loop 1)', () =>
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     // Switch to Compare mode
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
@@ -275,7 +275,7 @@ describe('TestPage — Clear resets debug', () => {
     expect(screen.getAllByTestId('stats-card').length).toBeGreaterThan(0);
 
     // Click the first Clear button (chat-area; resets both messages and debug)
-    const clearBtns = screen.getAllByRole('button', { name: 'Clear' });
+    const clearBtns = screen.getAllByRole('button', { name: '清空' });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await userEvent.click(clearBtns[0]!);
 
@@ -333,7 +333,7 @@ describe('TestPage — streaming-disabled banner and toggle (block+response rule
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     expect(screen.queryByTestId('streaming-disabled-banner')).not.toBeNull();
   });
@@ -345,7 +345,7 @@ describe('TestPage — streaming-disabled banner and toggle (block+response rule
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     const toggle = screen.getByTestId('stream-toggle') as HTMLInputElement;
     expect(toggle.disabled).toBe(true);
@@ -359,7 +359,7 @@ describe('TestPage — streaming-disabled banner and toggle (block+response rule
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     expect(screen.queryByTestId('streaming-disabled-banner')).toBeNull();
 
@@ -380,7 +380,7 @@ describe('TestPage — buffered-by-guardrail note', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     const textarea = screen.getByPlaceholderText('Type a message...');
     await userEvent.type(textarea, 'hi');
@@ -452,11 +452,11 @@ describe('TestPage — debug sidebar Clear button', () => {
     { timeout: 4000 });
 
     // The debug sidebar Clear button appears (not the chat Clear)
-    const clearBtns = screen.getAllByRole('button', { name: 'Clear' });
-    // There are two: one in the chat area (has "Clear" in controls) and one in the debug sidebar
+    const clearBtns = screen.getAllByRole('button', { name: '清空' });
+    // There are two: one in the chat area (has "清空" in controls) and one in the debug sidebar
     // The debug Clear only appears when debugTraceHistory.length > 0
     // After a message the debug history is populated; find the non-chat one
-    // Both have text "Clear"; the one inside the debug sidebar comes after
+    // Both have text "清空"; the one inside the debug sidebar comes after
     expect(clearBtns.length).toBeGreaterThanOrEqual(1);
 
     // Click the debug sidebar Clear (index 1 if both visible, else first)
@@ -738,7 +738,7 @@ describe('TestPage — presets panel', () => {
     await userEvent.type(nameInput, 'New Preset');
 
     // Click Save
-    const saveBtn = screen.getAllByRole('button', { name: 'Save' }).find(b => !b.hasAttribute('disabled'));
+    const saveBtn = screen.getAllByRole('button', { name: '保存' }).find(b => !b.hasAttribute('disabled'));
     if (saveBtn) {
       await userEvent.click(saveBtn);
       await waitFor(() => expect(vi.mocked(createPlaygroundPreset)).toHaveBeenCalled());
@@ -1198,7 +1198,7 @@ describe('TestPage — ComparePanel controls', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
   }
 
@@ -1248,7 +1248,7 @@ describe('TestPage — ComparePanel HTTP error', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1315,7 +1315,7 @@ describe('TestPage — matched token labels display', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     // Labels shown in parentheses next to project name
     await waitFor(() =>
@@ -1341,7 +1341,7 @@ describe('TestPage — ComparePanel response stats row', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1369,7 +1369,7 @@ describe('TestPage — ComparePanel stop button', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1405,7 +1405,7 @@ describe('TestPage — ComparePanel trace + getTrace fetch', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1450,7 +1450,7 @@ describe('TestPage — ComparePanel all param sliders onChange', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const sliders = document.querySelectorAll('input[type="range"]');
@@ -1579,7 +1579,7 @@ describe('TestPage — debug sidebar null trace entry', () => {
     // the map renders without null. We need the `!traces` branch hit.
     // The handleSend sets debugTraceHistory entry to [] initially (non-null),
     // then replaces with traceEntries. We cover the null branch by clearing:
-    const clearBtns = screen.getAllByRole('button', { name: 'Clear' });
+    const clearBtns = screen.getAllByRole('button', { name: '清空' });
     await userEvent.click(clearBtns[0]!);
     await waitFor(() => expect(screen.queryByText('No debug data yet.')).not.toBeNull());
   });
@@ -1773,7 +1773,7 @@ describe('TestPage — ComparePanel no assistant messages empty state', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     // Both columns show empty state (assistantMsgs.length === 0 → stats row hidden)
@@ -1799,7 +1799,7 @@ describe('TestPage — ComparePanel assistant message with latencyMs', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1826,7 +1826,7 @@ describe('TestPage — handleSend stream=false when streamingDisabled', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     const textarea = screen.getByPlaceholderText('Type a message...');
     await userEvent.type(textarea, 'buffered');
@@ -1859,7 +1859,7 @@ describe('TestPage — ComparePanel SSE tail flush', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1912,7 +1912,7 @@ describe('TestPage — ComparePanel getTrace rejection is caught', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1941,7 +1941,7 @@ describe('TestPage — ComparePanel data.model captured', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -1971,7 +1971,7 @@ describe('TestPage — ComparePanel data.usage branch', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2005,7 +2005,7 @@ describe('TestPage — ComparePanel data.error SSE event', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2034,7 +2034,7 @@ describe('TestPage — ComparePanel data.type=error SSE event', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2458,7 +2458,7 @@ describe('TestPage — ComparePanel with empty system prompt', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     // Clear system prompt
     const promptToggle = screen.getByText('System prompt').closest('button') as HTMLButtonElement;
@@ -2496,7 +2496,7 @@ describe('TestPage — ComparePanel data.type=result event skipped', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2526,7 +2526,7 @@ describe('TestPage — ComparePanel multi-delta SSE stream', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2550,7 +2550,7 @@ describe('TestPage — ComparePanel two turns shows "turns" label', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const ta = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2587,7 +2587,7 @@ describe('TestPage — ComparePanel usage-only SSE (no content delta)', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2688,7 +2688,7 @@ describe('TestPage — debug trace null entry renders null', () => {
     // The null path (L1120 br0) fires when traces[i] is null in debugTraceHistory
     // We cannot inject null directly, but the Clear button resets to [] which means
     // the next render shows "No debug data yet." — this covers the empty state
-    const clearBtns = screen.getAllByRole('button', { name: 'Clear' });
+    const clearBtns = screen.getAllByRole('button', { name: '清空' });
     await userEvent.click(clearBtns[0]!);
     await waitFor(() => expect(screen.queryByText('No debug data yet.')).not.toBeNull());
   });
@@ -2724,7 +2724,7 @@ describe('TestPage — ComparePanel usage without prompt_tokens', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2754,7 +2754,7 @@ describe('TestPage — ComparePanel SyntaxError swallowed', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2780,7 +2780,7 @@ describe('TestPage — ComparePanel AbortError swallowed', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2823,7 +2823,7 @@ describe('TestPage — ComparePanel assistant message latencyMs=0', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');
@@ -2860,7 +2860,7 @@ describe('TestPage — streamingDisabled: rule target=request not response/both'
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     // streamingDisabled should be false → stream toggle is enabled (not forced off)
     const toggle = screen.getByTestId('stream-toggle') as HTMLInputElement;
@@ -2893,7 +2893,7 @@ describe('TestPage — handleSend modelToUse empty fallback', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
 
     const textarea = screen.getByPlaceholderText('Type a message...');
     await userEvent.type(textarea, 'no model');
@@ -3191,7 +3191,7 @@ describe('TestPage — ComparePanel HTTP error non-JSON body', () => {
     const tokenInput = screen.getByPlaceholderText('sk-rt-...');
     await userEvent.clear(tokenInput);
     await userEvent.type(tokenInput, 'sk-rt-testABCDE');
-    await waitFor(() => expect(screen.queryByText('Test')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('测试')).not.toBeNull());
     await userEvent.click(screen.getByRole('button', { name: /compare/i }));
 
     const compareTextarea = screen.getByPlaceholderText('Send the same message to both models...');

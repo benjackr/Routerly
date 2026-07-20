@@ -21,7 +21,7 @@ function setup(value: string[] = [], onChange = vi.fn(), disabled = false) {
 describe('MultiSelect — closed state', () => {
   it('renders placeholder when no values selected', () => {
     setup();
-    expect(screen.getByText('Select...')).toBeTruthy();
+    expect(screen.getByText('请选择...')).toBeTruthy();
   });
 
   it('renders custom placeholder', () => {
@@ -35,7 +35,7 @@ describe('MultiSelect — closed state', () => {
     setup(['a', 'b']);
     expect(screen.getByText('Alpha')).toBeTruthy();
     expect(screen.getByText('Beta')).toBeTruthy();
-    expect(screen.queryByText('Select...')).toBeNull();
+    expect(screen.queryByText('请选择...')).toBeNull();
   });
 
   it('renders label for unknown value (fallback to value string)', () => {
@@ -47,7 +47,7 @@ describe('MultiSelect — closed state', () => {
 describe('MultiSelect — open/close', () => {
   it('opens dropdown on container click', async () => {
     setup();
-    const trigger = screen.getByText('Select...').closest('div')!.parentElement!;
+    const trigger = screen.getByText('请选择...').closest('div')!.parentElement!;
     // click the input area
     const inputArea = trigger.querySelector('.form-input') as HTMLElement;
     await userEvent.click(inputArea);
@@ -63,14 +63,14 @@ describe('MultiSelect — open/close', () => {
     expect(screen.getByText('Alpha')).toBeTruthy();
     // click outside
     fireEvent.mouseDown(document.body);
-    expect(screen.queryByText('No remaining options')).toBeNull();
+    expect(screen.queryByText('无可选项')).toBeNull();
   });
 
-  it('shows "No remaining options" when all options are selected', async () => {
+  it('shows "无可选项" when all options are selected', async () => {
     setup(['a', 'b', 'c']);
     const inputArea = document.querySelector('.form-input') as HTMLElement;
     await userEvent.click(inputArea);
-    expect(screen.getByText('No remaining options')).toBeTruthy();
+    expect(screen.getByText('无可选项')).toBeTruthy();
   });
 
   it('does not open when disabled', async () => {

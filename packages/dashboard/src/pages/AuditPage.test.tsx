@@ -211,9 +211,9 @@ describe('AuditPage — filters', () => {
 
   it('result filter buttons toggle active state', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('Success'));
-    await userEvent.click(screen.getByText('Success'));
-    await waitFor(() => expect(screen.getByText('Success').closest('button')?.classList.contains('btn-primary')).toBe(true));
+    await waitFor(() => screen.queryByText('操作成功'));
+    await userEvent.click(screen.getByText('操作成功'));
+    await waitFor(() => expect(screen.getByText('操作成功').closest('button')?.classList.contains('btn-primary')).toBe(true));
   });
 
   it('passes result filter to getAuditLog when non-all selected', async () => {
@@ -223,10 +223,10 @@ describe('AuditPage — filters', () => {
     await waitFor(() => expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ result: 'forbidden' })));
   });
 
-  it('does not pass result to getAuditLog when "All" selected', async () => {
+  it('does not pass result to getAuditLog when "全部" selected', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('All'));
-    // "All" is default; check the initial call
+    await waitFor(() => screen.queryByText('全部'));
+    // "全部" is default; check the initial call
     await waitFor(() => expect(mockGetAuditLog).toHaveBeenCalledWith(
       expect.not.objectContaining({ result: expect.anything() })
     ));
@@ -234,8 +234,8 @@ describe('AuditPage — filters', () => {
 
   it('Refresh button triggers reload', async () => {
     renderPage();
-    await waitFor(() => screen.getByText('Refresh'));
-    await userEvent.click(screen.getByText('Refresh'));
+    await waitFor(() => screen.getByText('刷新'));
+    await userEvent.click(screen.getByText('刷新'));
     await waitFor(() => expect(mockGetAuditLog).toHaveBeenCalledTimes(2));
   });
 
@@ -280,7 +280,7 @@ describe('AuditPage — pagination', () => {
     renderPage();
     await waitFor(() => screen.queryByText('success'));
     // pagination bar IS rendered (it always renders when entries exist)
-    expect(screen.queryByText('← Previous')).not.toBeNull();
+    expect(screen.queryByText('← 上一页')).not.toBeNull();
   });
 
   it('Previous button is disabled on page 1', async () => {
@@ -289,8 +289,8 @@ describe('AuditPage — pagination', () => {
       pagination: makePagination({ page: 1, totalPages: 2 }),
     });
     renderPage();
-    await waitFor(() => screen.queryByText('← Previous'));
-    const prev = screen.getByText('← Previous').closest('button') as HTMLButtonElement;
+    await waitFor(() => screen.queryByText('← 上一页'));
+    const prev = screen.getByText('← 上一页').closest('button') as HTMLButtonElement;
     expect(prev.disabled).toBe(true);
   });
 
@@ -302,8 +302,8 @@ describe('AuditPage — pagination', () => {
       pagination: makePagination({ page: 1, totalPages: 1 }),
     });
     renderPage();
-    await waitFor(() => screen.queryByText('Next →'));
-    const next = screen.getByText('Next →').closest('button') as HTMLButtonElement;
+    await waitFor(() => screen.queryByText('下一页 →'));
+    const next = screen.getByText('下一页 →').closest('button') as HTMLButtonElement;
     expect(next.disabled).toBe(true);
   });
 
@@ -313,8 +313,8 @@ describe('AuditPage — pagination', () => {
       pagination: makePagination({ page: 1, totalPages: 2 }),
     });
     renderPage();
-    await waitFor(() => screen.queryByText('Next →'));
-    await userEvent.click(screen.getByText('Next →'));
+    await waitFor(() => screen.queryByText('下一页 →'));
+    await userEvent.click(screen.getByText('下一页 →'));
     await waitFor(() =>
       expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ page: 2 }))
     );
@@ -327,13 +327,13 @@ describe('AuditPage — pagination', () => {
       pagination: makePagination({ page: 1, totalPages: 3 }),
     });
     renderPage();
-    await waitFor(() => screen.queryByText('Next →'));
-    await userEvent.click(screen.getByText('Next →'));
+    await waitFor(() => screen.queryByText('下一页 →'));
+    await userEvent.click(screen.getByText('下一页 →'));
     await waitFor(() =>
       expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ page: 2 }))
     );
     // Now click previous
-    await userEvent.click(screen.getByText('← Previous'));
+    await userEvent.click(screen.getByText('← 上一页'));
     await waitFor(() =>
       expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ page: 1 }))
     );
@@ -355,13 +355,13 @@ describe('AuditPage — pagination', () => {
       pagination: makePagination({ page: 1, totalPages: 3 }),
     });
     renderPage();
-    await waitFor(() => screen.queryByText('Next →'));
-    await userEvent.click(screen.getByText('Next →'));
+    await waitFor(() => screen.queryByText('下一页 →'));
+    await userEvent.click(screen.getByText('下一页 →'));
     await waitFor(() =>
       expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ page: 2 }))
     );
     // Change result filter — should reset to page 1
-    await userEvent.click(screen.getByText('Error'));
+    await userEvent.click(screen.getByText('错误'));
     await waitFor(() =>
       expect(mockGetAuditLog).toHaveBeenCalledWith(expect.objectContaining({ page: 1, result: 'error' }))
     );

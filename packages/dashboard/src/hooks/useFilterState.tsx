@@ -28,7 +28,7 @@ export function useFilterState<T>(
         return deserialize(saved);
       }
     } catch (err) {
-      console.warn(`Failed to load filter state for key "${key}":`, err);
+      console.warn(`操作失败 to load filter state for key "${key}":`, err);
     }
     return defaultValue;
   });
@@ -37,7 +37,7 @@ export function useFilterState<T>(
     try {
       localStorage.setItem(key, serialize(state));
     } catch (err) {
-      console.warn(`Failed to save filter state for key "${key}":`, err);
+      console.warn(`操作失败 to save filter state for key "${key}":`, err);
     }
   }, [key, state, serialize]);
 

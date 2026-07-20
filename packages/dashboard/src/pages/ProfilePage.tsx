@@ -79,7 +79,7 @@ function NotificationDetailDrawer({
           </span>
           <button
             onClick={onClose}
-            title="Close"
+            title="关闭"
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'inline-flex' }}
           >
             <X size={18} />
@@ -104,7 +104,7 @@ function NotificationDetailDrawer({
               </div>
             </div>
             <div>
-              <FilterLabel>Status</FilterLabel>
+              <FilterLabel>状态</FilterLabel>
               <div style={{ marginTop: 4, fontSize: '0.85rem', color: item.read ? 'var(--text-muted)' : 'var(--accent)', fontWeight: item.read ? 400 : 600 }}>
                 {item.read ? 'Read' : 'Unread'}
               </div>
@@ -120,7 +120,7 @@ function NotificationDetailDrawer({
           </div>
 
           <div>
-            <FilterLabel>Details</FilterLabel>
+            <FilterLabel>详情</FilterLabel>
             {detailEntries.length === 0 ? (
               <div style={{ marginTop: 4, fontSize: '0.82rem', color: 'var(--text-muted)' }}>No additional details.</div>
             ) : (
@@ -174,7 +174,7 @@ export function ProfileNotificationsTab() {
   const [severity, setSeverity] = useFilterState<SeverityFilter>({ key: 'notif-filter-severity', defaultValue: 'all' });
   const [eventFilter, setEventFilter] = useFilterState<string>({ key: 'notif-filter-event', defaultValue: '' });
   const [unreadOnly, setUnreadOnly] = useFilterState<boolean>({ key: 'notif-filter-unread', defaultValue: false });
-  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'notif-filter-dateRange', defaultValue: { from: '', to: '', label: 'All time' } });
+  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'notif-filter-dateRange', defaultValue: { from: '', to: '', label: '全部时间' } });
 
   const load = useCallback(async (p: number) => {
     setLoading(true);
@@ -317,7 +317,7 @@ export function ProfileNotificationsTab() {
                   className={`btn btn-sm ${severity === s ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setSeverity(s)}
                 >
-                  {s === 'all' ? 'All' : severityLabel(s)}
+                  {s === 'all' ? '全部' : severityLabel(s)}
                 </button>
               ))}
             </div>
@@ -334,17 +334,17 @@ export function ProfileNotificationsTab() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Period</FilterLabel>
+            <FilterLabel>时间段</FilterLabel>
             <DateRangePicker value={dateRange} onChange={setDateRange} />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Status</FilterLabel>
+            <FilterLabel>状态</FilterLabel>
             <button
               className={`btn btn-sm ${unreadOnly ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setUnreadOnly(!unreadOnly)}
             >
-              {unreadOnly ? 'Unread only' : 'All'}
+              {unreadOnly ? 'Unread only' : '全部'}
             </button>
           </div>
 
@@ -405,14 +405,14 @@ export function ProfileNotificationsTab() {
                     <th style={{ padding: '10px 12px', width: 40 }}>
                       <input
                         type="checkbox"
-                        aria-label="Select all"
+                        aria-label="全选"
                         checked={items.length > 0 && checkedIds.size === items.length}
                         ref={el => { if (el) el.indeterminate = checkedIds.size > 0 && checkedIds.size < items.length; }}
                         onChange={toggleAll}
                         style={{ width: 16, height: 16, accentColor: 'var(--accent)', cursor: 'pointer', verticalAlign: 'middle' }}
                       />
                     </th>
-                    {['Severity', 'Event', 'Date', 'Status'].map(h => (
+                    {['Severity', 'Event', 'Date', '状态'].map(h => (
                       <th key={h} style={{
                         padding: '10px 12px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap',
                         fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-muted)',
@@ -852,7 +852,7 @@ function ProfileSecurityTab() {
                   <button type="submit" className="btn btn-primary" disabled={tfaBusy}>
                     {tfaBusy ? <span className="spinner" style={{ width: 14, height: 14 }} /> : 'Regenerate'}
                   </button>
-                  <button type="button" className="btn btn-ghost" onClick={() => { setBackupVisible(false); setTfaError(''); }}>Cancel</button>
+                  <button type="button" className="btn btn-ghost" onClick={() => { setBackupVisible(false); setTfaError(''); }}>取消</button>
                 </div>
               </form>
             ) : (
@@ -892,8 +892,8 @@ function ProfileSecurityTab() {
 // ─── Tab bar (reuses ProjectLayout pattern) ───────────────────────────────────
 
 const TABS = [
-  { id: 'profile', label: 'Profile', to: '/dashboard/profile' },
-  { id: 'notifications', label: 'Notifications', to: '/dashboard/profile/notifications' },
+  { id: 'profile', label: '个人资料', to: '/dashboard/profile' },
+  { id: 'notifications', label: '通知', to: '/dashboard/profile/notifications' },
 ] as const;
 
 type TabId = typeof TABS[number]['id'];

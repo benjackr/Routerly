@@ -27,11 +27,11 @@ export function ProjectLayout() {
   }, [id, isNew]);
 
   const tabs = [
-    { id: 'general', label: 'General', icon: <Settings size={16} /> },
+    { id: 'general', label: '通用', icon: <Settings size={16} /> },
     { id: 'routing', label: 'Routing', icon: <Route size={16} />, disabled: isNew },
-    { id: 'security', label: 'Security', icon: <Shield size={16} />, disabled: isNew },
+    { id: 'security', label: '安全', icon: <Shield size={16} />, disabled: isNew },
     { id: 'token', label: 'Token', icon: <Key size={16} />, disabled: isNew },
-    { id: 'users', label: 'Users', icon: <Users size={16} />, disabled: isNew },
+    { id: 'users', label: '用户', icon: <Users size={16} />, disabled: isNew },
     { id: 'logs', label: 'Logs', icon: <FileText size={16} />, disabled: isNew },
     { id: 'end-users', label: 'End Users', icon: <UserSearch size={16} />, disabled: isNew },
   ];

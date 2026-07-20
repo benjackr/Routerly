@@ -72,7 +72,7 @@ const embeddingModel = makeModel({
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [],
   policies: [],
 };

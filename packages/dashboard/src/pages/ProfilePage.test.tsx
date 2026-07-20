@@ -215,8 +215,8 @@ describe('ProfilePage — 2FA setup flow', () => {
     mockSetup2fa.mockResolvedValue({ secret: 'S', qrUrl: '', backupCodes: [] });
     renderProfile();
     await userEvent.click(screen.getByRole('button', { name: /Enable Two-Factor Authentication/ }));
-    await waitFor(() => screen.getByRole('button', { name: 'Cancel' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => screen.getByRole('button', { name: '取消' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     expect(screen.getByRole('button', { name: /Enable Two-Factor Authentication/ })).toBeTruthy();
   });
 });
@@ -295,8 +295,8 @@ describe('ProfilePage — 2FA enabled state', () => {
   it('cancel from regenerate form hides the form', async () => {
     renderProfile();
     await userEvent.click(screen.getByRole('button', { name: /Regenerate backup codes/ }));
-    await waitFor(() => screen.getByRole('button', { name: 'Cancel' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => screen.getByRole('button', { name: '取消' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     // Regenerate button should be visible again
     expect(screen.getByRole('button', { name: /Regenerate backup codes/ })).toBeTruthy();
   });
@@ -392,8 +392,8 @@ describe('ProfileNotificationsTab', () => {
       { id: 'n2', event: 'b', severity: 'info', timestamp: new Date().toISOString(), read: false, details: {} },
     ], 2));
     renderTab();
-    await waitFor(() => screen.getByLabelText('Select all'));
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await waitFor(() => screen.getByLabelText('全选'));
+    await userEvent.click(screen.getByLabelText('全选'));
     expect(screen.getByText('2 selected')).toBeTruthy();
     await userEvent.click(screen.getByText(/Mark as read/));
     expect(mockMarkRead).toHaveBeenCalledWith({ ids: ['n1', 'n2'] });
@@ -428,10 +428,10 @@ describe('ProfileNotificationsTab', () => {
       { id: 'n2', event: 'b', severity: 'info', timestamp: new Date().toISOString(), read: false, details: {} },
     ], 2));
     renderTab();
-    await waitFor(() => screen.getByLabelText('Select all'));
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await waitFor(() => screen.getByLabelText('全选'));
+    await userEvent.click(screen.getByLabelText('全选'));
     expect(screen.getByText('2 selected')).toBeTruthy();
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await userEvent.click(screen.getByLabelText('全选'));
     await waitFor(() => expect(screen.queryByText('2 selected')).toBeNull());
   });
 
@@ -442,7 +442,7 @@ describe('ProfileNotificationsTab', () => {
     renderTab();
     await waitFor(() => screen.getByText('a'));
     await userEvent.click(screen.getByLabelText('Select a'));
-    await userEvent.click(screen.getByText('Clear'));
+    await userEvent.click(screen.getByText('清空'));
     await waitFor(() => expect(screen.queryByText('1 selected')).toBeNull());
   });
 
@@ -490,8 +490,8 @@ describe('ProfileNotificationsTab', () => {
     ], 0));
     mockMarkUnread.mockResolvedValue(undefined);
     renderTab();
-    await waitFor(() => screen.getByLabelText('Select all'));
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await waitFor(() => screen.getByLabelText('全选'));
+    await userEvent.click(screen.getByLabelText('全选'));
     expect(screen.getByText('2 selected')).toBeTruthy();
     await userEvent.click(screen.getByText(/Mark as unread/));
     expect(mockMarkUnread).toHaveBeenCalledWith({ ids: ['n1', 'n2'] });
@@ -572,10 +572,10 @@ describe('ProfileNotificationsTab — filter interactions', () => {
     mockGetInboxPage.mockResolvedValue(emptyPage);
     renderTab();
     await waitFor(() => screen.getByText('No notifications found.'));
-    // The Status section has an "All" button; there are multiple "All" buttons (severity too).
-    // Find the one inside the Status group by looking for all "All" buttons and clicking the last one.
-    const allBtns = screen.getAllByRole('button', { name: 'All' });
-    // Last "All" is the unread-only toggle (Status section renders after Severity)
+    // The Status section has an "全部" button; there are multiple "全部" buttons (severity too).
+    // Find the one inside the Status group by looking for all "全部" buttons and clicking the last one.
+    const allBtns = screen.getAllByRole('button', { name: '全部' });
+    // Last "全部" is the unread-only toggle (Status section renders after Severity)
     await userEvent.click(allBtns[allBtns.length - 1]!);
     await waitFor(() => expect(mockGetInboxPage).toHaveBeenCalledWith(
       expect.objectContaining({ unreadOnly: true })
@@ -770,8 +770,8 @@ describe('ProfileNotificationsTab — filter interactions', () => {
     ], 0));
     mockMarkRead.mockResolvedValue(undefined);
     renderTab();
-    await waitFor(() => screen.getByLabelText('Select all'));
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await waitFor(() => screen.getByLabelText('全选'));
+    await userEvent.click(screen.getByLabelText('全选'));
     // All items already read — newlyRead=0, unreadCount stays 0
     await userEvent.click(screen.getByText(/Mark as read/));
     expect(mockMarkRead).toHaveBeenCalledWith({ ids: ['n1'] });
@@ -783,8 +783,8 @@ describe('ProfileNotificationsTab — filter interactions', () => {
     ], 1));
     mockMarkUnread.mockResolvedValue(undefined);
     renderTab();
-    await waitFor(() => screen.getByLabelText('Select all'));
-    await userEvent.click(screen.getByLabelText('Select all'));
+    await waitFor(() => screen.getByLabelText('全选'));
+    await userEvent.click(screen.getByLabelText('全选'));
     // All items already unread — newlyUnread=0
     await userEvent.click(screen.getByText(/Mark as unread/));
     expect(mockMarkUnread).toHaveBeenCalledWith({ ids: ['n1'] });
@@ -873,7 +873,7 @@ describe('ProfilePage — clipboard and QRCode', () => {
     await userEvent.type(screen.getByLabelText(/Enter authenticator code to regenerate/), '123456');
     await userEvent.click(screen.getByRole('button', { name: 'Regenerate' }));
     await waitFor(() => screen.getByText('new1'));
-    await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
+    await userEvent.click(screen.getByRole('button', { name: '复制' }));
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('new1\nnew2');
   });
 });
@@ -1006,7 +1006,7 @@ describe('ProfilePage — tab navigation', () => {
     mockGetInbox.mockResolvedValue({ items: [], unreadCount: 0, enabled: false });
     renderProfile('profile');
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
-    expect(screen.queryByRole('link', { name: 'Notifications' })).toBeNull();
+    expect(screen.queryByRole('link', { name: '通知' })).toBeNull();
   });
 
   it('falls back to the profile tab when notifications route is hit but disabled', async () => {

@@ -550,7 +550,7 @@ describe('TraceEntryRenderer — router:intake', () => {
 
 describe('TraceEntryRenderer — other entry types', () => {
   it('renders model:prompt with summary truncation at 100 chars', () => {
-    const longPrompt = 'A'.repeat(120);
+    const longPrompt = '至'.repeat(120);
     render(
       <TraceEntryRenderer entry={{
         message: 'model:prompt',
@@ -558,7 +558,7 @@ describe('TraceEntryRenderer — other entry types', () => {
       }} />
     );
     // summary shows first 100 chars + ellipsis
-    expect(screen.getByText(new RegExp(`${'A'.repeat(100)}…`))).toBeTruthy();
+    expect(screen.getByText(new RegExp(`${'至'.repeat(100)}…`))).toBeTruthy();
   });
 
   it('renders model:prompt without ellipsis when prompt <= 100 chars', () => {

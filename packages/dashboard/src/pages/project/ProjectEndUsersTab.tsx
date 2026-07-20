@@ -35,7 +35,7 @@ export function ProjectEndUsersTab() {
               <tr>
                 <th>User ID</th>
                 <th>Requests</th>
-                <th>Tokens</th>
+                <th>Token</th>
                 <th>Cost</th>
                 <th>First Seen</th>
                 <th>Last Seen</th>

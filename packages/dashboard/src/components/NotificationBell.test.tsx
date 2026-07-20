@@ -174,7 +174,7 @@ describe('ProfileNotificationBadge', () => {
   it('renders a bell button', async () => {
     render(<BadgeWrapper />);
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
-    const btn = document.querySelector('button[title="Notifications"]');
+    const btn = document.querySelector('button[title="通知"]');
     expect(btn).toBeTruthy();
   });
 
@@ -182,7 +182,7 @@ describe('ProfileNotificationBadge', () => {
     mockGetInbox.mockResolvedValue({ items: [], unreadCount: 0, enabled: false });
     render(<BadgeWrapper />);
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
-    expect(document.querySelector('button[title="Notifications"]')).toBeNull();
+    expect(document.querySelector('button[title="通知"]')).toBeNull();
   });
 
   it('shows unread badge when unreadCount > 0', async () => {
@@ -211,7 +211,7 @@ describe('ProfileNotificationBadge', () => {
     mockGetInbox.mockResolvedValue({ items, unreadCount: 1, enabled: true });
     render(<BadgeWrapper />);
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
-    const btn = document.querySelector('button[title="Notifications"]')!;
+    const btn = document.querySelector('button[title="通知"]')!;
     await userEvent.click(btn);
     expect(screen.getByText('provider.error')).toBeTruthy();
   });
@@ -222,7 +222,7 @@ describe('ProfileNotificationBadge', () => {
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
 
     // Open dropdown
-    const btn = document.querySelector('button[title="Notifications"]')!;
+    const btn = document.querySelector('button[title="通知"]')!;
     await userEvent.click(btn);
 
     // Click mark all read
@@ -236,7 +236,7 @@ describe('ProfileNotificationBadge', () => {
     render(<BadgeWrapper />);
     // Should not throw; with no enabled signal the bell stays hidden.
     await new Promise(r => setTimeout(r, 50));
-    const btn = document.querySelector('button[title="Notifications"]');
+    const btn = document.querySelector('button[title="通知"]');
     expect(btn).toBeNull();
   });
 
@@ -246,7 +246,7 @@ describe('ProfileNotificationBadge', () => {
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
 
     // Open the dropdown
-    const btn = document.querySelector('button[title="Notifications"]')!;
+    const btn = document.querySelector('button[title="通知"]')!;
     await userEvent.click(btn);
     expect(screen.getByText('provider.error')).toBeTruthy();
 
@@ -267,7 +267,7 @@ describe('ProfileNotificationBadge', () => {
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
 
     // Open
-    const btn = document.querySelector('button[title="Notifications"]')!;
+    const btn = document.querySelector('button[title="通知"]')!;
     await userEvent.click(btn);
     expect(screen.getByText('View all notifications')).toBeTruthy();
 
@@ -286,14 +286,14 @@ describe('ProfileNotificationBadge', () => {
     render(<BadgeWrapper />);
     await waitFor(() => expect(mockGetInbox).toHaveBeenCalled());
 
-    const btn = document.querySelector('button[title="Notifications"]')!;
+    const btn = document.querySelector('button[title="通知"]')!;
     await userEvent.click(btn);
     const markBtn = screen.getByText(/Mark all read/);
     // Should not throw even though markNotificationsRead rejects
     await userEvent.click(markBtn);
     await new Promise(r => setTimeout(r, 50));
     // Bell still visible
-    expect(document.querySelector('button[title="Notifications"]')).toBeTruthy();
+    expect(document.querySelector('button[title="通知"]')).toBeTruthy();
   });
 
   it('setInterval callback triggers a reload after POLL_MS (line 170 interval fn)', async () => {

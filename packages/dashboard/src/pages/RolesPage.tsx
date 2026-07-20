@@ -250,7 +250,7 @@ function RoleForm({ form, onChange, onSave, onCancel, saving, isNew }: RoleFormP
           </div>
         )}
         <div className="form-group" style={{ flex: '1 1 180px', marginBottom: 0 }}>
-          <label className="form-label">Name</label>
+          <label className="form-label">名称</label>
           <input className="form-input" placeholder="Role name" value={form.name}
             onChange={e => onChange(f => ({ ...f, name: e.target.value }))} />
         </div>
@@ -276,7 +276,7 @@ function RoleForm({ form, onChange, onSave, onCancel, saving, isNew }: RoleFormP
 
       <div style={{ display: 'flex', gap: 8 }}>
         <button className="btn btn-primary" disabled={saving} onClick={onSave}>
-          {saving ? <span className="spinner" /> : <><Save size={14} /> {isNew ? 'Create' : 'Save'}</>}
+          {saving ? <span className="spinner" /> : <><Save size={14} /> {isNew ? '创建' : '保存'}</>}
         </button>
         <button className="btn btn-secondary" onClick={onCancel}>
           <X size={14} /> Cancel

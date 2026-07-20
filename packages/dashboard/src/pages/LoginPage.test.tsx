@@ -70,7 +70,7 @@ describe('LoginPage — loading state', () => {
 
   it('shows login form after setup check resolves', async () => {
     renderLogin();
-    await waitFor(() => expect(screen.queryByText('Sign In')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('登录')).not.toBeNull());
   });
 });
 
@@ -146,7 +146,7 @@ describe('LoginPage — redirect to setup', () => {
   it('shows login form when checkSetupStatus throws', async () => {
     mockCheckSetup.mockRejectedValue(new Error('network'));
     renderLogin();
-    await waitFor(() => expect(screen.queryByText('Sign In')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('登录')).not.toBeNull());
   });
 });
 
@@ -155,11 +155,11 @@ describe('LoginPage — redirect to setup', () => {
 describe('LoginPage — form fields', () => {
   it('email and password inputs are controllable', async () => {
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'test@x.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'secret');
-    expect((screen.getByLabelText('Email') as HTMLInputElement).value).toBe('test@x.com');
-    expect((screen.getByLabelText('Password') as HTMLInputElement).value).toBe('secret');
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'test@x.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'secret');
+    expect((screen.getByLabelText('邮箱') as HTMLInputElement).value).toBe('test@x.com');
+    expect((screen.getByLabelText('密码') as HTMLInputElement).value).toBe('secret');
   });
 });
 
@@ -169,10 +169,10 @@ describe('LoginPage — submit success', () => {
   it('navigates to overview on successful login', async () => {
     loginFn.mockResolvedValue(undefined);
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'password');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'password');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => expect(navigateFn).toHaveBeenCalledWith('/dashboard/overview', { replace: true }));
   });
 
@@ -180,10 +180,10 @@ describe('LoginPage — submit success', () => {
     let resolve!: (v: void) => void;
     loginFn.mockReturnValue(new Promise<void>(r => { resolve = r; }));
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => expect(document.querySelector('.spinner')).toBeTruthy());
     resolve();
   });
@@ -195,20 +195,20 @@ describe('LoginPage — submit failure', () => {
   it('shows error message when login throws Error', async () => {
     loginFn.mockRejectedValue(new Error('Invalid credentials'));
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'wrong');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'wrong');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => expect(screen.queryByText('Invalid credentials')).not.toBeNull());
   });
 
   it('shows generic error when login throws non-Error', async () => {
     loginFn.mockRejectedValue('oops');
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => expect(screen.queryByText('Login failed')).not.toBeNull());
   });
 });
@@ -219,10 +219,10 @@ describe('LoginPage — 2FA flow', () => {
   it('shows 2FA form when login returns requiresTotp', async () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => expect(screen.queryByText('Two-Factor Authentication')).not.toBeNull());
     expect(screen.queryByLabelText('Authenticator Code')).not.toBeNull();
   });
@@ -231,10 +231,10 @@ describe('LoginPage — 2FA flow', () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     mockVerify2fa.mockResolvedValue({ token: 'tok', user: { id: 'u-totp', email: 'a@b.com', role: 'admin' } });
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByLabelText('Authenticator Code'));
     await userEvent.type(screen.getByLabelText('Authenticator Code'), '123456');
     await userEvent.click(screen.getByRole('button', { name: 'Verify' }));
@@ -246,10 +246,10 @@ describe('LoginPage — 2FA flow', () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     mockVerify2fa.mockRejectedValue(new Error('Invalid code'));
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByLabelText('Authenticator Code'));
     await userEvent.type(screen.getByLabelText('Authenticator Code'), '000000');
     await userEvent.click(screen.getByRole('button', { name: 'Verify' }));
@@ -260,10 +260,10 @@ describe('LoginPage — 2FA flow', () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     mockVerify2fa.mockRejectedValue('oops');
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByLabelText('Authenticator Code'));
     await userEvent.type(screen.getByLabelText('Authenticator Code'), '000000');
     await userEvent.click(screen.getByRole('button', { name: 'Verify' }));
@@ -273,10 +273,10 @@ describe('LoginPage — 2FA flow', () => {
   it('switches to backup code mode', async () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByRole('button', { name: 'Use a backup code instead' }));
     await userEvent.click(screen.getByRole('button', { name: 'Use a backup code instead' }));
     await waitFor(() => expect(screen.queryByText('Backup Code')).not.toBeNull());
@@ -287,10 +287,10 @@ describe('LoginPage — 2FA flow', () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     mockVerify2fa.mockResolvedValue({ token: 'tok', user: { id: 'u-totp', email: 'a@b.com', role: 'admin' } });
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByRole('button', { name: 'Use a backup code instead' }));
     await userEvent.click(screen.getByRole('button', { name: 'Use a backup code instead' }));
     await waitFor(() => screen.getByLabelText('Backup Code'));
@@ -302,10 +302,10 @@ describe('LoginPage — 2FA flow', () => {
   it('switching back to authenticator from backup clears code and error', async () => {
     loginFn.mockResolvedValue({ requiresTotp: true, userId: 'u-totp' });
     renderLogin();
-    await waitFor(() => screen.getByLabelText('Email'));
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
-    await userEvent.type(screen.getByLabelText('Password'), 'pw');
-    await userEvent.click(screen.getByRole('button', { name: 'Sign In' }));
+    await waitFor(() => screen.getByLabelText('邮箱'));
+    await userEvent.type(screen.getByLabelText('邮箱'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('密码'), 'pw');
+    await userEvent.click(screen.getByRole('button', { name: '登录' }));
     await waitFor(() => screen.getByRole('button', { name: 'Use a backup code instead' }));
     await userEvent.click(screen.getByRole('button', { name: 'Use a backup code instead' }));
     await waitFor(() => screen.getByRole('button', { name: 'Use authenticator app instead' }));

@@ -103,13 +103,13 @@ describe('OverviewPage — error state', () => {
 describe('OverviewPage — loaded state', () => {
   it('renders page header', async () => {
     renderPage();
-    await waitFor(() => expect(screen.queryByText('Overview')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('概览')).not.toBeNull());
   });
 
   it('renders total cost stat card', async () => {
     renderPage();
     await waitFor(() => expect(screen.queryByText('$1.2345')).not.toBeNull());
-    expect(screen.queryByText('Total Cost')).not.toBeNull();
+    expect(screen.queryByText('总消耗')).not.toBeNull();
   });
 
   it('renders total calls stat card', async () => {
@@ -142,18 +142,18 @@ describe('OverviewPage — loaded state', () => {
   it('renders model count from getModels', async () => {
     renderPage();
     await waitFor(() => expect(screen.queryByText('2')).not.toBeNull());
-    expect(screen.queryByText('Models')).not.toBeNull();
+    expect(screen.queryByText('模型')).not.toBeNull();
   });
 
   it('renders project count from getProjects', async () => {
     renderPage();
     await waitFor(() => expect(screen.queryByText('1')).not.toBeNull());
-    expect(screen.queryByText('Projects')).not.toBeNull();
+    expect(screen.queryByText('项目')).not.toBeNull();
   });
 
   it('does not render token strip when all tokens are 0', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('Overview'));
+    await waitFor(() => screen.queryByText('概览'));
     expect(screen.queryByText(/Input tokens/)).toBeNull();
   });
 
@@ -229,17 +229,17 @@ describe('OverviewPage — loaded state', () => {
 describe('OverviewPage — period selector', () => {
   it('renders four period buttons', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('Overview'));
-    expect(screen.queryByText('Daily')).not.toBeNull();
-    expect(screen.queryByText('Weekly')).not.toBeNull();
-    expect(screen.queryByText('Monthly')).not.toBeNull();
-    expect(screen.queryByText('All')).not.toBeNull();
+    await waitFor(() => screen.queryByText('概览'));
+    expect(screen.queryByText('每日')).not.toBeNull();
+    expect(screen.queryByText('每周')).not.toBeNull();
+    expect(screen.queryByText('每月')).not.toBeNull();
+    expect(screen.queryByText('全部')).not.toBeNull();
   });
 
   it('clicking Daily switches period and calls getUsage with "daily"', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('Daily'));
-    await userEvent.click(screen.getByText('Daily'));
+    await waitFor(() => screen.queryByText('每日'));
+    await userEvent.click(screen.getByText('每日'));
     await waitFor(() =>
       expect(mockGetUsage).toHaveBeenCalledWith('daily')
     );
@@ -247,15 +247,15 @@ describe('OverviewPage — period selector', () => {
 
   it('clicking Weekly calls getUsage with "weekly"', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('Weekly'));
-    await userEvent.click(screen.getByText('Weekly'));
+    await waitFor(() => screen.queryByText('每周'));
+    await userEvent.click(screen.getByText('每周'));
     await waitFor(() => expect(mockGetUsage).toHaveBeenCalledWith('weekly'));
   });
 
   it('clicking All calls getUsage with "all"', async () => {
     renderPage();
-    await waitFor(() => screen.queryByText('All'));
-    await userEvent.click(screen.getByText('All'));
+    await waitFor(() => screen.queryByText('全部'));
+    await userEvent.click(screen.getByText('全部'));
     await waitFor(() => expect(mockGetUsage).toHaveBeenCalledWith('all'));
   });
 });
@@ -278,8 +278,8 @@ describe('OverviewPage — timeline chart', () => {
     const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
     mockGetUsage.mockResolvedValue(makeStats({ timeline: [[dateStr, 0.1]] }));
     renderPage();
-    await waitFor(() => screen.queryByText('Weekly'));
-    await userEvent.click(screen.getByText('Weekly'));
+    await waitFor(() => screen.queryByText('每周'));
+    await userEvent.click(screen.getByText('每周'));
     await waitFor(() => expect(screen.queryByTestId('area-chart')).not.toBeNull());
   });
 
@@ -288,8 +288,8 @@ describe('OverviewPage — timeline chart', () => {
       timeline: [['2024-01-01', 0.1], ['2024-01-02', 0.2]],
     }));
     renderPage();
-    await waitFor(() => screen.queryByText('All'));
-    await userEvent.click(screen.getByText('All'));
+    await waitFor(() => screen.queryByText('全部'));
+    await userEvent.click(screen.getByText('全部'));
     await waitFor(() => expect(screen.queryByTestId('area-chart')).not.toBeNull());
   });
 
@@ -298,8 +298,8 @@ describe('OverviewPage — timeline chart', () => {
       timeline: [['2024-01-15T10', 0.05]],
     }));
     renderPage();
-    await waitFor(() => screen.queryByText('Daily'));
-    await userEvent.click(screen.getByText('Daily'));
+    await waitFor(() => screen.queryByText('每日'));
+    await userEvent.click(screen.getByText('每日'));
     await waitFor(() => expect(screen.queryByTestId('area-chart')).not.toBeNull());
   });
 
@@ -328,16 +328,16 @@ describe('OverviewPage — timeline chart', () => {
   it('getModels error is caught silently (console.error)', async () => {
     mockGetModels.mockRejectedValue(new Error('models error'));
     renderPage();
-    await waitFor(() => screen.queryByText('Overview'));
+    await waitFor(() => screen.queryByText('概览'));
     // Page still renders without crash
-    expect(screen.queryByText('Total Cost')).not.toBeNull();
+    expect(screen.queryByText('总消耗')).not.toBeNull();
   });
 
   it('getProjects error is caught silently', async () => {
     mockGetProjects.mockRejectedValue(new Error('projects error'));
     renderPage();
-    await waitFor(() => screen.queryByText('Overview'));
-    expect(screen.queryByText('Total Cost')).not.toBeNull();
+    await waitFor(() => screen.queryByText('概览'));
+    expect(screen.queryByText('总消耗')).not.toBeNull();
   });
 });
 
@@ -347,7 +347,7 @@ describe('OverviewPage — dark theme', () => {
   it('renders without crash when theme is dark (isDark=true)', async () => {
     mockUseTheme.mockReturnValue({ theme: 'dark', setTheme: vi.fn() });
     renderPage();
-    await waitFor(() => expect(screen.queryByText('Overview')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('概览')).not.toBeNull());
     mockUseTheme.mockReturnValue({ theme: 'light', setTheme: vi.fn() });
   });
 
@@ -360,7 +360,7 @@ describe('OverviewPage — dark theme', () => {
     });
     mockUseTheme.mockReturnValue({ theme: 'auto', setTheme: vi.fn() });
     renderPage();
-    await waitFor(() => expect(screen.queryByText('Overview')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('概览')).not.toBeNull());
     mockUseTheme.mockReturnValue({ theme: 'light', setTheme: vi.fn() });
   });
 
@@ -380,8 +380,8 @@ describe('OverviewPage — dark theme', () => {
 
     mockGetUsage.mockResolvedValue(makeStats({ timeline: [['2024-01-01', 0.5]] }));
     renderPage();
-    await waitFor(() => screen.queryByText('Weekly'));
-    await userEvent.click(screen.getByText('Weekly'));
+    await waitFor(() => screen.queryByText('每周'));
+    await userEvent.click(screen.getByText('每周'));
     await waitFor(() => expect(screen.queryByTestId('area-chart')).not.toBeNull());
 
     globalThis.Date = origDate;

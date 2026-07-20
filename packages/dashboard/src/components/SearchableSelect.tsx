@@ -20,7 +20,7 @@ export function SearchableSelect({
   options,
   value,
   onChange,
-  placeholder = 'Select...',
+  placeholder = '请选择...',
   disabled,
   style,
 }: SearchableSelectProps) {
@@ -105,7 +105,7 @@ export function SearchableSelect({
           </div>
           <div style={{ maxHeight: 220, overflowY: 'auto' }}>
             {filtered.length === 0 ? (
-              <div style={{ padding: '10px 12px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>No results</div>
+              <div style={{ padding: '10px 12px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>无结果</div>
             ) : (
               filtered.map(opt => (
                 <div

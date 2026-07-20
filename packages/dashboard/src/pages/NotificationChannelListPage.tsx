@@ -85,7 +85,7 @@ export function NotificationChannelListPage() {
 
   function handleDelete(id: string, name: string | undefined) {
     setConfirmState({
-      message: `Remove channel "${name ?? id}"? This cannot be undone.`,
+      message: `移除 channel "${name ?? id}"? This cannot be undone.`,
       onConfirm: async () => {
         setConfirmState(null);
         try {
@@ -228,7 +228,7 @@ export function NotificationChannelListPage() {
                     style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: '0.85rem', color: 'var(--text-primary)' }} />
                 </div>
                 {filteredToAdd.length === 0
-                  ? <div style={{ padding: '10px 14px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>No results</div>
+                  ? <div style={{ padding: '10px 14px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>无结果</div>
                   : filteredToAdd.map((ch, i) => (
                       <button key={ch.key} type="button"
                         onClick={() => {
@@ -262,7 +262,7 @@ export function NotificationChannelListPage() {
           <table>
             <thead>
               <tr>
-                <th style={thStyle}>{thInner('Name', 'name')}</th>
+                <th style={thStyle}>{thInner('名称', 'name')}</th>
                 <th style={thStyle}>{thInner('Type', 'type')}</th>
                 <th style={thStyle}>{thInner('Events / Targets', 'summary')}</th>
                 <th></th>
@@ -347,7 +347,7 @@ export function NotificationChannelListPage() {
       {confirmState && (
         <ConfirmDialog
           message={confirmState.message}
-          confirmLabel="Delete"
+          confirmLabel="删除"
           onConfirm={confirmState.onConfirm}
           onCancel={() => setConfirmState(null)}
         />

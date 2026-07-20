@@ -85,7 +85,7 @@ const embeddingModel = makeModel({
 // New-shape project (no action/fallbackMessage)
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [],
   guardrails: { rules: [] },
   pii: { policies: [] },
@@ -657,8 +657,8 @@ describe('ProjectSecurityTab — PII entity toggles', () => {
     await waitFor(() => screen.getByText('+ Add Policy'));
     await userEvent.click(screen.getByText('+ Add Policy'));
 
-    await waitFor(() => screen.getByText('Email'));
-    const emailLabel = screen.getByText('Email').closest('label') as HTMLElement;
+    await waitFor(() => screen.getByText('邮箱'));
+    const emailLabel = screen.getByText('邮箱').closest('label') as HTMLElement;
     const emailCb = emailLabel.querySelector('input[type="checkbox"]') as HTMLInputElement;
     // new policy entities:[] => empty Set => unchecked
     expect(emailCb.checked).toBe(false);
@@ -675,8 +675,8 @@ describe('ProjectSecurityTab — PII entity toggles', () => {
       },
     });
 
-    await waitFor(() => screen.getByText('Email'));
-    const emailLabel = screen.getByText('Email').closest('label') as HTMLElement;
+    await waitFor(() => screen.getByText('邮箱'));
+    const emailLabel = screen.getByText('邮箱').closest('label') as HTMLElement;
     const emailCb = emailLabel.querySelector('input[type="checkbox"]') as HTMLInputElement;
     expect(emailCb.checked).toBe(true);
     await userEvent.click(emailCb);
@@ -693,9 +693,9 @@ describe('ProjectSecurityTab — PII policy enabled toggle', () => {
     await waitFor(() => screen.getByText('+ Add Policy'));
     await userEvent.click(screen.getByText('+ Add Policy'));
 
-    // "Enabled" label appears in the PII policy card header
-    await waitFor(() => screen.getByText('Enabled'));
-    const enabledLabel = screen.getByText('Enabled').closest('label') as HTMLElement;
+    // "已启用" label appears in the PII policy card header
+    await waitFor(() => screen.getByText('已启用'));
+    const enabledLabel = screen.getByText('已启用').closest('label') as HTMLElement;
     const enabledCb = enabledLabel.querySelector('input[type="checkbox"]') as HTMLInputElement;
     expect(enabledCb.checked).toBe(true);
     await userEvent.click(enabledCb);
@@ -1284,7 +1284,7 @@ describe('ProjectSecurityTab — PiiPolicyCard entities ?? ALL_PII_ENTITIES fall
     // Wait for the policy card heading
     await waitFor(() => screen.getByText('Policy 1'));
     // All entity labels should be present and checked (from ALL_PII_ENTITIES fallback)
-    const emailLabel = screen.getByText('Email').closest('label') as HTMLElement;
+    const emailLabel = screen.getByText('邮箱').closest('label') as HTMLElement;
     const emailCb = emailLabel.querySelector('input[type="checkbox"]') as HTMLInputElement;
     // entities===null triggers fallback to ALL_PII_ENTITIES so all are checked
     expect(emailCb.checked).toBe(true);
@@ -1399,7 +1399,7 @@ describe('ProjectSecurityTab — PII onChange with multiple policies covers j !=
     expect(removeButtons).toHaveLength(2);
 
     // Toggle enabled on the first policy card's Enabled checkbox
-    const enabledLabels = screen.getAllByText('Enabled');
+    const enabledLabels = screen.getAllByText('已启用');
     const firstEnabledCb = enabledLabels[0]!.closest('label')!.querySelector('input[type="checkbox"]') as HTMLInputElement;
     await userEvent.click(firstEnabledCb);
     expect(firstEnabledCb.checked).toBe(false);

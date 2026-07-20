@@ -15,7 +15,7 @@ vi.mock('../../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <p>{message}</p>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -38,7 +38,7 @@ const mockToken = {
 
 const mockProject = {
   id: 'proj-1',
-  name: 'Test',
+  name: '测试',
   models: [],
   tokens: [mockToken],
 };
@@ -137,14 +137,14 @@ describe('ProjectTokenTab — token list render', () => {
     expect(screen.getAllByText('—').length).toBeGreaterThan(0);
   });
 
-  it('renders "Never" for expiresAt null', () => {
+  it('renders "永不" for expiresAt null', () => {
     renderTab();
-    expect(screen.getByText('Never')).toBeTruthy();
+    expect(screen.getByText('永不')).toBeTruthy();
   });
 
   it('renders expiry date when expiresAt set', () => {
     renderTab({ ...mockProject, tokens: [{ ...mockToken, expiresAt: '2025-12-31T00:00:00Z' }] });
-    expect(screen.queryByText('Never')).toBeNull();
+    expect(screen.queryByText('永不')).toBeNull();
   });
 
   it('shows Budget Overrides badge when token has models', () => {
@@ -221,7 +221,7 @@ describe('ProjectTokenTab — delete token', () => {
   it('canceling revoke dialog closes without calling API', async () => {
     renderTab();
     await userEvent.click(screen.getByTitle('Revoke Token'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockDeleteProjectToken).not.toHaveBeenCalled();
   });
@@ -291,7 +291,7 @@ describe('LabelInput', () => {
     await waitFor(() => expect(screen.getByText('production')).toBeTruthy());
   });
 
-  it('shows "Create" option when input has no exact match in allLabels', async () => {
+  it('shows "创建" option when input has no exact match in allLabels', async () => {
     const setLabels = vi.fn();
     const setInput = vi.fn();
     render(

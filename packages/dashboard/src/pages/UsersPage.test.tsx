@@ -15,7 +15,7 @@ vi.mock('../components/ConfirmDialog', () => ({
     <div data-testid="confirm-dialog">
       <span>{message}</span>
       <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onCancel}>Cancel</button>
+      <button onClick={onCancel}>取消</button>
     </div>
   ),
 }));
@@ -77,7 +77,7 @@ describe('UsersPage — loading', () => {
 describe('UsersPage — empty state', () => {
   it('shows empty state when no users', async () => {
     renderPage();
-    await waitFor(() => expect(screen.queryByText('No users yet.')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('暂无用户。')).not.toBeNull());
   });
 
   it('shows 0 users in toolbar', async () => {
@@ -108,10 +108,10 @@ describe('UsersPage — loaded state', () => {
     await waitFor(() => expect(screen.queryByText('2 users')).not.toBeNull());
   });
 
-  it('shows "All" for empty projectIds', async () => {
+  it('shows "全部" for empty projectIds', async () => {
     mockGetUsers.mockResolvedValue([makeUser({ projectIds: [] })]);
     renderPage();
-    await waitFor(() => expect(screen.queryByText('All')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('全部')).not.toBeNull());
   });
 
   it('shows joined projectIds when non-empty', async () => {
@@ -168,7 +168,7 @@ describe('UsersPage — navigation', () => {
 
 // ── Add user modal ─────────────────────────────────────────────────────────────
 
-// ponytail: toolbar has the only "Add User" button before modal opens; after open,
+// ponytail: toolbar has the only "添加用户" button before modal opens; after open,
 // two exist (toolbar + submit). Use toolbar scope to open; submit type to submit.
 function getToolbarAddBtn() {
   return within(document.querySelector('.toolbar') as HTMLElement).getByRole('button', { name: /Add User/ });
@@ -190,8 +190,8 @@ describe('UsersPage — add user modal', () => {
     renderPage();
     await waitFor(() => getToolbarAddBtn());
     await userEvent.click(getToolbarAddBtn());
-    await waitFor(() => screen.getByRole('button', { name: 'Cancel' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => screen.getByRole('button', { name: '取消' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByPlaceholderText('user@example.com')).toBeNull());
   });
 
@@ -254,7 +254,7 @@ describe('UsersPage — add user modal', () => {
     await userEvent.type(screen.getByPlaceholderText('user@example.com'), 'x@x.com');
     await userEvent.type(screen.getByPlaceholderText('••••••••'), 'pw');
     await userEvent.click(getModalSubmitBtn());
-    await waitFor(() => expect(screen.queryByText('Error')).not.toBeNull());
+    await waitFor(() => expect(screen.queryByText('错误')).not.toBeNull());
   });
 
   it('shows spinner while adding user', async () => {
@@ -290,7 +290,7 @@ describe('UsersPage — delete user', () => {
     await waitFor(() => document.querySelector('button.btn-icon.danger'));
     await userEvent.click(document.querySelector('button.btn-icon.danger') as HTMLElement);
     await waitFor(() => screen.getByTestId('confirm-dialog'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockDeleteUser).not.toHaveBeenCalled();
   });
@@ -336,7 +336,7 @@ describe('UsersPage — reset 2FA', () => {
     await waitFor(() => screen.getByTitle('Reset 2FA'));
     await userEvent.click(screen.getByTitle('Reset 2FA'));
     await waitFor(() => screen.getByTestId('confirm-dialog'));
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: '取消' }));
     await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeNull());
     expect(mockReset2fa).not.toHaveBeenCalled();
   });

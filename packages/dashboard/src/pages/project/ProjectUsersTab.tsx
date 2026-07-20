@@ -128,14 +128,14 @@ export function ProjectUsersTab() {
             </div>
             <div style={{ width: 140 }}>
               <select className="form-input" value={newRole} onChange={e => setNewRole(e.target.value)} disabled={loading}>
-                <option value="viewer">Viewer</option>
-                <option value="editor">Editor</option>
-                <option value="admin">Admin</option>
+                <option value="viewer">查看者</option>
+                <option value="editor">编辑者</option>
+                <option value="admin">管理员</option>
               </select>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button className="btn btn-primary" onClick={handleAddMember} disabled={loading || !newUserId}>Add</button>
-              <button className="btn btn-secondary" onClick={() => setAdding(false)} disabled={loading}>Cancel</button>
+              <button className="btn btn-secondary" onClick={() => setAdding(false)} disabled={loading}>取消</button>
             </div>
           </div>
         </div>
@@ -150,9 +150,9 @@ export function ProjectUsersTab() {
           <table className="table">
             <thead>
               <tr>
-                <th>User</th>
-                <th style={{ width: 200 }}>Role</th>
-                <th style={{ width: 100, textAlign: 'right' }}>Actions</th>
+                <th>用户</th>
+                <th style={{ width: 200 }}>角色</th>
+                <th style={{ width: 100, textAlign: 'right' }}>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -175,9 +175,9 @@ export function ProjectUsersTab() {
                           onChange={e => setEditRole(e.target.value)}
                           disabled={loading}
                         >
-                          <option value="viewer">Viewer</option>
-                          <option value="editor">Editor</option>
-                          <option value="admin">Admin</option>
+                          <option value="viewer">查看者</option>
+                          <option value="editor">编辑者</option>
+                          <option value="admin">管理员</option>
                         </select>
                       ) : (
                         <span style={{
@@ -198,7 +198,7 @@ export function ProjectUsersTab() {
                           <button className="btn-icon" onClick={() => handleUpdateMember(member.userId)} disabled={loading} title="Save changes">
                             <Check size={16} />
                           </button>
-                          <button className="btn-icon" onClick={() => setEditingUserId(null)} disabled={loading} title="Cancel">
+                          <button className="btn-icon" onClick={() => setEditingUserId(null)} disabled={loading} title="取消">
                             <X size={16} />
                           </button>
                         </>
