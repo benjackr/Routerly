@@ -104,9 +104,9 @@ export function ModelsPage() {
   const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
   const [importLoading, setImportLoading] = useState(false);
-  const [importResult, setImportResult] = useState<{imported: number; total: number} | null>(null);
   const [fetchSearch, setFetchSearch] = useState('');
   const [providerName, setProviderName] = useState('');
+  const [importResult, setImportResult] = useState<{imported: number; total: number} | null>(null);
   const healthActive = useRef(true);
 
   // Health tab state
@@ -148,7 +148,7 @@ export function ModelsPage() {
     setImportResult(null);
     setDiscoveredModels([]);
     setSelectedModels(new Set());
-    try { setProviderName(new URL(fetchEndpoint).hostname.replace('api.', '').replace('.com', '')); } catch {}
+    try { setProviderName(new URL(fetchEndpoint).hostname.replace('api.', '').replace('.com', '')); } catch (e) {}
     try {
       const result = await discoverModels(fetchEndpoint, fetchApiKey);
       if (!result.success) {
@@ -190,7 +190,7 @@ export function ModelsPage() {
         apiKey: fetchApiKey,
         modelIds: Array.from(selectedModels),
       });
-      // No alert needed — modal closes and list refreshes
+      setImportResult(result);
       setShowFetchModal(false);
       setFetchEndpoint('');
       setFetchApiKey('');
@@ -338,7 +338,7 @@ export function ModelsPage() {
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
         <h1>模型</h1>
-        <p>已注册的 LLM 提供商</p>
+        <p>LLM providers registered with Routerly</p>
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border)', marginTop: 12 }}>
           <button style={tabStyle('models')} onClick={() => setTab('models')}>模型</button>
           <button style={tabStyle('health')} onClick={() => setTab('health')}>健康</button>
@@ -350,8 +350,8 @@ export function ModelsPage() {
             <div className="toolbar">
               <span className="toolbar-title">
                 {filtered.length !== models.length
-                  ? `${filtered.length} of ${models.length} model${models.length !== 1 ? 's' : ''}`
-                  : `${models.length} model${models.length !== 1 ? 's' : ''}`}
+                  ? `${filtered.length} / ${models.length} 个模型`
+                  : `${models.length} 个模型`}
               </span>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <select
@@ -484,8 +484,8 @@ export function ModelsPage() {
               <div className="toolbar">
                 <span className="toolbar-title">
                   {hFiltered.length !== models.length
-                    ? `${hFiltered.length} of ${models.length} model${models.length !== 1 ? 's' : ''}`
-                    : `${models.length} model${models.length !== 1 ? 's' : ''}`}
+                    ? `${hFiltered.length} / ${models.length} 个模型`
+                    : `${models.length} 个模型`}
                 </span>
                 <div style={{ position: 'relative' }}>
                   <Search size={14} style={{ position: 'absolute', left: 9, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
@@ -575,7 +575,7 @@ export function ModelsPage() {
         <ConfirmDialog
           message={confirmState.message}
           onConfirm={confirmState.onConfirm}
-          on取消={() => setConfirmState(null)}
+          onCancel={() => setConfirmState(null)}
         />
       )}
       {showFetchModal && (
@@ -659,10 +659,11 @@ export function ModelsPage() {
                       />
                     </div>
                     <label style={{ fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                    <input type="checkbox" checked={selectedModels.size === discoveredModels.length && discoveredModels.length > 0}
-                      onChange={toggleAllModels} />
-                    全选
-                  </label>
+                      <input type="checkbox" checked={selectedModels.size === discoveredModels.length && discoveredModels.length > 0}
+                        onChange={toggleAllModels} />
+                      全选
+                    </label>
+                  </div>
                 </div>
                 <div style={{ maxHeight: 300, overflow: 'auto', border: '1px solid var(--border)', borderRadius: 6 }}>
                   {filteredFetch.map(m => (
@@ -678,16 +679,13 @@ export function ModelsPage() {
                     </label>
                   ))}
                 </div>
-                <div style={{ padding: '6px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: 6, fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: 8 }}>
-                  将创建 <strong>{selectedModels.size}</strong> 个模型，提供商: <strong>{providerName || '…'}</strong>，端点: <span className="mono" style={{ fontSize: '0.75rem' }}>{fetchEndpoint}</span>
-                </div>
                 <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>
                   <button className="btn" onClick={() => setShowFetchModal(false)} disabled={importLoading}>
-                    取消
+                    Cancel
                   </button>
                   <button className="btn btn-primary" onClick={handleImport}
                     disabled={selectedModels.size === 0 || importLoading}>
-                    {importLoading ? '导入中...' : `导入选中 (${selectedModels.size})`}
+                    {importLoading ? '导入中...' : `导入选中模型 (${selectedModels.size})`}
                   </button>
                 </div>
               </>
