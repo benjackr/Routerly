@@ -220,6 +220,31 @@ export interface CatalogEntry {
 
 export const getModelCatalog = () => request<CatalogEntry[]>('/models/catalog');
 
+export interface DiscoverResult {
+  success: boolean;
+  models: Array<{ id: string; object: string; created: number; owned_by: string }>;
+  error?: string;
+}
+
+export interface ImportResult {
+  imported: number;
+  total: number;
+}
+
+export const discoverModels = (endpoint: string, apiKey?: string) =>
+  request<DiscoverResult>('/models/discover', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint, apiKey }),
+  });
+
+export const importModels = (data: { provider: string; endpoint: string; apiKey?: string; modelIds: string[] }) =>
+  request<ImportResult>('/models/import', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
 export type ProviderCatalog = Record<string, {
   endpoint: string;
   models: Array<{
