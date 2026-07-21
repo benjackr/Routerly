@@ -151,7 +151,7 @@ function SecretDetailField({ label, value }: { label: string; value: unknown }) 
   );
 }
 
-/** Read-only view of provider-specific fields. Secrets shown as "已配置" / "Not set". */
+/** Read-only view of provider-specific fields. Secrets shown as "已配置" / "未设置". */
 export function ChannelDetailFields({ channel }: { channel: Record<string, unknown> }) {
   const provider = channel['provider'] as ChannelProvider;
   switch (provider) {
@@ -164,49 +164,49 @@ export function ChannelDetailFields({ channel }: { channel: Record<string, unkno
     case 'smtp':
       return (
         <>
-          <DetailField label="From Address" value={str(channel, 'fromAddress')} />
-          {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
+          <DetailField label="发件地址" value={str(channel, 'fromAddress')} />
+          {channel['fromName'] && <DetailField label="发件人名称" value={str(channel, 'fromName')} />}
           <DetailField label="Host" value={str(channel, 'host')} />
           <DetailField label="Port" value={String(channel['port'] ?? '')} />
           <DetailField label="TLS/SSL" value={channel['secure'] ? '已启用' : '已禁用'} />
-          {channel['username'] && <DetailField label="Username" value={str(channel, 'username')} />}
+          {channel['username'] && <DetailField label="用户名" value={str(channel, 'username')} />}
           <SecretDetailField label="密码" value={channel['password']} />
         </>
       );
     case 'ses':
       return (
         <>
-          <DetailField label="From Address" value={str(channel, 'fromAddress')} />
-          {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
-          <DetailField label="AWS Region" value={str(channel, 'region')} />
-          {channel['accessKeyId'] && <DetailField label="Access Key ID" value={str(channel, 'accessKeyId')} />}
-          <SecretDetailField label="Secret Access Key" value={channel['secretAccessKey']} />
+          <DetailField label="发件地址" value={str(channel, 'fromAddress')} />
+          {channel['fromName'] && <DetailField label="发件人名称" value={str(channel, 'fromName')} />}
+          <DetailField label="AWS 区域" value={str(channel, 'region')} />
+          {channel['accessKeyId'] && <DetailField label="访问密钥 ID" value={str(channel, 'accessKeyId')} />}
+          <SecretDetailField label="秘密访问密钥" value={channel['secretAccessKey']} />
         </>
       );
     case 'sendgrid':
       return (
         <>
-          <DetailField label="From Address" value={str(channel, 'fromAddress')} />
-          {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
+          <DetailField label="发件地址" value={str(channel, 'fromAddress')} />
+          {channel['fromName'] && <DetailField label="发件人名称" value={str(channel, 'fromName')} />}
           <SecretDetailField label="API 密钥" value={channel['apiKey']} />
         </>
       );
     case 'azure':
       return (
         <>
-          <DetailField label="From Address" value={str(channel, 'fromAddress')} />
-          {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
-          <SecretDetailField label="Connection String" value={channel['connectionString']} />
+          <DetailField label="发件地址" value={str(channel, 'fromAddress')} />
+          {channel['fromName'] && <DetailField label="发件人名称" value={str(channel, 'fromName')} />}
+          <SecretDetailField label="连接字符串" value={channel['connectionString']} />
         </>
       );
     case 'google':
       return (
         <>
-          <DetailField label="From Address" value={str(channel, 'fromAddress')} />
-          {channel['fromName'] && <DetailField label="From Name" value={str(channel, 'fromName')} />}
+          <DetailField label="发件地址" value={str(channel, 'fromAddress')} />
+          {channel['fromName'] && <DetailField label="发件人名称" value={str(channel, 'fromName')} />}
           <DetailField label="Client ID" value={str(channel, 'clientId')} />
           <SecretDetailField label="Client Secret" value={channel['clientSecret']} />
-          <SecretDetailField label="Refresh Token" value={channel['refreshToken']} />
+          <SecretDetailField label="刷新令牌" value={channel['refreshToken']} />
         </>
       );
     case 'webhook':
@@ -220,14 +220,14 @@ export function ChannelDetailFields({ channel }: { channel: Record<string, unkno
     case 'slack':
       return (
         <>
-          <SecretDetailField label="Bot Token" value={channel['botToken']} />
+          <SecretDetailField label="Bot 令牌" value={channel['botToken']} />
           <DetailField label="Channel ID" value={str(channel, 'channelId')} />
         </>
       );
     case 'teams':
       return <SecretDetailField label="Webhook URL" value={channel['webhookUrl']} />;
     case 'pagerduty':
-      return <SecretDetailField label="Integration Key" value={channel['integrationKey']} />;
+      return <SecretDetailField label="集成密钥" value={channel['integrationKey']} />;
     case 'discord':
       return <SecretDetailField label="Webhook URL" value={channel['webhookUrl']} />;
     default:
@@ -241,7 +241,7 @@ interface EditFieldsProps {
   /** Current mutable form state — keyed by field name. */
   form: Record<string, unknown>;
   onChange: (field: string, value: unknown) => void;
-  /** When true, secret fields start empty with "Leave blank to keep current" placeholder. */
+  /** When true, secret fields start empty with "留空则保持当前值" placeholder. */
   isEdit: boolean;
 }
 
@@ -341,7 +341,7 @@ export function RoutingEditFields({
           options={EVENT_OPTIONS}
           value={events}
           onChange={v => onChange('events', v.length ? v : undefined)}
-          placeholder="All events (leave empty for all)"
+          placeholder="所有事件（留空表示全部）"
         />
         <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: '5px 0 0' }}>
           Leave empty to receive all events. Select specific events to filter.
@@ -353,7 +353,7 @@ export function RoutingEditFields({
           options={projectOptions}
           value={selectedProjects}
           onChange={v => onChange('projects', v.length ? v : undefined)}
-          placeholder="All projects (leave empty for all)"
+          placeholder="所有项目（留空表示全部）"
         />
         <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: '5px 0 0' }}>
           Leave empty to receive events from all projects.
@@ -403,7 +403,7 @@ export function RecipientsEditFields({
           options={roleOptions}
           value={targets.roles ?? []}
           onChange={v => onChange('targets', { ...targets, roles: v.length ? v : undefined })}
-          placeholder="All roles (everyone)"
+          placeholder="所有角色（所有人）"
         />
       </div>
       <div>
@@ -412,7 +412,7 @@ export function RecipientsEditFields({
           options={PERM_OPTIONS}
           value={(targets.permissions ?? []) as string[]}
           onChange={v => onChange('targets', { ...targets, permissions: v.length ? (v as Permission[]) : undefined })}
-          placeholder="All permissions (everyone)"
+          placeholder="所有权限（所有人）"
         />
       </div>
       <div>
@@ -421,7 +421,7 @@ export function RecipientsEditFields({
           options={userOptions}
           value={targets.users ?? []}
           onChange={v => onChange('targets', { ...targets, users: v.length ? v : undefined })}
-          placeholder="All users (everyone)"
+          placeholder="所有用户（所有人）"
         />
       </div>
       {hint && (
@@ -474,7 +474,7 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <EditInput label="Username" fieldKey="username" form={form} onChange={onChange} />
+            <EditInput label="用户名" fieldKey="username" form={form} onChange={onChange} />
             <SecretEditInput label="密码" fieldKey="password" form={form} onChange={onChange} isEdit={isEdit} />
           </div>
         </>
@@ -483,10 +483,10 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
       return (
         <>
           <EmailBaseFields form={form} onChange={onChange} isEdit={isEdit} />
-          <EditInput label="AWS Region" fieldKey="region" form={form} onChange={onChange} placeholder="us-east-1" required />
+          <EditInput label="AWS 区域" fieldKey="region" form={form} onChange={onChange} placeholder="us-east-1" required />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <EditInput label="Access Key ID" fieldKey="accessKeyId" form={form} onChange={onChange} />
-            <SecretEditInput label="Secret Access Key" fieldKey="secretAccessKey" form={form} onChange={onChange} isEdit={isEdit} />
+            <EditInput label="访问密钥 ID" fieldKey="accessKeyId" form={form} onChange={onChange} />
+            <SecretEditInput label="秘密访问密钥" fieldKey="secretAccessKey" form={form} onChange={onChange} isEdit={isEdit} />
           </div>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>Leave credentials blank to use the IAM instance role.</p>
         </>
@@ -502,7 +502,7 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
       return (
         <>
           <EmailBaseFields form={form} onChange={onChange} isEdit={isEdit} />
-          <SecretEditInput label="Connection String" fieldKey="connectionString" form={form} onChange={onChange} isEdit={isEdit} />
+          <SecretEditInput label="连接字符串" fieldKey="connectionString" form={form} onChange={onChange} isEdit={isEdit} />
         </>
       );
     case 'google':
@@ -511,7 +511,7 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
           <EmailBaseFields form={form} onChange={onChange} isEdit={isEdit} />
           <EditInput label="Client ID" fieldKey="clientId" form={form} onChange={onChange} required />
           <SecretEditInput label="Client Secret" fieldKey="clientSecret" form={form} onChange={onChange} isEdit={isEdit} />
-          <SecretEditInput label="Refresh Token" fieldKey="refreshToken" form={form} onChange={onChange} isEdit={isEdit} />
+          <SecretEditInput label="刷新令牌" fieldKey="refreshToken" form={form} onChange={onChange} isEdit={isEdit} />
         </>
       );
     case 'webhook':
@@ -533,14 +533,14 @@ export function ChannelEditFields({ form, onChange, isEdit }: EditFieldsProps) {
     case 'slack':
       return (
         <>
-          <SecretEditInput label="Bot Token" fieldKey="botToken" form={form} onChange={onChange} isEdit={isEdit} placeholder="xoxb-…" />
+          <SecretEditInput label="Bot 令牌" fieldKey="botToken" form={form} onChange={onChange} isEdit={isEdit} placeholder="xoxb-…" />
           <EditInput label="Channel ID" fieldKey="channelId" form={form} onChange={onChange} placeholder="C1234567890" required />
         </>
       );
     case 'teams':
       return <SecretEditInput label="Webhook URL" fieldKey="webhookUrl" form={form} onChange={onChange} isEdit={isEdit} placeholder="https://outlook.office.com/webhook/…" />;
     case 'pagerduty':
-      return <SecretEditInput label="Integration Key" fieldKey="integrationKey" form={form} onChange={onChange} isEdit={isEdit} placeholder="32-character routing key" />;
+      return <SecretEditInput label="集成密钥" fieldKey="integrationKey" form={form} onChange={onChange} isEdit={isEdit} placeholder="32-character routing key" />;
     case 'discord':
       return <SecretEditInput label="Webhook URL" fieldKey="webhookUrl" form={form} onChange={onChange} isEdit={isEdit} placeholder="https://discord.com/api/webhooks/…" />;
     default:
