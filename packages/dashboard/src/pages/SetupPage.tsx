@@ -125,7 +125,7 @@ export function SetupPage() {
               className="form-input"
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
-              placeholder="Re-enter password"
+              placeholder="再次输入密码"
               required
             />
           </div>
