@@ -888,7 +888,7 @@ const filteredModels = useMemo(() => {
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                     <input className="form-input" type="text"
                       name="apiKey" autoComplete="off"
-                      value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: *** })); setOauthTest({ status: 'idle' }); }}
+                      value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: e.target.value })); setOauthTest({ status: 'idle' }); }}
                       placeholder={(editingModelId || isCloning) ? '留空以保留现有路径' : '~/.codex/auth.json (default)'}
                       style={{ flex: 1 }} />
                     <button type="button"
@@ -914,7 +914,7 @@ const filteredModels = useMemo(() => {
                 <div style={{ position: 'relative' }}>
                   <input className="form-input" type={showToken ? 'text' : 'password'}
                     name="apiKey" autoComplete="new-password"
-                    value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: *** }))}
+                    value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: e.target.value }))}
                     placeholder={editingModelId ? '留空以保留现有密钥' : isCloning ? '留空以保留现有密钥' : isWebProvider(form.provider) ? WEB_PROVIDER_TOKEN_PLACEHOLDER[form.provider as WebProvider] : isSubscriptionProvider(form.provider) ? SUBSCRIPTION_TOKEN_PLACEHOLDER[form.provider as SubscriptionProvider] : form.provider === 'ollama' ? '本地模型不需要' : 'sk-…'}
                     style={{ paddingRight: 40 }} />
                   <button type="button" onClick={() => setShowToken(v => !v)}
