@@ -43,9 +43,9 @@ const RULE_TYPE_LABELS: Record<GuardrailRuleType, string> = {
 
 const RULE_TYPE_DESCRIPTIONS: Record<GuardrailRuleType, string> = {
   regex:      'Block requests/responses matching regex patterns.',
-  semantic:   'Block content semantically similar to provided examples.',
-  topic:      'Restrict conversation to allowed topics using an LLM judge.',
-  moderation: 'Block harmful content using an LLM moderation judge.',
+  semantic:   '屏蔽与提供的示例在语义上相似的内容。',
+  topic:      '使用 LLM 判断器将对话限制在允许的主题内。',
+  moderation: '使用 LLM 审核判断器屏蔽有害内容。',
 };
 
 function makeDefaultRule(type: GuardrailRuleType): RuleWithId {
@@ -774,7 +774,7 @@ export function ProjectSecurityTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Error saving security settings');
+      setErr(e instanceof Error ? e.message : '保存安全设置失败');
     } finally {
       setSaving(false);
     }
@@ -886,7 +886,7 @@ export function ProjectSecurityTab() {
         ) : saved ? (
           <><Check size={15} style={{ marginRight: 6 }} />Saved!</>
         ) : (
-          'Save Security Settings'
+          '保存安全设置'
         )}
       </button>
     </form>
