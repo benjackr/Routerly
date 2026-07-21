@@ -203,13 +203,13 @@ export function UsageRecordPage() {
               />
               <Field label="时间" value={new Date(record.timestamp).toISOString()} mono />
               {record.guardrailTriggered && (
-                <Field label="Guardrail Triggered" value={record.guardrailTriggered} mono />
+                <Field label="护栏触发" value={record.guardrailTriggered} mono />
               )}
               {record.blockedBy && (
-                <Field label="Blocked By" value={record.blockedBy} mono />
+                <Field label="被拦截" value={record.blockedBy} mono />
               )}
               {record.piiRedacted && record.piiRedacted.length > 0 && (
-                <Field label="PII Redacted" value={record.piiRedacted.join(', ')} />
+                <Field label="PII 已编辑" value={record.piiRedacted.join(', ')} />
               )}
             </div>
             {record.errorMessage && (
