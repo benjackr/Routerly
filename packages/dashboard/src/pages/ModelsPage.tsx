@@ -95,6 +95,9 @@ export function ModelsPage() {
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [page, setPage] = useState(1);
 
+const [selectedForDelete, setSelectedForDelete] = useState<Set<string>>(new Set());
+
+
 
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
   const [testResults, setTestResults] = useState<Record<string, 'loading' | { ok: boolean; latencyMs: number; error?: string }>>({});
