@@ -7,7 +7,7 @@ import {
   CHANNEL_PROVIDER_META,
   ChannelEditFields,
   RoutingEditFields,
-  RecipientEditFields,
+  RecipientsEditFields,
   providerLabel,
 } from './notificationChannelFields';
 import type { ChannelProvider } from './notificationChannelFields';
@@ -213,7 +213,7 @@ export function NotificationChannelCreatePage() {
         {activeTab === 'recipients' && (
           <div className="form-section">
             <h3 className="section-title">收件人</h3>
-            <RecipientEditFields form={form} onChange={onChange} roles={roles} users={users} />
+            <RecipientsEditFields form={form} onChange={onChange} roles={roles} users={users} />
           </div>
         )}
 
