@@ -166,7 +166,7 @@ export function ProjectLogsTab() {
                   className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setCallTypeFilter(f)}
                 >
-                  {f === 'all' ? '全部' : f === 'completion' ? 'Completion' : 'Router'}
+                  {f === 'all' ? '全部' : f === 'completion' ? '补全' : '路由'}
                 </button>
               ))}
             </div>
