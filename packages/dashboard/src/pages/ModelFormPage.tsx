@@ -940,7 +940,7 @@ const filteredModels = useMemo(() => {
         <input className="form-input" value={form.customProviderName}
           onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value }))}
           placeholder="e.g. deepseek, mistral, groq" required />
-        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>Used as prefix for the Routerly ID (e.g. {customProviderName}/{form.id || "model"}).</div>
+        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>Used as prefix for the Routerly ID (e.g. {form.customProviderName}/{form.id || "model"}).</div>
       </div>
       <div className="form-group">
         <label className="form-label">Model <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(upstream model ID)</span></label>
