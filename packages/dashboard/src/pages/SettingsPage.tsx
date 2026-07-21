@@ -257,11 +257,11 @@ type EProvider = import('../api').ChannelProvider;
 type EChannel  = import('../api').NotificationChannel;
 
 const CHANNEL_PROVIDERS: Array<{ key: EProvider; label: string; description: string }> = [
-  { key: 'dashboard',  label: 'Dashboard (in-app inbox)', description: 'Routes events to the in-app inbox' },
-  { key: 'smtp',       label: 'SMTP',               description: 'Custom mail server' },
-  { key: 'ses',        label: 'Amazon SES',          description: 'AWS Simple Email Service' },
+  { key: 'dashboard',  label: '仪表盘（应用内收件箱）', description: '将事件发送到应用内收件箱' },
+  { key: 'smtp',       label: 'SMTP',               description: '自定义邮件服务器' },
+  { key: 'ses',        label: '亚马逊 SES',          description: 'AWS 简单邮件服务' },
   { key: 'sendgrid',   label: 'SendGrid',            description: 'Twilio SendGrid' },
-  { key: 'azure',      label: 'Azure Communication', description: 'Azure Communication Services' },
+  { key: 'azure',      label: 'Azure 通信', description: 'Azure 通信服务' },
   { key: 'google',     label: 'Google / Gmail',       description: 'Gmail via OAuth2' },
   { key: 'webhook',    label: 'Webhook',             description: 'HTTP webhook callback' },
   { key: 'slack',      label: 'Slack',               description: 'Slack Bot API' },
