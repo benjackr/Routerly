@@ -22,7 +22,7 @@ export function ProjectsPage() {
 
   function handleDelete(id: string) {
     setConfirmState({
-      message: 'Delete this project?',
+      message: '确定删除此项目？',
       onConfirm: async () => {
         setConfirmState(null);
         try {
