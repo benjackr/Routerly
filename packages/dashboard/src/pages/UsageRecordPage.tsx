@@ -18,10 +18,10 @@ function Field({ label, value, mono = false }: { label: string; value: React.Rea
 }
 
 const PANEL_LABELS: Record<string, string> = {
-  'router-request':  'Router Request',
-  'router-response': 'Router Response',
-  'request':         'Model Request',
-  'response':        'Model Response',
+  'router-request':  '路由请求',
+  'router-response': '路由响应',
+  'request':         '模型请求',
+  'response':        '模型响应',
 };
 
 const PANEL_COLORS: Record<string, string> = {
@@ -87,7 +87,7 @@ export function UsageRecordPage() {
     setLoadingRecord(true);
     getUsageRecord(id)
       .then(setRecord)
-      .catch(e => setLoadError(e instanceof Error ? e.message : 'Failed to load record'))
+      .catch(e => setLoadError(e instanceof Error ? e.message : '加载记录失败'))
       .finally(() => setLoadingRecord(false));
   }, [id]);
 
@@ -106,7 +106,7 @@ export function UsageRecordPage() {
       <>
         <div className="page-header" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <BackBtn />
-          <h1 style={{ margin: 0 }}>Call Detail</h1>
+          <h1 style={{ margin: 0 }}>调用详情</h1>
         </div>
         <div className="page-body"><div className="loading-center"><div className="spinner" /></div></div>
       </>
@@ -118,7 +118,7 @@ export function UsageRecordPage() {
       <>
         <div className="page-header" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <BackBtn />
-          <h1 style={{ margin: 0 }}>Record Not Found</h1>
+          <h1 style={{ margin: 0 }}>记录未找到</h1>
         </div>
         <div className="page-body">
           <div className="empty-state">
@@ -138,7 +138,7 @@ export function UsageRecordPage() {
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <BackBtn />
         <div>
-          <h1 style={{ margin: 0 }}>Call Detail</h1>
+          <h1 style={{ margin: 0 }}>调用详情</h1>
           <p style={{ margin: 0 }}>{new Date(record.timestamp).toLocaleString()}</p>
         </div>
       </div>
