@@ -109,7 +109,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
             <span className="logo-tag">One gateway. Any AI model. Total control.</span>
           </span>
         </div>
-        <button className="sidebar-toggle" onClick={onToggle} title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+        <button className="sidebar-toggle" onClick={onToggle} title={collapsed ? '展开侧边栏' : '收起侧边栏'}>
           {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
         </button>
       </div>
