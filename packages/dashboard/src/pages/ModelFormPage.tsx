@@ -761,8 +761,8 @@ const filteredModels = useMemo(() => {
 
 
     const finalId = form.customId.trim() || generateId(idPrefix, form.id, models.filter(m => m.id !== editingModelId).map(m => m.id));
-    if (!finalId) { setErr('Model ID required'); setSaving(false); return; }
-    if (isCloning && models.some(m => m.id === finalId)) { setErr(`模型 "${finalId}" already exists — set a different Custom ID`); setSaving(false); return; }
+    if (!finalId) { setErr('模型 ID 必填'); setSaving(false); return; }
+    if (isCloning && models.some(m => m.id === finalId)) { setErr(`模型 "${finalId}" 已存在 — 请设置不同的自定义 ID`); setSaving(false); return; }
 
     const pricingTiersPayload: PricingTier[] = tierRows
       .filter(t => t.above && t.input && t.output)
@@ -843,10 +843,10 @@ const filteredModels = useMemo(() => {
     <>
       <div className="page-header">
         <button className="btn-icon" onClick={goBack} style={{ marginBottom: 16, display: 'inline-flex', padding: 4, width: 'fit-content' }}>
-          <ArrowLeft size={16} /><span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>Back to Models</span>
+          <ArrowLeft size={16} /><span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>返回模型列表</span>
         </button>
-        <h1>{editingModelId ? 'Edit Model' : isCloning ? 'Clone Model' : '添加模型'}</h1>
-        <p>{editingModelId ? `Modifying configuration for ${editingModelId}` : isCloning ? `Cloning from ${cloneSourceId} — assign a new ID to save` : 'Register a new LLM provider model'}</p>
+        <h1>{editingModelId ? '编辑模型' : isCloning ? '克隆模型' : '添加模型'}</h1>
+        <p>{editingModelId ? `Modifying configuration for ${editingModelId}` : isCloning ? `从 ${cloneSourceId} 克隆 — 设置新 ID 后保存` : '注册一个新的 LLM 提供商模型'}</p>
       </div>
 
       <div className="page-body">
@@ -856,17 +856,25 @@ const filteredModels = useMemo(() => {
 {/* ── Section: Model Information ────────────────────── */}
 
            <div className="form-section">
-            <h3 className="section-title">Model Identification</h3>
-            <p className="section-desc">Unique identifier and provider settings for this model configuration.</p>
+            <h3 className="section-title">模型标识</h3>
+            <p className="section-desc">此模型的唯一标识符和提供商设置。</p>
 
             <div className="form-group">
               <label className="form-label">
-                Routerly ID <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional — default: <code style={{ fontSize: '0.78rem' }}>{autoId || `${autoIdPrefix}/model`}</code>)</span>
+                Routerly ID <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(可选 — 默认: <code style={{ fontSize: '0.78rem' }}>{autoId || `${autoIdPrefix}/model`}</code>)</span>
               </label>
               <input className="form-input" value={form.customId} name="modelId" autoComplete="关闭"
                 onChange={e => setForm(f => ({ ...f, customId: e.target.value }))}
                 placeholder={autoId || `${autoIdPrefix}/model`} />
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The identifier used when referencing this model in Routerly API calls. Also shown as provider name in the model list.</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>在 Routerly API 调用中引用此模型时使用的标识符。也作为模型列表中"提供商"列显示的名称。</div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">提供商名称</label>
+              <input className="form-input" value={form.provider}
+                onChange={e => setForm(f => ({ ...f, provider: e.target.value }))}
+                placeholder="例如：OPENROUTER、MY_PROVIDER" required />
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>自定义提供商名称，将显示在模型列表的"提供商"列中。导入模型时也将使用此名称。</div>
             </div>
 
             <div className="form-group">
@@ -1041,18 +1049,18 @@ const filteredModels = useMemo(() => {
             {form.provider === 'azure-openai' && (
               <>
                 <div className="form-group">
-                  <label className="form-label">Azure Resource Name</label>
+                  <label className="form-label">Azure 资源名称</label>
                   <input className="form-input" value={form.azureResourceName}
                     onChange={e => setForm(f => ({ ...f, azureResourceName: e.target.value }))}
                     placeholder="myresource" required />
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The Azure OpenAI resource name (from the Azure portal).</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>Azure OpenAI 资源名称（来自 Azure 门户）。</div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Deployment ID</label>
+                  <label className="form-label">部署 ID</label>
                   <input className="form-input" value={form.azureDeploymentId}
                     onChange={e => setForm(f => ({ ...f, azureDeploymentId: e.target.value }))}
                     placeholder="gpt-4o-deployment" required />
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The deployment name you created in Azure OpenAI Studio.</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>你在 Azure OpenAI Studio 中创建的部署名称。</div>
                 </div>
                 <div className="form-group">
                   <label className="form-label">API Version <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(default: 2024-02-01)</span></label>
@@ -1067,7 +1075,7 @@ const filteredModels = useMemo(() => {
             {form.provider === 'bedrock' && (
               <>
                 <div className="form-group">
-                  <label className="form-label">AWS Region</label>
+                  <label className="form-label">AWS 区域</label>
                   <input className="form-input" value={form.awsRegion}
                     onChange={e => setForm(f => ({ ...f, awsRegion: e.target.value }))}
                     placeholder="us-east-1" required />
@@ -1083,7 +1091,7 @@ const filteredModels = useMemo(() => {
                   <input className="form-input" type="password" autoComplete="new-password"
                     value={form.awsSecretAccessKey}
                     onChange={e => setForm(f => ({ ...f, awsSecretAccessKey: e.target.value }))}
-                    placeholder={editingModelId ? 'Leave blank to keep existing' : 'wJalrXUtnFEMI/K7MDENG/…'} />
+                    placeholder={editingModelId ? '留空以保留现有密钥' : 'wJalrXUtnFEMI/K7MDENG/…'} />
                 </div>
                 <div className="form-group">
                   <label className="form-label">会话令牌 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional, for temporary credentials)</span></label>
@@ -1099,7 +1107,7 @@ const filteredModels = useMemo(() => {
             {form.provider === 'vertex' && (
               <>
                 <div className="form-group">
-                  <label className="form-label">GCP Project ID</label>
+                  <label className="form-label">GCP 项目 ID</label>
                   <input className="form-input" value={form.vertexProjectId}
                     onChange={e => setForm(f => ({ ...f, vertexProjectId: e.target.value }))}
                     placeholder="my-gcp-project" required />
@@ -1115,11 +1123,11 @@ const filteredModels = useMemo(() => {
                   <textarea className="form-input" rows={6}
                     value={form.vertexServiceAccountKey}
                     onChange={e => setForm(f => ({ ...f, vertexServiceAccountKey: e.target.value }))}
-                    placeholder={editingModelId ? '留空以保留现有密钥' : 'Paste the contents of your service account JSON key file'}
+                    placeholder={editingModelId ? '留空以保留现有密钥' : '粘贴你的服务账号 JSON 密钥文件内容'}
                     style={{ fontFamily: 'monospace', fontSize: '0.78rem', resize: 'vertical' }} />
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                    The full JSON content of a service account key with Vertex AI User role.
-                    If omitted, falls back to the API Key field as a Bearer token.
+                    具有 Vertex AI User 角色的服务账号密钥的完整 JSON 内容。
+                    如果留空，则回退到使用 API Key 字段作为 Bearer 令牌。
                   </div>
                 </div>
               </>
@@ -1141,7 +1149,7 @@ const filteredModels = useMemo(() => {
               />
               <label htmlFor="cap-embedding" style={{ cursor: 'pointer', marginBottom: 0 }}>
                 嵌入模型
-                <span style={{ marginLeft: 8, fontSize: '0.75rem', color: 'var(--text-muted)' }}>This model generates vector embeddings (not chat completions)</span>
+                <span style={{ marginLeft: 8, fontSize: '0.75rem', color: 'var(--text-muted)' }}>此模型生成向量嵌入（非对话补全）</span>
                 <FieldBadge field="capabilities" />
               </label>
             </div>
@@ -1164,7 +1172,7 @@ const filteredModels = useMemo(() => {
                   onChange={e => { setForm(f => ({ ...f, outputPerMillion: e.target.value })); setOverride('outputPerMillion', true); }} placeholder="15.00" required />
               </div>
               <div className="form-group">
-                <label className="form-label">Cache read $/1M <span style={{ color: 'var(--text-muted)' }}>(opt.)</span><FieldBadge field="cachePerMillion" /></label>
+                <label className="form-label">Cache read $/1M <span style={{ color: 'var(--text-muted)' }}>（可选）</span><FieldBadge field="cachePerMillion" /></label>
                 <input className="form-input" type="number" step="any" value={form.cachePerMillion}
                   onChange={e => { setForm(f => ({ ...f, cachePerMillion: e.target.value })); setOverride('cachePerMillion', true); }} placeholder="—" />
               </div>
@@ -1172,14 +1180,14 @@ const filteredModels = useMemo(() => {
 
             <div className="grid-3">
               <div className="form-group">
-                <label className="form-label">Cache write $/1M <span style={{ color: 'var(--text-muted)' }}>(opt.)</span><FieldBadge field="cacheWritePerMillion" /></label>
+                <label className="form-label">Cache write $/1M <span style={{ color: 'var(--text-muted)' }}>（可选）</span><FieldBadge field="cacheWritePerMillion" /></label>
                 <input className="form-input" type="number" step="any" value={form.cacheWritePerMillion}
                   onChange={e => { setForm(f => ({ ...f, cacheWritePerMillion: e.target.value })); setOverride('cacheWritePerMillion', true); }} placeholder="—" />
               </div>
             </div>
 
             <div className="form-group">
-              <label className="form-label">Context Window <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(tokens, optional)</span><FieldBadge field="contextWindow" /></label>
+              <label className="form-label">Context Window <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>（令牌，可选）</span><FieldBadge field="contextWindow" /></label>
               <input className="form-input" type="number" step="1000" value={form.contextWindow}
                 onChange={e => { setForm(f => ({ ...f, contextWindow: e.target.value })); setOverride('contextWindow', true); }} placeholder="128000" />
             </div>
@@ -1205,7 +1213,7 @@ const filteredModels = useMemo(() => {
 
                 {tierRows.map((tier, idx) => (
                   <div key={idx} style={{ background: 'var(--surface-2, rgba(255,255,255,0.04))', border: '1px solid var(--border)', borderRadius: 8, padding: '16px', marginBottom: 12, position: 'relative' }}>
-                    <button type="button" onClick={() => removeTier(idx)} title="Remove tier"
+                    <button type="button" onClick={() => removeTier(idx)} title="删除层级"
                       style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4, display: 'flex', alignItems: 'center', borderRadius: 6 }}>
                       <X size={16} />
                     </button>
@@ -1228,7 +1236,7 @@ const filteredModels = useMemo(() => {
                     </div>
 
                     {/* Tier pricing */}
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>覆盖定价</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>层级定价</div>
                     <div className="form-group">
                       <label className="form-label" style={{ fontSize: '0.75rem' }}>输入 $/百万</label>
                       <input className="form-input" type="number" step="any" value={tier.input}
@@ -1240,7 +1248,7 @@ const filteredModels = useMemo(() => {
                         onChange={e => updateTier(idx, 'output', e.target.value)} placeholder="37.50" />
                     </div>
                     <div className="form-group">
-                      <label className="form-label" style={{ fontSize: '0.75rem' }}>Cache $/1M <span style={{ color: 'var(--text-muted)' }}>(opt.)</span></label>
+                      <label className="form-label" style={{ fontSize: '0.75rem' }}>Cache $/1M <span style={{ color: 'var(--text-muted)' }}>（可选）</span></label>
                       <input className="form-input" type="number" step="any" value={tier.cache}
                         onChange={e => updateTier(idx, 'cache', e.target.value)} placeholder="—" />
                     </div>
@@ -1288,7 +1296,7 @@ const filteredModels = useMemo(() => {
                       </div>
                       {/* Window type */}
                       <div className="form-group" style={{ margin: 0 }}>
-                        <label className="form-label" style={{ fontSize: '0.75rem' }}>Type</label>
+                        <label className="form-label" style={{ fontSize: '0.75rem' }}>类型</label>
                         <select className="form-input" value={lim.windowType}
                           onChange={e => upd({ windowType: e.target.value as 'period' | 'rolling' })}>
                           <option value="period">时间段</option>
@@ -1321,7 +1329,7 @@ const filteredModels = useMemo(() => {
                       {/* Max value */}
                       <div className="form-group" style={{ margin: 0 }}>
                         <label className="form-label" style={{ fontSize: '0.75rem' }}>
-                        {lim.metric === 'cost' ? 'Max ($)' : lim.metric === 'calls' ? 'Max (n.)' : 'Max (tokens)'}
+                        {lim.metric === 'cost' ? '上限（美元）' : lim.metric === 'calls' ? '上限（次）' : '上限（令牌）'}
                         </label>
                         <input className="form-input" type="number" step="any" min="0" value={lim.value}
                           onChange={e => upd({ value: e.target.value })}
@@ -1355,7 +1363,7 @@ const filteredModels = useMemo(() => {
               <button type="button" className="btn btn-secondary" disabled={testState === 'loading'}
                 onClick={async () => { setTestState('loading'); setTestState(await testModel(editingModelId)); }}>
                 {testState === 'loading' ? <span className="spinner" /> : <FlaskConical size={14} />}
-                {testState === 'loading' ? ' 测试ing…' : ' 测试'}
+                {testState === 'loading' ? ' 测试中…' : ' 测试'}
               </button>
             )}
             {testState && testState !== 'loading' && (
