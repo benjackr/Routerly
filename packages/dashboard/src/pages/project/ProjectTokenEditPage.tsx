@@ -418,7 +418,7 @@ export function ProjectTokenEditPage() {
                           })}
                           <button type="button" onClick={() => addLimitRow(pm.modelId)}
                             disabled={!freeCombo}
-                            title={!freeCombo ? 'All metric/period combinations are already set' : undefined}
+                            title={!freeCombo ? '所有指标/时间段组合已设置' : undefined}
                             style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, background: 'none', border: '1px dashed var(--border)', borderRadius: 6, cursor: freeCombo ? 'pointer' : 'not-allowed', color: 'var(--text-muted)', fontSize: '0.8rem', padding: '6px 12px', transition: 'all 0.15s', opacity: freeCombo ? 1 : 0.4 }}
                             onMouseEnter={e => { if (freeCombo) { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--accent)'; } }}
                             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)'; (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-muted)'; }}>
