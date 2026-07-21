@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Outlet, NavLink, useLocation } from 'react-router-dom';
-import { ArrowLeft, Settings, Route, 用户, FileText, Key, Shield, UserSearch } from 'lucide-react';
+import { ArrowLeft, Settings, Route, Users, FileText, Key, Shield, UserSearch } from 'lucide-react';
 import { getProjects, type Project } from '../../api';
 
 export function ProjectLayout() {
@@ -31,9 +31,9 @@ export function ProjectLayout() {
     { id: 'routing', label: '路由', icon: <Route size={16} />, disabled: isNew },
     { id: 'security', label: '安全', icon: <Shield size={16} />, disabled: isNew },
     { id: 'token', label: 'Token', icon: <Key size={16} />, disabled: isNew },
-    { id: 'users', label: '用户', icon: <用户 size={16} />, disabled: isNew },
+    { id: 'users', label: '用户', icon: <Users size={16} />, disabled: isNew },
     { id: 'logs', label: '日志', icon: <FileText size={16} />, disabled: isNew },
-    { id: 'end-users', label: 'End 用户', icon: <UserSearch size={16} />, disabled: isNew },
+    { id: 'end-users', label: '终端用户', icon: <UserSearch size={16} />, disabled: isNew },
   ];
 
   if (err && !isNew) {
