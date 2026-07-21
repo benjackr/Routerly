@@ -22,7 +22,7 @@ export function ProjectLogsTab() {
 
   const [stats, setStats]         = useState<UsageStats | null>(null);
   const [loading, setLoading]     = useState(true);
-  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: `project-${projectId}-filters-dateRange`, defaultValue: { from: '', to: '', label: 'This month' } });
+  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: `project-${projectId}-filters-dateRange`, defaultValue: { from: '', to: '', label: '本月' } });
   const [modelIds, setModelIds]   = useFilterState<string[]>({ key: `project-${projectId}-filters-modelIds`, defaultValue: [] });
   const [callTypeFilter, setCallTypeFilter] = useFilterState<'all' | 'completion' | 'routing'>({ key: `project-${projectId}-filters-callType`, defaultValue: 'all' });
   const [outcomeFilter, setOutcomeFilter]   = useFilterState<'all' | 'success' | 'error' | 'blocked'>({ key: `project-${projectId}-filters-outcome`, defaultValue: 'all' });
@@ -49,7 +49,7 @@ export function ProjectLogsTab() {
       setDateRange({
         from: start.toISOString().slice(0, 10),
         to: now.toISOString().slice(0, 10),
-        label: 'This month',
+        label: '本月',
       });
     }
   }, []);
@@ -266,8 +266,8 @@ export function ProjectLogsTab() {
           {filteredRecords.length === 0 ? (
             <div className="empty-state">
               <p>{stats.records.length === 0
-                ? 'No requests for this project in the selected period.'
-                : 'No records match the active filters.'}
+                ? '所选时间段内无此项目的请求。'
+                : '没有符合筛选条件的记录。'}
               </p>
             </div>
           ) : (
