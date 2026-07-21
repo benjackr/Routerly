@@ -370,7 +370,7 @@ function SemanticFields({ rule, onChange, modelOptions }: {
           options={modelOptions}
           value={cfg.embeddingModelId}
           onChange={v => onChange({ ...rule, config: { ...cfg, embeddingModelId: v } })}
-          placeholder="Select embedding model..."
+          placeholder="选择嵌入模型..."
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
@@ -429,7 +429,7 @@ function TopicFields({ rule, onChange, modelOptions }: {
           options={modelOptions}
           value={cfg.modelId ?? ''}
           onChange={v => onChange({ ...rule, config: { ...cfg, modelId: v } })}
-          placeholder="Select judge model..."
+          placeholder="选择判断模型..."
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
@@ -489,7 +489,7 @@ function ModerationFields({ rule, onChange, modelOptions, instructionsError }: {
           options={modelOptions}
           value={cfg.modelId ?? ''}
           onChange={v => onChange({ ...rule, config: { ...cfg, modelId: v } })}
-          placeholder="Select judge model..."
+          placeholder="选择判断模型..."
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
@@ -596,7 +596,7 @@ function RuleCard({ rule, onChange, onDelete, regexErrors, modelOptions, embeddi
           type="button"
           onClick={onDelete}
           style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center' }}
-          aria-label="Delete rule"
+          aria-label="删除规则"
         >
           <Trash2 size={14} />
         </button>
@@ -837,7 +837,7 @@ export function ProjectSecurityTab() {
                 }))}
                 value=""
                 onChange={(type) => addRule(type as GuardrailRuleType)}
-                placeholder="Add a security policy..."
+                placeholder="添加安全策略..."
               />
             </div>
           </div>
