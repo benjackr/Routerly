@@ -434,6 +434,9 @@ export function ModelsPage() {
               </>
             )}
         {tab === 'health' && (
+            </>
+          )}
+
           loading ? (
             <div className="loading-center"><div className="spinner" /></div>
           ) : models.length === 0 ? (
