@@ -342,7 +342,7 @@ export function ModelFormPage() {
   const [isEmbeddingModel, setIsEmbeddingModel] = useState(false);
   const [fieldOverrides, setFieldOverrides] = useState<Record<string, boolean>>({});
   const [catalogDefaults, setCatalogDefaults] = useState<Model['catalogDefaults']>(undefined);
-  const isCustomModel = false; // Batch import states (new model only)
+  
   const [showBatchImport, setShowBatchImport] = useState(true);
 
 const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; object: string; created: number; owned_by: string }>>([]);
