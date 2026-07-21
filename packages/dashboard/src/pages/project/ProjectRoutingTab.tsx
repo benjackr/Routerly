@@ -329,7 +329,7 @@ export function ProjectRoutingTab() {
     setTargetModels(prev => prev.filter((_, i) => i !== idx));
   }
 
-  // --- Policy Add/Remove ---
+  // --- Policy Add/移除 ---
   function addPolicy(type: string) {
     const mkId = () => Math.random().toString(36).substring(7);
     let config: Record<string, unknown> | undefined;
@@ -481,7 +481,7 @@ export function ProjectRoutingTab() {
                     <button
                       type="button"
                       onClick={() => removePolicy(idx)}
-                      title="Remove policy"
+                      title="移除 policy"
                       style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center', flexShrink: 0 }}
                     >
                       <Trash2 size={14} />
@@ -1024,7 +1024,7 @@ export function ProjectRoutingTab() {
                                       updatePolicyConfig(idx, { intents });
                                     }}
                                     style={{ background: 'none', border: 'none', padding: 4, cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', borderRadius: 4, flexShrink: 0 }}
-                                    title="Remove intent"
+                                    title="移除 intent"
                                   >
                                     <X size={14} />
                                   </button>
@@ -1094,7 +1094,7 @@ export function ProjectRoutingTab() {
                                                   updatePolicyConfig(idx, { intents });
                                                 }}
                                                 style={{ background: 'none', border: 'none', padding: 2, cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', flexShrink: 0, opacity: 0.5 }}
-                                                title="Remove example"
+                                                title="移除 example"
                                               >
                                                 <X size={12} />
                                               </button>
@@ -1471,7 +1471,7 @@ export function ProjectRoutingTab() {
                     type="button"
                     onClick={() => removeTargetModel(idx)}
                     className="btn-icon danger"
-                    title="Remove target model"
+                    title="移除 target model"
                   >
                     <Trash2 size={16} />
                   </button>
