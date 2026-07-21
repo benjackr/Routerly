@@ -84,7 +84,7 @@ export function ProjectGeneralTab() {
         }
       }
     } catch (err) {
-      setErr(err instanceof Error ? err.message : 'Error saving project');
+      setErr(err instanceof Error ? err.message : '保存项目失败');
     } finally {
       setSaving(false);
     }
@@ -219,7 +219,7 @@ export function ProjectGeneralTab() {
 
         <div style={{ marginTop: 24 }}>
           <button type="submit" className="btn btn-primary" disabled={saving || (isEdit && !isDirty)}>
-            {saving ? <span className="spinner" /> : isEdit ? 'Save Changes' : 'Create Project'}
+            {saving ? <span className="spinner" /> : isEdit ? '保存更改' : '创建项目'}
           </button>
         </div>
       </form>
