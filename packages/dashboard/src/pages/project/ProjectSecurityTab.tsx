@@ -20,11 +20,11 @@ import { SearchableSelect } from '../../components/SearchableSelect';
 import { MultiSelect } from '../../components/MultiSelect';
 import { useProject } from './ProjectLayout';
 
-const ALL_PII_ENTITIES: PiiEntity[] = ['邮箱', '电话', 'CREDIT_CARD', 'SSN', 'IBAN'];
+const ALL_PII_ENTITIES: PiiEntity[] = ['EMAIL', 'PHONE', 'CREDIT_CARD', 'SSN', 'IBAN'];
 
 const PII_LABELS: Record<PiiEntity, string> = {
-  EMAIL: '邮箱',
-  PHONE: '电话',
+  EMAIL: 'EMAIL',
+  PHONE: 'PHONE',
   CREDIT_CARD: '信用卡',
   SSN: 'SSN',
   IBAN: 'IBAN',
