@@ -57,7 +57,7 @@ export function NotificationChannelListPage() {
     setLoading(true);
     getNotificationChannels()
       .then(setChannels)
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
       .finally(() => setLoading(false));
   }
 
@@ -92,7 +92,7 @@ export function NotificationChannelListPage() {
           await deleteNotificationChannel(id);
           setChannels(cs => cs.filter(c => c.id !== id));
         } catch (e) {
-          setError(e instanceof Error ? e.message : 'Failed to delete');
+          setError(e instanceof Error ? e.message : '删除失败');
         }
       },
     });
@@ -184,7 +184,7 @@ export function NotificationChannelListPage() {
                 outline: 'none',
               }}
             >
-              <option value="">All types</option>
+              <option value="">全部类型</option>
               {providerOptions.map(p => (
                 <option key={p} value={p}>{providerLabel(p as ChannelProvider)}</option>
               ))}
@@ -254,17 +254,17 @@ export function NotificationChannelListPage() {
       {loading ? (
         <div className="loading-center"><div className="spinner" /></div>
       ) : channels.length === 0 ? (
-        <div className="empty-state"><Bell size={40} /><p>No notification channels configured yet.</p></div>
+        <div className="empty-state"><Bell size={40} /><p>尚未配置通知频道。</p></div>
       ) : sorted.length === 0 ? (
-        <div className="empty-state"><Search size={40} /><p>No channels match the active filters.</p></div>
+        <div className="empty-state"><Search size={40} /><p>没有符合筛选条件的频道。</p></div>
       ) : (
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
                 <th style={thStyle}>{thInner('名称', 'name')}</th>
-                <th style={thStyle}>{thInner('Type', 'type')}</th>
-                <th style={thStyle}>{thInner('Events / Targets', 'summary')}</th>
+                <th style={thStyle}>{thInner('类型', 'type')}</th>
+                <th style={thStyle}>{thInner('事件/目标', 'summary')}</th>
                 <th></th>
               </tr>
             </thead>
