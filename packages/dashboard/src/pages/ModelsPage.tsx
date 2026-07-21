@@ -530,6 +530,7 @@ export function ModelsPage() {
                   )}
                 </>
               )}
+            </>
           )
         )}
       </div>
