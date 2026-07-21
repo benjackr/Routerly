@@ -94,6 +94,9 @@ export function ModelsPage() {
   const [sortKey, setSortKey] = useState<SortKey>('id');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [page, setPage] = useState(1);
+
+          </>
+
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
   const [testResults, setTestResults] = useState<Record<string, 'loading' | { ok: boolean; latencyMs: number; error?: string }>>({});
   const healthActive = useRef(true);
@@ -431,9 +434,6 @@ export function ModelsPage() {
                 )}
               </>
             )}
-          </>
-        )}
-
         {tab === 'health' && (
           loading ? (
             <div className="loading-center"><div className="spinner" /></div>
