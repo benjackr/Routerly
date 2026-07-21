@@ -366,7 +366,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
                 borderRadius: isInjection ? 'var(--radius-sm)' : undefined,
               }}>
                 <span style={{ fontSize: '0.82rem', color: isInjection ? '#fca5a5' : 'var(--text-primary)', fontFamily: 'monospace', fontWeight: isInjection ? 700 : 400, flex: 1, minWidth: 0 }}>
-                  {isInjection ? 'Prompt injection' : r.rule}
+                  {isInjection ? '提示注入' : r.rule}
                 </span>
                 <span style={{ fontSize: '0.68rem', fontWeight: 700, color: outcomeColor, background: outcomeBg, border: `1px solid ${outcomeBorder}`, padding: '1px 7px', borderRadius: 99, whiteSpace: 'nowrap' }}>
                   {r.outcome}
