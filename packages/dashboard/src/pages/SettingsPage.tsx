@@ -518,7 +518,7 @@ export function SettingsNotificationsTab() {
       );
     }
     return (
-      <button type="button" onClick={() => setPendingDelete(id)} title="Remove channel"
+      <button type="button" onClick={() => setPendingDelete(id)} title="移除频道"
         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4, display: 'flex', alignItems: 'center' }}>
         <Trash2 size={14} />
       </button>
@@ -598,7 +598,7 @@ export function SettingsNotificationsTab() {
             options={EVENT_OPTIONS}
             value={ch.events ?? []}
             onChange={v => uf(ch.id, 'events', v.length ? v : undefined)}
-            placeholder="All events (leave empty for all)"
+            placeholder="所有事件（留空表示全部）"
           />
           <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: '5px 0 0' }}>
             Leave empty to receive all events. Select specific events to filter.
@@ -615,7 +615,7 @@ export function SettingsNotificationsTab() {
                 options={roleOptions}
                 value={ch.targets?.roles ?? []}
                 onChange={v => uf(ch.id, 'targets', { ...(ch.targets ?? {}), roles: v.length ? v : undefined })}
-                placeholder="All roles (everyone)"
+                placeholder="所有角色（所有人）"
               />
             </div>
             <div>
@@ -624,7 +624,7 @@ export function SettingsNotificationsTab() {
                 options={PERM_OPTIONS}
                 value={(ch.targets?.permissions ?? []) as string[]}
                 onChange={v => uf(ch.id, 'targets', { ...(ch.targets ?? {}), permissions: v.length ? (v as Permission[]) : undefined })}
-                placeholder="All permissions (everyone)"
+                placeholder="所有权限（所有人）"
               />
             </div>
             <div>
@@ -633,7 +633,7 @@ export function SettingsNotificationsTab() {
                 options={userOptions}
                 value={ch.targets?.users ?? []}
                 onChange={v => uf(ch.id, 'targets', { ...(ch.targets ?? {}), users: v.length ? v : undefined })}
-                placeholder="All users (everyone)"
+                placeholder="所有用户（所有人）"
               />
             </div>
           </div>
@@ -779,7 +779,7 @@ export function SettingsNotificationsTab() {
             </div>
             <div className="form-group">
               <label className="form-label">Secret <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span></label>
-              <input className="form-input" type="password" value={ch.secret ?? ''} onChange={e => uf(ch.id, 'secret', e.target.value || undefined)} placeholder="HMAC signing key" />
+              <input className="form-input" type="password" value={ch.secret ?? ''} onChange={e => uf(ch.id, 'secret', e.target.value || undefined)} placeholder="HMAC 签名密钥" />
             </div>
           </div>
           {eventsAndTargetsFields(ch)}
@@ -867,7 +867,7 @@ export function SettingsNotificationsTab() {
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', flexShrink: 0 }}>{meta?.label}</span>
                   <input value={ch.name ?? ''}
                     onChange={e => uf(ch.id, 'name', e.target.value || undefined)}
-                    placeholder="Label (optional)"
+                    placeholder="标签（可选）"
                     style={{ background: 'none', border: 'none', outline: 'none', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', minWidth: 0, flex: 1 }} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
@@ -991,7 +991,7 @@ function integrationFormFields(
         <div className="form-group">
           <label className="form-label">Bearer Token <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span></label>
           <input className="form-input" type="password"
-            placeholder="Leave empty for open access"
+            placeholder="留空则开放访问"
             value={(form.authToken as string) ?? ''}
             onChange={e => onChange({ authToken: e.target.value || undefined })} />
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 4 }}>
@@ -1040,7 +1040,7 @@ function integrationFormFields(
           <div className="form-group">
             <label className="form-label">API 密钥</label>
             <input className="form-input" type="password"
-              placeholder="Your Datadog API key"
+              placeholder="你的 Datadog API 密钥"
               value={(form.apiKey as string) ?? ''}
               onChange={e => onChange({ apiKey: e.target.value })}
               required />
@@ -1073,7 +1073,7 @@ function integrationFormFields(
               onChange={e => onChange({ url: e.target.value })}
               required />
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 4 }}>
-              Found in <strong>Grafana Cloud → Connections → Prometheus → Details</strong> as "Remote Write Endpoint".
+              Found in <strong>Grafana Cloud → Connections → Prometheus → Details</strong> as "远程写入端点".
             </p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -1120,7 +1120,7 @@ function integrationFormFields(
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Token</label>
               <input className="form-input" type="password"
-                placeholder="Your InfluxDB API token"
+                placeholder="你的 InfluxDB API 令牌"
                 value={(form.token as string) ?? ''}
                 onChange={e => onChange({ token: e.target.value })}
                 required />
@@ -1372,7 +1372,7 @@ export function SettingsIntegrationsTab() {
                       </button>
                     </div>
                   ) : (
-                    <button type="button" onClick={() => setPendingDelete(integration.id)} title="Remove integration"
+                    <button type="button" onClick={() => setPendingDelete(integration.id)} title="移除集成"
                       style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4, display: 'flex', alignItems: 'center' }}>
                       <Trash2 size={14} />
                     </button>
@@ -1957,18 +1957,18 @@ export function SettingsAboutTab() {
 
       <div style={{ marginBottom: 28 }}>
         <h3 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: 4 }}>Storage</h3>
-        <InfoRow label="Config directory" value={info.configDir} mono />
-        <InfoRow label="Data directory" value={info.dataDir} mono />
+        <InfoRow label="配置目录" value={info.configDir} mono />
+        <InfoRow label="数据目录" value={info.dataDir} mono />
       </div>
 
       <div>
         <h3 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: 4 }}>Software Update</h3>
         {updateInfo ? (
           <>
-            <InfoRow label="Current version" value={`v${updateInfo.currentVersion}`} />
-            <InfoRow label="Available version" value={updateInfo.available ? `v${updateInfo.latestVersion}` : 'Up to date'} />
+            <InfoRow label="当前版本" value={`v${updateInfo.currentVersion}`} />
+            <InfoRow label="可用版本" value={updateInfo.available ? `v${updateInfo.latestVersion}` : 'Up to date'} />
             {updateInfo.checkedAt && (
-              <InfoRow label="Last checked" value={new Date(updateInfo.checkedAt).toLocaleString()} />
+              <InfoRow label="上次检查" value={new Date(updateInfo.checkedAt).toLocaleString()} />
             )}
           </>
         ) : (
