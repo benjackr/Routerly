@@ -310,10 +310,10 @@ export function DateRangePicker({ value, onChange }: Props) {
               </div>
               {/* "From now" — freezes 'from' to the clicked instant, open-ended 'to' */}
               {(() => {
-                const active = value.label === 'From now';
+                const active = value.label === '至今';
                 return (
                   <button
-                    onClick={() => handlePreset({ from: new Date().toISOString(), to: '', label: 'From now' })}
+                    onClick={() => handlePreset({ from: new Date().toISOString(), to: '', label: '至今' })}
                     style={{
                       background: active ? 'var(--accent, #6366f1)' : 'transparent',
                       border: 'none', borderRadius: 6,
