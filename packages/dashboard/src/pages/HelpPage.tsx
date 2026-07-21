@@ -112,7 +112,7 @@ export function HelpPage() {
 
       <div className="page-body" style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 640 }}>
 
-        {/* ── Documentation ─────────────────────────────────────────────────── */}
+        {/* ── 文档 ─────────────────────────────────────────────────── */}
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <div style={{
@@ -123,8 +123,8 @@ export function HelpPage() {
               <BookOpen size={17} color="#8b5cf6" />
             </div>
             <div>
-              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>Documentation</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>Guides, API reference, and configuration docs</div>
+              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>文档</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>指南、API 参考和配置文档</div>
             </div>
           </div>
           <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 14px' }}>
@@ -152,7 +152,7 @@ export function HelpPage() {
               <Bug size={17} color="var(--accent)" />
             </div>
             <div>
-              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>Report a bug or suggest a feature</div>
+              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>报告 Bug 或建议功能</div>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>Open a GitHub issue — it takes 2 minutes</div>
             </div>
           </div>
@@ -223,8 +223,8 @@ export function HelpPage() {
               <Mail size={17} color="#10b981" />
             </div>
             <div>
-              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>Contact support</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>We read every message and reply as soon as we can</div>
+              <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>联系支持</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>我们阅读每条消息并尽快回复</div>
             </div>
           </div>
 
