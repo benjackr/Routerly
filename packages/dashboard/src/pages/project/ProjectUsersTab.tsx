@@ -72,7 +72,7 @@ export function ProjectUsersTab() {
 
   function handleRemoveMember(userId: string) {
     setConfirmState({
-      message: 'Are you sure you want to remove this member?',
+      message: '确定要移除此成员吗？',
       onConfirm: async () => {
         setConfirmState(null);
         setErr('');
