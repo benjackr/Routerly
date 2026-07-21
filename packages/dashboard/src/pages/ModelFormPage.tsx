@@ -345,6 +345,13 @@ export function ModelFormPage() {
   // Batch import states (new model only)
   const [showBatchImport, setShowBatchImport] = useState(true);
 
+const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; object: string; created: number; owned_by: string }>>([]);
+const [selectedModelIds, setSelectedModelIds] = useState<Set<string>>(new Set());
+const [discoverQuery, setDiscoverQuery] = useState('');
+const [discovering, setDiscovering] = useState(false);
+const [importing, setImporting] = useState(false);
+const [discoverError, setDiscoverError] = useState('');
+
   useEffect(() => {
     async function init() {
       try {
@@ -856,6 +863,91 @@ export function ModelFormPage() {
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{selectedPreset.notes}</div>
                 )}
               </div>
+            )}
+          </div>
+
+
+          {/* ── 拉取模型 ────────────────────────────── */}
+          <div className="form-section" style={{ marginTop: 24 }}>
+            <h3 className="section-title">拉取模型</h3>
+            <p className="section-desc">从提供商 API 自动发现可用模型</p>
+
+            <div style={{ display: "flex", gap: 8, marginBottom: 12, alignItems: "center" }}>
+              <button type="button"
+                onClick={handleDiscover}
+                disabled={discovering}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 15%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 40%, transparent)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 500 }}>
+                {discovering ? <span className="spinner" style={{ width: 14, height: 14 }} /> : "🔍"}
+                拉取模型
+              </button>
+
+              <input className="form-input" type="text"
+                value={discoverQuery}
+                onChange={e => setDiscoverQuery(e.target.value)}
+                placeholder='搜索模型…'
+                style={{ flex: 1, maxWidth: 280, height: 38, fontSize: '0.85rem' }} />
+
+              {selectedModelIds.size > 0 && (
+                <button type="button"
+                  onClick={handleImportSelected}
+                  disabled={importing}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 25%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 60%, transparent)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 500 }}>
+                  {importing ? <span className="spinner" style={{ width: 14, height: 14 }} /> : "✓"}
+                  添加选中 ({selectedModelIds.size})
+                </button>
+              )}
+            </div>
+
+            {discoverError && (
+              <div style={{ padding: '8px 12px', borderRadius: 8, marginBottom: 12, background: 'color-mix(in srgb, #ef4444 10%, transparent)', border: '1px solid color-mix(in srgb, #ef4444 30%, transparent)', color: '#f87171', fontSize: '0.85rem' }}>
+                {discoverError}
+              </div>
+            )}
+
+            {discoveredModels.length > 0 && (
+              <>
+                <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 10, fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                    <input type="checkbox"
+                      checked={filteredModels.length > 0 && filteredModels.every(m => selectedModelIds.has(m.id))}
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setSelectedModelIds(new Set(filteredModels.map(m => m.id)));
+                        } else {
+                          setSelectedModelIds(new Set());
+                        }
+                      }}
+                      style={{ accentColor: 'var(--color-primary, #6366f1)' }} />
+                    全选 ({filteredModels.length})
+                  </label>
+                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>共 {discoveredModels.length} 个模型</span>
+                </div>
+
+                <div style={{ maxHeight: 320, overflowY: 'auto', borderRadius: 8, border: '1px solid var(--border)', background: 'color-mix(in srgb, var(--bg-secondary, #1e1e2e) 50%, transparent)' }}>
+                  {filteredModels.length === 0 ? (
+                    <div style={{ padding: '16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>没有匹配的模型</div>
+                  ) : (
+                    filteredModels.map(m => (
+                      <label key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid color-mix(in srgb, var(--border) 50%, transparent)', fontSize: '0.85rem' }}>
+                        <input type="checkbox"
+                          checked={selectedModelIds.has(m.id)}
+                          onChange={e => {
+                            const next = new Set(selectedModelIds);
+                            if (e.target.checked) {
+                              next.add(m.id);
+                            } else {
+                              next.delete(m.id);
+                            }
+                            setSelectedModelIds(next);
+                          }}
+                          style={{ accentColor: 'var(--color-primary, #6366f1)', flexShrink: 0 }} />
+                        <span style={{ flex: 1 }}>{m.id}</span>
+                        {m.owned_by && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.owned_by}</span>}
+                      </label>
+                    ))
+                  )}
+                </div>
+              </>
             )}
           </div>
 
