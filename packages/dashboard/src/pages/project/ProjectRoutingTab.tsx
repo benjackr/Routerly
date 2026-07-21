@@ -26,9 +26,9 @@ const POLICY_LABELS: Record<string, string> = {
   context:           '上下文策略',
   capability:        '能力策略',
   performance:       '性能策略',
-  fairness:          'Fairness Policy',
-  cheapest:          'Cheapest Policy',
-  'model-preference':'Model Preference Policy',
+  fairness:          '公平策略',
+  cheapest:          '最便宜策略',
+  'model-preference':'模型偏好策略',
 };
 
 const POLICY_DESCRIPTIONS: Record<string, string> = {
@@ -382,7 +382,7 @@ export function ProjectRoutingTab() {
     // Validate: target models cannot repeat
     const targetIds = targetModels.map(t => t.modelId);
     if (new Set(targetIds).size !== targetIds.length) {
-      setErr('Target models cannot contain duplicates.');
+      setErr('目标模型不能包含重复项。');
       return;
     }
 
@@ -405,7 +405,7 @@ export function ProjectRoutingTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (err) {
-      setErr(err instanceof Error ? err.message : 'Error saving project routing');
+      setErr(err instanceof Error ? err.message : '保存项目路由失败');
     } finally {
       setSaving(false);
     }
@@ -1524,7 +1524,7 @@ export function ProjectRoutingTab() {
             ) : saved ? (
               <><Check size={15} style={{ marginRight: 6 }} />Saved!</>
             ) : (
-              'Save Routing Configuration'
+              '保存路由配置'
             )}
           </button>
         </div>
