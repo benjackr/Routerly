@@ -3,23 +3,23 @@ import { BookOpen, Bug, ExternalLink, Mail, ChevronDown, ChevronRight, MessageSq
 
 const FAQ_ITEMS = [
   {
-    q: 'How do I connect my app to Routerly?',
+    q: '如何将我的应用连接到 Routerly？',
     a: `Point your OpenAI or Anthropic SDK to your Routerly instance. Replace the base URL with http://your-host:3000/v1 (OpenAI-compatible) or http://your-host:3000/anthropic (Anthropic-compatible), then use a project token as the API key. That's it — no other changes needed.`,
   },
   {
-    q: 'Is Routerly compatible with tools that use the OpenAI SDK?',
+    q: 'Routerly 兼容使用 OpenAI SDK 的工具吗？',
     a: 'Yes. Routerly is a drop-in replacement: any tool that supports a custom base URL and API key (LangChain, LlamaIndex, Cursor, Continue, etc.) works out of the box. For Anthropic-format clients, use the /anthropic endpoint instead.',
   },
   {
-    q: 'How does model routing work?',
+    q: '模型路由如何工作？',
     a: 'Each project has a routing policy that decides which model receives a request. Policies include round-robin, lowest cost, fastest response, fallback chains, and more. You configure them per project under Projects → Routing.',
   },
   {
-    q: 'How do I add a new AI model?',
+    q: '如何添加新的 AI 模型？',
     a: 'Go to Models → Add model. You can add any OpenAI-compatible provider (Ollama, LM Studio, custom endpoints) or a native Anthropic endpoint. Fill in the base URL, API key, and model ID — Routerly will handle the rest.',
   },
   {
-    q: 'Is my data stored? Are my prompts logged?',
+    q: '我的数据会存储吗？提示词会被记录吗？',
     a: 'Routerly is self-hosted and stores data only on your machine (in ~/.routerly/ by default). Prompts and responses are never sent anywhere by Routerly. Request logs are stored locally and only if you enable them per-project.',
   },
   {
