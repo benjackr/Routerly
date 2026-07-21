@@ -21,9 +21,9 @@ export const CHANNEL_PROVIDER_META: Array<{ key: ChannelProvider; label: string;
   { key: 'sendgrid',   label: 'SendGrid',                 description: 'Twilio SendGrid' },
   { key: 'azure',      label: 'Azure 通信',      description: 'Azure 通信服务' },
   { key: 'google',     label: 'Google / Gmail',           description: 'Gmail via OAuth2' },
-  { key: 'webhook',    label: 'Webhook',                  description: 'HTTP webhook callback' },
+  { key: 'webhook',    label: 'Webhook',                  description: 'HTTP Webhook 回调' },
   { key: 'slack',      label: 'Slack',                    description: 'Slack Bot API' },
-  { key: 'teams',      label: 'Microsoft Teams',          description: 'Teams Incoming Webhook' },
+  { key: 'teams',      label: 'Microsoft Teams',          description: 'Teams 入站 Webhook' },
   { key: 'pagerduty',  label: 'PagerDuty',                description: 'PagerDuty Events API v2' },
   { key: 'discord',    label: 'Discord',                  description: 'Discord Webhook' },
 ];
@@ -101,13 +101,13 @@ export function summariseChannel(ch: Record<string, unknown>): string {
   const parts: string[] = [];
   const events = ch['events'] as string[] | undefined;
   const evCount = events?.length ?? 0;
-  parts.push(evCount === 0 ? 'All events' : `${evCount} event${evCount > 1 ? 's' : ''}`);
+  parts.push(evCount === 0 ? '所有事件' : `${evCount} event${evCount > 1 ? 's' : ''}`);
   const t = ch['targets'] as { roles?: string[]; permissions?: string[]; users?: string[] } | undefined;
   const targetParts: string[] = [];
   if (t?.roles?.length) targetParts.push(`${t.roles.length} role${t.roles.length > 1 ? 's' : ''}`);
   if (t?.permissions?.length) targetParts.push(`${t.permissions.length} perm${t.permissions.length > 1 ? 's' : ''}`);
   if (t?.users?.length) targetParts.push(`${t.users.length} user${t.users.length > 1 ? 's' : ''}`);
-  parts.push(targetParts.length ? targetParts.join(', ') : 'Everyone');
+  parts.push(targetParts.length ? targetParts.join(', ') : '所有人');
   return parts.join(' · ');
 }
 
@@ -138,14 +138,14 @@ function DetailField({ label, value }: { label: string; value: string | React.Re
 function SecretDetailField({ label, value }: { label: string; value: unknown }) {
   const display = (value && typeof value === 'string' && value.length > 0)
     ? '已配置'
-    : 'Not set';
+    : '未设置';
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: 2 }}>{label}</div>
       <div style={{
         fontSize: '0.875rem',
         color: display === '已配置' ? 'var(--text-secondary)' : 'var(--text-muted)',
-        fontStyle: display === 'Not set' ? 'italic' : undefined,
+        fontStyle: display === '未设置' ? 'italic' : undefined,
       }}>{display}</div>
     </div>
   );
@@ -272,7 +272,7 @@ function SecretEditInput({
   label: string; fieldKey: string; form: Record<string, unknown>; onChange: (k: string, v: unknown) => void;
   isEdit: boolean; placeholder?: string;
 }) {
-  const placeholder = isEdit ? 'Leave blank to keep current' : (customPlaceholder ?? '');
+  const placeholder = isEdit ? '留空则保持当前值' : (customPlaceholder ?? '');
   /* v8 ignore next */
   const secretValue = typeof form[fieldKey] === 'string' ? (form[fieldKey] as string) : '';
   return (
