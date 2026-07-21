@@ -188,9 +188,9 @@ type LimitRow = {
 const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
   { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
-  { value: 'input_tokens',  label: 'Input tokens'    },
-  { value: 'output_tokens', label: 'Output tokens'   },
-  { value: 'total_tokens',  label: 'Total tokens'    },
+  { value: 'input_tokens',  label: '输入令牌'    },
+  { value: 'output_tokens', label: '输出令牌'   },
+  { value: 'total_tokens',  label: '令牌总数'    },
 ];
 
 const PERIOD_OPTIONS: { value: LimitPeriod; label: string }[] = [
@@ -699,7 +699,7 @@ const filteredModels = useMemo(() => {
         const expStr = res.expiresAt ? new Date(res.expiresAt).toLocaleString() : 'unknown';
         setOauthTest({ status: 'ok', msg: `至ccount: ${res.accountId} — expires ${expStr}` });
       } else {
-        setOauthTest({ status: 'error', msg: res.error ?? 'Unknown error' });
+        setOauthTest({ status: 'error', msg: res.error ?? '未知错误' });
       }
     } catch (e) {
       setOauthTest({ status: 'error', msg: e instanceof Error ? e.message : String(e) });
