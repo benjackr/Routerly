@@ -106,7 +106,7 @@ function NotificationDetailDrawer({
             <div>
               <FilterLabel>状态</FilterLabel>
               <div style={{ marginTop: 4, fontSize: '0.85rem', color: item.read ? 'var(--text-muted)' : 'var(--accent)', fontWeight: item.read ? 400 : 600 }}>
-                {item.read ? 'Read' : 'Unread'}
+                {item.read ? '已读' : '未读'}
               </div>
             </div>
           </div>
@@ -122,7 +122,7 @@ function NotificationDetailDrawer({
           <div>
             <FilterLabel>详情</FilterLabel>
             {detailEntries.length === 0 ? (
-              <div style={{ marginTop: 4, fontSize: '0.82rem', color: 'var(--text-muted)' }}>No additional details.</div>
+              <div style={{ marginTop: 4, fontSize: '0.82rem', color: 'var(--text-muted)' }}>无更多详情。</div>
             ) : (
               <div style={{ marginTop: 6, border: '1px solid var(--border)', borderRadius: 6, overflow: 'hidden' }}>
                 {detailEntries.map(([k, v], i) => (
@@ -344,7 +344,7 @@ export function ProfileNotificationsTab() {
               className={`btn btn-sm ${unreadOnly ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setUnreadOnly(!unreadOnly)}
             >
-              {unreadOnly ? 'Unread only' : '全部'}
+              {unreadOnly ? '仅未读' : '全部'}
             </button>
           </div>
 
@@ -356,7 +356,7 @@ export function ProfileNotificationsTab() {
           </div>
 
           <div style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-end' }}>
-            <FilterLabel>{unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}</FilterLabel>
+            <FilterLabel>{unreadCount > 0 ? `${unreadCount} unread` : '全部已读'}</FilterLabel>
             {unreadCount > 0 && (
               <button
                 className="btn btn-sm btn-secondary"
@@ -412,7 +412,7 @@ export function ProfileNotificationsTab() {
                         style={{ width: 16, height: 16, accentColor: 'var(--accent)', cursor: 'pointer', verticalAlign: 'middle' }}
                       />
                     </th>
-                    {['Severity', 'Event', 'Date', '状态'].map(h => (
+                    {['严重级别', '事件', '日期', '状态'].map(h => (
                       <th key={h} style={{
                         padding: '10px 12px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap',
                         fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-muted)',
