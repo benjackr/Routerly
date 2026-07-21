@@ -508,7 +508,7 @@ function ProfileSecurityTab() {
     setPwError('');
     setPwSaved(false);
     if (pwForm.newPassword !== pwForm.confirmPassword) {
-      setPwError('Passwords do not match.');
+      setPwError('密码不匹配。');
       return;
     }
     if (pwForm.newPassword.length < 8) {
@@ -525,7 +525,7 @@ function ProfileSecurityTab() {
       setPwSaved(true);
       setTimeout(() => setPwSaved(false), 3000);
     } catch (e) {
-      setPwError(e instanceof Error ? e.message : 'Update failed');
+      setPwError(e instanceof Error ? e.message : '更新失败');
     } finally {
       setPwSaving(false);
     }
@@ -564,7 +564,7 @@ function ProfileSecurityTab() {
       setTfaBackupCodes(res.backupCodes);
       setTfaStep('setup');
     } catch (e) {
-      setTfaError(e instanceof Error ? e.message : 'Setup failed');
+      setTfaError(e instanceof Error ? e.message : '设置失败');
     } finally {
       setTfaBusy(false);
     }
@@ -581,7 +581,7 @@ function ProfileSecurityTab() {
       setTfaEnabled(true);
       updateUser({ totpEnabled: true });
     } catch (e) {
-      setTfaError(e instanceof Error ? e.message : 'Confirmation failed');
+      setTfaError(e instanceof Error ? e.message : '确认失败');
     } finally {
       setTfaBusy(false);
     }
@@ -598,7 +598,7 @@ function ProfileSecurityTab() {
       setTfaStep('idle');
       updateUser({ totpEnabled: false });
     } catch (e) {
-      setTfaError(e instanceof Error ? e.message : 'Disable failed');
+      setTfaError(e instanceof Error ? e.message : '禁用失败');
     } finally {
       setTfaBusy(false);
     }
@@ -614,7 +614,7 @@ function ProfileSecurityTab() {
       setRegenCode('');
       setBackupVisible(false);
     } catch (e) {
-      setTfaError(e instanceof Error ? e.message : 'Regeneration failed');
+      setTfaError(e instanceof Error ? e.message : '重新生成失败');
     } finally {
       setTfaBusy(false);
     }
