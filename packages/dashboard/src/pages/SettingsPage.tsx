@@ -68,7 +68,7 @@ function TelemetrySection({ settings, onSaved }: { settings: Settings; onSaved: 
             onClick={() => toggle(true)}
             style={{ fontSize: '0.8rem' }}
           >
-            {saving && !t?.enabled ? <><div className="spinner" style={{ width: 11, height: 11 }} /> Saving…</> : 'Enable'}
+            {saving && !t?.enabled ? <><div className="spinner" style={{ width: 11, height: 11 }} /> Saving…</> : '启用'}
           </button>
           <button
             type="button"
@@ -77,7 +77,7 @@ function TelemetrySection({ settings, onSaved }: { settings: Settings; onSaved: 
             onClick={() => toggle(false)}
             style={{ fontSize: '0.8rem' }}
           >
-            {saving && t?.enabled ? <><div className="spinner" style={{ width: 11, height: 11 }} /> Saving…</> : 'Disable'}
+            {saving && t?.enabled ? <><div className="spinner" style={{ width: 11, height: 11 }} /> Saving…</> : '禁用'}
           </button>
         </div>
       </div>
