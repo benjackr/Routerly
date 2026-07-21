@@ -332,7 +332,7 @@ function targetsHint(provider: EProvider): string | null {
 function summariseChannel(ch: EChannel): string {
   const parts: string[] = [];
   const evCount = ch.events?.length ?? 0;
-  parts.push(evCount === 0 ? 'All events' : `${evCount} event${evCount > 1 ? 's' : ''}`);
+  parts.push(evCount === 0 ? '所有事件' : `${evCount} event${evCount > 1 ? 's' : ''}`);
   const t = ch.targets;
   const targetParts: string[] = [];
   if (t?.roles?.length) targetParts.push(`${t.roles.length} role${t.roles.length > 1 ? 's' : ''}`);
