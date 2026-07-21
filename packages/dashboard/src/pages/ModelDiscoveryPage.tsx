@@ -199,7 +199,7 @@ export function 模型DiscoveryPage() {
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'free', 'low', 'mid', 'high'] as PriceFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${priceFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setPriceFilter(f)}>
-                    {{ all: '全部', free: 'Free', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
+                    {{ all: '全部', free: '免费', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
                   </button>
                 ))}
               </div>
@@ -276,7 +276,7 @@ export function 模型DiscoveryPage() {
                               </span>
                             )}
                             {e.embedding && (
-                              <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>embedding</span>
+                              <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>嵌入模型</span>
                             )}
                             {e.local && (
                               <span title="Runs locally" style={{ color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' }}>
