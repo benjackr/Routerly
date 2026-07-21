@@ -352,6 +352,13 @@ const [discovering, setDiscovering] = useState(false);
 const [importing, setImporting] = useState(false);
 const [discoverError, setDiscoverError] = useState('');
 
+const filteredModels = useMemo(() => {
+  if (!discoverQuery.trim()) return discoveredModels;
+  const q = discoverQuery.toLowerCase();
+  return discoveredModels.filter(m => m.id.toLowerCase().includes(q) || (m.owned_by && m.owned_by.toLowerCase().includes(q)));
+}, [discoveredModels, discoverQuery]);
+
+
   useEffect(() => {
     async function init() {
       try {
