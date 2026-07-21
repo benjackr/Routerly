@@ -147,7 +147,7 @@ export function OverviewPage() {
         {/* Stats grid */}
         <div className="stats-grid">
           <StatCard icon={<DollarSign size={18} />} label="总消耗" accentColor="#3D75F5"
-            value={`$${stats.summary.total费用.toFixed(4)}`} sub="USD this period" />
+            value={`$${stats.summary.totalCost.toFixed(4)}`} sub="USD this period" />
           <StatCard icon={<Activity size={18} />} label="Total Calls" accentColor="#5A90F8"
             value={stats.summary.totalCalls}
             sub={`${stats.summary.routingCalls} routing · ${stats.summary.completionCalls} completion`} />
