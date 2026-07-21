@@ -338,7 +338,7 @@ function summariseChannel(ch: EChannel): string {
   if (t?.roles?.length) targetParts.push(`${t.roles.length} role${t.roles.length > 1 ? 's' : ''}`);
   if (t?.permissions?.length) targetParts.push(`${t.permissions.length} perm${t.permissions.length > 1 ? 's' : ''}`);
   if (t?.users?.length) targetParts.push(`${t.users.length} user${t.users.length > 1 ? 's' : ''}`);
-  parts.push(targetParts.length ? targetParts.join(', ') : 'Everyone');
+  parts.push(targetParts.length ? targetParts.join(', ') : '所有人');
   return parts.join(' · ');
 }
 
@@ -399,7 +399,7 @@ export function SettingsNotificationsTab() {
         const ids = notif?.channels?.map(ch => ch.id) ?? [];
         if (ids.length) setCollapsed(Object.fromEntries(ids.map(id => [id, true])));
       })
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
       .finally(() => setLoading(false));
     // ponytail: load roles + users in parallel for targets editor; failures are non-fatal
     getRoles().then(setRoles).catch(() => {});
@@ -545,7 +545,7 @@ export function SettingsNotificationsTab() {
             style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6 }}>
             {st?.loading
               ? <><div className="spinner" style={{ width: 12, height: 12 }} /> Sending…</>
-              : 'Send Test'}
+              : '发送测试'}
           </button>
         </div>
         {st && !st.loading && (
@@ -1194,7 +1194,7 @@ export function SettingsIntegrationsTab() {
   useEffect(() => {
     getIntegrations()
       .then(setIntegrations)
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load integrations'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载集成失败'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -1228,7 +1228,7 @@ export function SettingsIntegrationsTab() {
       const updated = await updateIntegration(integration.id, { enabled: !integration.enabled });
       setIntegrations(prev => prev.map(i => i.id === updated.id ? updated : i));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to update integration');
+      setError(e instanceof Error ? e.message : '更新集成失败');
     }
   }
 
@@ -1248,7 +1248,7 @@ export function SettingsIntegrationsTab() {
         setCollapsed(c => ({ ...c, [id]: true }));
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save integration');
+      setError(e instanceof Error ? e.message : '保存集成失败');
     } finally {
       setSaving(s => ({ ...s, [id]: false }));
     }
@@ -1286,7 +1286,7 @@ export function SettingsIntegrationsTab() {
       setForms(f => { const n = { ...f }; delete n[id]; return n; });
       setTestResults(r => { const n = { ...r }; delete n[id]; return n; });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to delete integration');
+      setError(e instanceof Error ? e.message : '删除集成失败');
     }
   }
 
@@ -1497,18 +1497,18 @@ export function SettingsCatalogTab() {
     if (!url) return;
     setAddError('');
     if (repos.some(r => r.url === url)) {
-      setAddError('This URL is already in the list.');
+      setAddError('此 URL 已在列表中。');
       return;
     }
     setProbing(true);
     try {
       const probe = await probeRepo(url);
       if (!probe.ok) {
-        setAddError(probe.error ?? 'Could not reach a valid provider catalog at this URL.');
+        setAddError(probe.error ?? '无法在此 URL 找到有效的提供商目录。');
         return;
       }
     } catch {
-      setAddError('Could not reach a valid provider catalog at this URL.');
+      setAddError('无法在此 URL 找到有效的提供商目录。');
       return;
     } finally {
       setProbing(false);
@@ -1534,7 +1534,7 @@ export function SettingsCatalogTab() {
     const url = editUrl.trim();
     setEditError('');
     if (repos.some((r, i) => i !== editIdx && r.url === url)) {
-      setEditError('This URL is already in the list.');
+      setEditError('此 URL 已在列表中。');
       return;
     }
     /* v8 ignore next */
@@ -1567,7 +1567,7 @@ export function SettingsCatalogTab() {
     try {
       const st = await refreshCatalog().catch(() => [] as RepoStatus[]);
       setStatus(st);
-      setSaved('Refreshed.');
+      setSaved('已刷新。');
       setTimeout(() => setSaved(''), 2000);
     } finally {
       setRefreshing(false);
@@ -1636,7 +1636,7 @@ export function SettingsCatalogTab() {
       <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 20 }}>
         {/* Header */}
         <div style={{ display: 'grid', gridTemplateColumns: COL, gap: 0, background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)', padding: '6px 14px' }}>
-          {['#', 'URL', 'Updated', 'Last Check', '状态', ''].map(h => (
+          {['#', 'URL', 'Updated', '上次检查', '状态', ''].map(h => (
             <span key={h} style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
           ))}
         </div>
@@ -1869,7 +1869,7 @@ export function SettingsAboutTab() {
   useEffect(() => {
     getSystemInfo()
       .then(i => { setInfo(i); setUpdateInfo(i.updateInfo); })
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
       .finally(() => setLoading(false));
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, []);
@@ -1887,7 +1887,7 @@ export function SettingsAboutTab() {
       const result = await checkForUpdates();
       setUpdateInfo(result);
     } catch (e) {
-      setUpdateError(e instanceof Error ? e.message : 'Check failed');
+      setUpdateError(e instanceof Error ? e.message : '检查失败');
     } finally {
       setChecking(false);
     }
@@ -1922,11 +1922,11 @@ export function SettingsAboutTab() {
         if (attempts >= 20) {
           clearInterval(pollRef.current!);
           setUpdating(false);
-          setUpdateMsg('Service is restarting. Please reload the page in a moment.');
+          setUpdateMsg('服务正在重启，请稍后重新加载页面。');
         }
       }, 3000);
     } catch (e) {
-      setUpdateError(e instanceof Error ? e.message : 'Update failed');
+      setUpdateError(e instanceof Error ? e.message : '更新失败');
       setUpdating(false);
     }
   }
@@ -1966,7 +1966,7 @@ export function SettingsAboutTab() {
         {updateInfo ? (
           <>
             <InfoRow label="当前版本" value={`v${updateInfo.currentVersion}`} />
-            <InfoRow label="可用版本" value={updateInfo.available ? `v${updateInfo.latestVersion}` : 'Up to date'} />
+            <InfoRow label="可用版本" value={updateInfo.available ? `v${updateInfo.latestVersion}` : '已是最新'} />
             {updateInfo.checkedAt && (
               <InfoRow label="上次检查" value={new Date(updateInfo.checkedAt).toLocaleString()} />
             )}
@@ -1983,7 +1983,7 @@ export function SettingsAboutTab() {
             disabled={checking || updating}
             style={{ fontSize: '0.83rem' }}
           >
-            {checking ? <><span className="spinner" style={{ width: 12, height: 12, marginRight: 6 }} />Checking…</> : 'Check for updates'}
+            {checking ? <><span className="spinner" style={{ width: 12, height: 12, marginRight: 6 }} />Checking…</> : '检查更新'}
           </button>
           {!info.isDocker && updateInfo?.available && (
             <button
@@ -2020,8 +2020,8 @@ export function SettingsAboutTab() {
 const TABS = [
   { path: 'general',       label: '通用' },
   { path: 'notifications', label: '通知' },
-  { path: 'integrations',  label: 'Integrations' },
-  { path: 'catalog',       label: 'Provider Catalog' },
+  { path: 'integrations',  label: '集成' },
+  { path: 'catalog',       label: '提供商目录' },
   { path: 'users',         label: '用户' },
   { path: 'roles',         label: '角色' },
   { path: 'audit',         label: '审计日志' },
