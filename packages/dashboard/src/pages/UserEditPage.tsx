@@ -27,7 +27,7 @@ export function UserEditPage() {
         setRoles(allRoles);
         setForm({ email: u.email, roleId: u.roleId, newPassword: '' });
       })
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load user'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载用户失败'))
       .finally(() => setLoading(false));
   }, [userId]);   // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -47,7 +47,7 @@ export function UserEditPage() {
       setSaved(true);
       setTimeout(/* v8 ignore next */ () => setSaved(false), 3000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      setError(e instanceof Error ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
@@ -62,7 +62,7 @@ export function UserEditPage() {
           <ArrowLeft size={15} />
         </button>
         <div>
-          <h1 style={{ margin: 0 }}>Edit User</h1>
+          <h1 style={{ margin: 0 }}>编辑用户</h1>
           <p style={{ margin: 0 }}>{user?.email}</p>
         </div>
       </div>
