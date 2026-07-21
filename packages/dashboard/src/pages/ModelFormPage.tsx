@@ -896,6 +896,8 @@ export function ModelFormPage() {
                 </div>
               </div>
 
+            )}
+
             <div className="form-group">
               <label className="form-label">端点 URL</label>
               <input className="form-input" value={form.endpoint}
