@@ -870,14 +870,6 @@ const filteredModels = useMemo(() => {
   </div>
 
   <div className="form-group">
-    <label className="form-label">提供商</label>
-    <select className="form-input" value={form.provider}
-      onChange={e => handleProviderChange(e.target.value as Provider)}>
-      {PROVIDERS.map(p => <option key={p} value={p}>{PROVIDER_LABELS[p] ?? p}</option>)}
-    </select>
-  </div>
-
-  <div className="form-group">
     <label className="form-label">端点 URL</label>
     <input className="form-input" value={form.endpoint}
       onChange={e => setForm(f => ({ ...f, endpoint: e.target.value }))} required />
@@ -941,43 +933,6 @@ const filteredModels = useMemo(() => {
           onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value }))}
           placeholder="e.g. deepseek, mistral, groq" required />
         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>Used as prefix for the Routerly ID (e.g. {form.customProviderName}/{form.id || "model"}).</div>
-      </div>
-      <div className="form-group">
-        <label className="form-label">Model <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(upstream model ID)</span></label>
-        <input className="form-input" value={form.id}
-          onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
-          placeholder="e.g. deepseek-r1, mistral-large-latest" required />
-        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The model identifier sent to the upstream API.</div>
-      </div>
-    </>
-  ) : (
-    <div className="form-group">
-      <label className="form-label">Model Preset</label>
-      {providerModels.length > 0 ? (
-        <select className="form-input" value={isCustomModel ? '__custom__' : form.id}
-          onChange={e => handleModelChange(e.target.value)}>
-          {providerModels.map(m => <option key={m.id} value={m.id}>{m.id}</option>)}
-          <option value="__custom__">--- custom model name ---</option>
-        </select>
-      ) : null}
-      {(isCustomModel || providerModels.length === 0) && (
-        <input className="form-input" style={{ marginTop: providerModels.length > 0 ? 6 : 0 }}
-          value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
-          placeholder='例如：my-fine-tuned-model' required autoFocus />
-      )}
-      {!isCustomModel && selectedPreset?.notes && (
-        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{selectedPreset.notes}</div>
-      )}
-    </div>
-  )}
-
-  {/* --- 拉取模型 --- */}
-  <div className="form-group">
-    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-      <button type="button"
-        onClick={handleDiscover}
-        disabled={discovering}
-        style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 15%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 40%, transparent)', borderRadius: 6, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.82rem', fontWeight: 500 }}>
         {discovering ? <span className="spinner" style={{ width: 13, height: 13 }} /> : "\uD83D\uDD0D"}
         拉取模型
       </button>
