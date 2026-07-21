@@ -545,7 +545,7 @@ export function ModelsPage() {
         />
       )}
 
-          </>
+    </>
 
   );
 }
