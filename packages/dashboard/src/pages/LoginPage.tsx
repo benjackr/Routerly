@@ -46,7 +46,7 @@ export function LoginPage() {
         navigate(redirectTo, { replace: true });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : '登录失败');
     } finally {
       setLoading(false);
     }
@@ -79,14 +79,14 @@ export function LoginPage() {
         <div className="login-card">
           <div className="login-logo">
             <Logo size={52} />
-            <h1>Two-Factor Authentication</h1>
-            <p>{useBackupCode ? 'Enter a backup code.' : 'Enter the 6-digit code from your authenticator app.'}</p>
+            <h1>双因素认证</h1>
+            <p>{useBackupCode ? '输入备用验证码。' : 'Enter the 6-digit code from your authenticator app.'}</p>
           </div>
           <form onSubmit={handleTotpSubmit}>
             {error && <div className="form-error">{error}</div>}
             <div className="form-group">
               <label className="form-label" htmlFor="totp-code">
-                {useBackupCode ? 'Backup Code' : 'Authenticator Code'}
+                {useBackupCode ? '备用验证码' : '验证器代码'}
               </label>
               <input
                 id="totp-code"
@@ -106,7 +106,7 @@ export function LoginPage() {
               disabled={loading}
               style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
             >
-              {loading ? <span className="spinner" /> : 'Verify'}
+              {loading ? <span className="spinner" /> : '验证'}
             </button>
             <button
               type="button"
@@ -114,7 +114,7 @@ export function LoginPage() {
               style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
               onClick={() => { setUseBackupCode(b => !b); setTotpCode(''); setError(''); }}
             >
-              {useBackupCode ? 'Use authenticator app instead' : 'Use a backup code instead'}
+              {useBackupCode ? '改用验证器应用' : '改用备用验证码'}
             </button>
           </form>
         </div>
@@ -128,7 +128,7 @@ export function LoginPage() {
         <div className="login-logo">
           <Logo size={52} />
           <h1>Routerly.ai</h1>
-          <p>One gateway. Any AI model. Total control.</p>
+          <p>一个网关。任何 AI 模型。完全掌控。</p>
         </div>
         <form onSubmit={handleSubmit}>
           {error && <div className="form-error">{error}</div>}
