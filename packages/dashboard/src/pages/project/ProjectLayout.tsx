@@ -20,7 +20,7 @@ export function ProjectLayout() {
       .then(ps => {
         const found = ps.find(p => p.id === id);
         if (found) setProject(found);
-        else setErr('Project not found');
+        else setErr('项目未找到');
       })
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false));
@@ -62,7 +62,7 @@ export function ProjectLayout() {
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 style={{ margin: 0 }}>{isNew ? 'New Project' : project?.name || 'Loading...'}</h1>
+            <h1 style={{ margin: 0 }}>{isNew ? '新建项目' : project?.name || 'Loading...'}</h1>
             {!isNew && project && (
               <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                 Project ID: <span className="mono">{project.id}</span>
