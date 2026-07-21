@@ -23,7 +23,7 @@ function TelemetrySection({ settings, onSaved }: { settings: Settings; onSaved: 
       const updated = await updateSettings({ telemetry: { enabled } } as Partial<Settings>);
       onSaved(updated);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      setError(e instanceof Error ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
@@ -39,10 +39,10 @@ function TelemetrySection({ settings, onSaved }: { settings: Settings; onSaved: 
         <p style={{ fontSize: '0.83rem', color: 'var(--text-primary)', margin: '0 0 4px' }}>
           <strong>Routerly never sends data automatically.</strong>{' '}
           {t === undefined
-            ? 'You have not made a choice yet.'
+            ? '你尚未做出选择。'
             : t.enabled
-              ? 'Anonymous install metrics are enabled.'
-              : 'Anonymous install metrics are disabled.'}
+              ? '匿名安装指标已启用。'
+              : '匿名安装指标已禁用。'}
         </p>
         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0 0 12px' }}>
           When enabled, Routerly sends only: event type (install / upgrade / uninstall), version, platform, and a random ID.
@@ -104,7 +104,7 @@ export function SettingsGeneralTab() {
       setSettings(s);
       setForm({ defaultTimeoutMs: s.defaultTimeoutMs, logLevel: s.logLevel, publicUrl: s.publicUrl || `http://localhost:${s.port}`, ...(s.requireMfa !== undefined ? { requireMfa: s.requireMfa } : {}), ...(s.notifications ? { notifications: s.notifications } : {}) });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load settings');
+      setError(e instanceof Error ? e.message : '加载设置失败');
     } finally {
       setLoading(false);
     }
@@ -121,7 +121,7 @@ export function SettingsGeneralTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save settings');
+      setError(e instanceof Error ? e.message : '保存设置失败');
     } finally {
       setSaving(false);
     }
@@ -133,7 +133,7 @@ export function SettingsGeneralTab() {
 
   if (loading) return <div className="loading-center"><div className="spinner" /></div>;
   /* v8 ignore next */
-  if (!settings) return <div className="form-error" style={{ margin: 24 }}>{error || 'Failed to load settings.'}</div>;
+  if (!settings) return <div className="form-error" style={{ margin: 24 }}>{error || '加载设置失败。'}</div>;
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 560 }}>
@@ -144,19 +144,19 @@ export function SettingsGeneralTab() {
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div>
-            <label className="form-label">Host</label>
+            <label className="form-label">主机</label>
             <input className="form-input" value={settings?.host ?? ''} disabled readOnly />
           </div>
           <div>
-            <label className="form-label">Port</label>
+            <label className="form-label">端口</label>
             <input className="form-input" value={settings?.port ?? ''} disabled readOnly />
           </div>
         </div>
         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 8 }}>
-          Host and port are configured via environment variables or the settings file and cannot be changed here.
+          主机 and port are configured via environment variables or the settings file and cannot be changed here.
         </p>
         <div className="form-group" style={{ marginTop: 14 }}>
-          <label className="form-label" htmlFor="s-publicurl">Service Host</label>
+          <label className="form-label" htmlFor="s-publicurl">Service 主机</label>
           <input
             id="s-publicurl"
             className="form-input"
@@ -167,7 +167,7 @@ export function SettingsGeneralTab() {
           />
           <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: 4 }}>
             Base URL at which the service is reachable from external clients (e.g. <code>http://192.168.1.10:3000</code>).
-            Used in the <strong>How to connect</strong> section of each project.
+            Used in the <strong>如何连接</strong> section of each project.
             Useful when the dashboard runs on a different machine or port than the service.
           </p>
         </div>
@@ -179,7 +179,7 @@ export function SettingsGeneralTab() {
         </h3>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="s-timeout">Default Request Timeout (ms)</label>
+          <label className="form-label" htmlFor="s-timeout">默认请求超时（毫秒）</label>
           <input
             id="s-timeout"
             type="number"
@@ -433,7 +433,7 @@ export function SettingsNotificationsTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      setError(e instanceof Error ? e.message : '保存失败');
     } finally { setSaving(false); }
   }
 
@@ -662,12 +662,12 @@ export function SettingsNotificationsTab() {
           {emailBaseFields(ch)}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px', gap: 12 }}>
             <div className="form-group">
-              <label className="form-label">Host</label>
+              <label className="form-label">主机</label>
               <input className="form-input" value={ch.host}
                 onChange={e => uf(ch.id, 'host', e.target.value)} placeholder="smtp.example.com" required />
             </div>
             <div className="form-group">
-              <label className="form-label">Port</label>
+              <label className="form-label">端口</label>
               <input className="form-input" type="number" value={ch.port}
                 onChange={e => uf(ch.id, 'port', Number(e.target.value))} required />
             </div>
@@ -1476,7 +1476,7 @@ export function SettingsCatalogTab() {
         setRepos(s.providerRepos ?? [{ url: DEFAULT_REPO_URL, enabled: true }]);
         setStatus(st);
       })
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load settings'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载设置失败'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -1771,7 +1771,7 @@ function ChannelSelector({
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Failed to save');
+      setErr(e instanceof Error ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
