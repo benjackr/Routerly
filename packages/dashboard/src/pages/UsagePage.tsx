@@ -37,7 +37,7 @@ export function UsagePage() {
   const [stats, setStats]               = useState<UsageStats | null>(null);
   const [projects, setProjects]         = useState<Project[]>([]);
   const [allModels, setAllModels]       = useState<Model[]>([]);
-  const [dateRange, setDateRange]       = useFilterState<DateRange>({ key: 'usage-filters-dateRange', defaultValue: { from: '', to: '', label: 'This month' } });
+  const [dateRange, setDateRange]       = useFilterState<DateRange>({ key: 'usage-filters-dateRange', defaultValue: { from: '', to: '', label: '本月' } });
   const [projectIds, setProjectIds]     = useFilterState<string[]>({ key: 'usage-filters-projectIds', defaultValue: [] });
   const [modelIds, setModelIds]         = useFilterState<string[]>({ key: 'usage-filters-modelIds', defaultValue: [] });
   const [callTypeFilter, setCallTypeFilter] = useFilterState<'all' | 'completion' | 'routing' | 'guardrail'>({ key: 'usage-filters-callType', defaultValue: 'all' });
@@ -85,8 +85,8 @@ export function UsagePage() {
       const from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
       setDateRange({ from, to: today, label: '本月' });
     } else if (dateRange.to && dateRange.to.slice(0, 10) < today) {
-      // ponytail: 'This month' is a legacy EN label stored in older localStorage entries
-      const label = dateRange.label === 'This month' ? '本月' : dateRange.label;
+      // ponytail: '本月' is a legacy EN label stored in older localStorage entries
+      const label = dateRange.label === '本月' ? '本月' : dateRange.label;
       const preset = PRESETS.find(p => p.label === label);
       if (preset) setDateRange(preset.range());
     }
@@ -470,10 +470,10 @@ export function UsagePage() {
                         {th('调用次数', 'calls', 'right')}
                         {th('错误', 'errors', 'right')}
                         {th('成功率', 'successRate', 'right')}
-                        {th('Avg latency', 'avgLatency', 'right')}
+                        {th('平均延迟', 'avgLatency', 'right')}
                         {th('P95 latency', 'p95Latency', 'right')}
-                        {th('Input tokens', 'inputTokens', 'right')}
-                        {th('Output tokens', 'outputTokens', 'right')}
+                        {th('输入令牌', 'inputTokens', 'right')}
+                        {th('输出令牌', 'outputTokens', 'right')}
                         {th('Cost / 1K', 'costPer1k', 'right')}
                         {th('消耗(美元)', 'cost', 'right')}
                       </tr>
