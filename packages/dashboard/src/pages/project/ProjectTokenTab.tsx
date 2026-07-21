@@ -38,7 +38,7 @@ export function ProjectTokenTab() {
           await deleteProjectToken(project.id, tokenId);
           /* v8 ignore next */
           setProject(p => p ? { ...p, tokens: p.tokens?.filter(t => t.id !== tokenId) || [] } : p);
-        } catch (e) { setErr(e instanceof Error ? e.message : 'Error deleting token'); }
+        } catch (e) { setErr(e instanceof Error ? e.message : '删除令牌失败'); }
         finally { setLoading(false); }
       },
     });
