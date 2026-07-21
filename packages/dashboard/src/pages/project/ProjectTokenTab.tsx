@@ -132,7 +132,7 @@ export function ProjectTokenTab() {
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="btn-icon" onClick={() => openEdit(token.id)} disabled={loading} title="Edit Configuration">
+                    <button className="btn-icon" onClick={() => openEdit(token.id)} disabled={loading} title="编辑配置">
                       <Edit2 size={16} />
                     </button>
                     <button className="btn-icon danger" onClick={() => handleDelete(token.id, token.tokenSnippet || '')} disabled={loading} title="撤销 Token">
