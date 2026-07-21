@@ -531,7 +531,6 @@ export function ModelsPage() {
       </div>
       {confirmState && (
 
-          </>
 
         <ConfirmDialog
           message={confirmState.message}
@@ -541,5 +540,8 @@ export function ModelsPage() {
           confirmLabel="删除"
         />
       )}
+
+          </>
+
   );
 }
