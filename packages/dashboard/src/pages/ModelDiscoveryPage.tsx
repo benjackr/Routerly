@@ -167,7 +167,7 @@ placeholder="模型 ID 或名称…"
                 options={providerOptions}
                 value={selectedProviders}
                 onChange={setSelectedProviders}
-                placeholder="All providers"
+                placeholder="全部提供商"
               />
             </div>
 
@@ -279,7 +279,7 @@ placeholder="模型 ID 或名称…"
 <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>嵌入模型</span>
                             )}
                             {e.local && (
-                              <span title="Runs locally" style={{ color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' }}>
+                              <span title="本地运行" style={{ color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' }}>
                                 <HardDrive size={11} />
                               </span>
                             )}
