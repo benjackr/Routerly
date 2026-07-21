@@ -55,7 +55,7 @@ export function ProjectTokenCreatePage() {
       const result = await createProjectToken(projectId, createLabels, Object.keys(createTags).length ? createTags : undefined);
       setProject(p => p ? { ...p, tokens: [...(p.tokens || []), result.tokenInfo] } : p);
       setRevealedToken(result.token);
-    } catch (e) { setErr(e instanceof Error ? e.message : 'Error creating token'); }
+    } catch (e) { setErr(e instanceof Error ? e.message : '创建令牌失败'); }
     finally { setLoading(false); }
   }
 
