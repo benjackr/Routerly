@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Plus, Trash2, Server, Edit2, Copy, ChevronUp, ChevronDown, ChevronsUpDown, Search, X, Telescope, FlaskConical, DownloadCloud } from 'lucide-react';
-import { getModels, deleteModel, testModel, getProviderHealth, discoverModels, importModels, type Model, type ProviderHealth, type DiscoverResult } from '../api';
+import { getModels, deleteModel, testModel, getProviderHealth, type Model, type ProviderHealth } from '../api';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 
 type SortKey = 'id' | 'provider' | 'endpoint' | 'input' | 'output' | 'cache' | 'context';
@@ -96,18 +96,6 @@ export function ModelsPage() {
   const [page, setPage] = useState(1);
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
   const [testResults, setTestResults] = useState<Record<string, 'loading' | { ok: boolean; latencyMs: number; error?: string }>>({});
-  const [showFetchModal, setShowFetchModal] = useState(false);
-  const [fetchEndpoint, setFetchEndpoint] = useState('');
-  const [fetchApiKey, setFetchApiKey] = useState('');
-  const [fetchLoading, setFetchLoading] = useState(false);
-  const [fetchError, setFetchError] = useState('');
-  const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; owned_by?: string; created?: number }>>([]);
-  const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set());
-  const [importLoading, setImportLoading] = useState(false);
-  const [fetchSearch, setFetchSearch] = useState('');
-  const [providerName, setProviderName] = useState('');
-  const [selectedForDelete, setSelectedForDelete] = useState<Set<string>>(new Set());
-  const [importResult, setImportResult] = useState<{imported: number; total: number} | null>(null);
   const healthActive = useRef(true);
 
   // Health tab state
@@ -142,69 +130,6 @@ export function ModelsPage() {
     return () => { healthActive.current = false; clearInterval(id); };
   }, []);
 
-  async function handleFetchDiscover() {
-    if (!fetchEndpoint) return;
-    setFetchLoading(true);
-    setFetchError('');
-    setImportResult(null);
-    setDiscoveredModels([]);
-    setSelectedModels(new Set());
-    try { setProviderName(new URL(fetchEndpoint).hostname.replace('api.', '').replace('.com', '')); } catch (e) {}
-    try {
-      const result = await discoverModels(fetchEndpoint, fetchApiKey);
-      if (!result.success) {
-        setFetchError(result.error || 'Discovery failed');
-        return;
-      }
-      setDiscoveredModels(result.models || []);
-    } catch (err) {
-      setFetchError((err as Error).message);
-    } finally {
-      setFetchLoading(false);
-    }
-  }
-
-  function toggleModel(id: string) {
-    setSelectedModels(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  function toggleAllModels() {
-    setSelectedModels(prev => {
-      if (prev.size === discoveredModels.length) return new Set();
-      return new Set(discoveredModels.map(m => m.id));
-    });
-  }
-
-  async function handleImport() {
-    if (selectedModels.size === 0) return;
-    setImportLoading(true);
-    try {
-      const provider = providerName || new URL(fetchEndpoint).hostname.replace('api.', '').replace('.com', '');
-      const result = await importModels({
-        provider,
-        endpoint: fetchEndpoint,
-        apiKey: fetchApiKey,
-        modelIds: Array.from(selectedModels),
-      });
-      setImportResult(result);
-      setShowFetchModal(false);
-      setFetchEndpoint('');
-      setFetchApiKey('');
-      setDiscoveredModels([]);
-      setSelectedModels(new Set());
-      // Reload the model list
-      setModels(await getModels());
-    } catch (err) {
-      setFetchError((err as Error).message);
-    } finally {
-      setImportLoading(false);
-    }
-  }
 
   async function handleTest(id: string) {
     setTestResults(r => ({ ...r, [id]: 'loading' }));
@@ -385,7 +310,6 @@ export function ModelsPage() {
                   <Telescope size={16} /> 发现
                 </Link>
                 <button className="btn" onClick={() => setShowFetchModal(true)}>
-                  <DownloadCloud size={16} /> 添加提供商
                 </button>
                 <Link to="/dashboard/models/new" className="btn btn-primary">
                   <Plus size={16} /> 添加模型
