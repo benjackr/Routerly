@@ -6,7 +6,7 @@ import type { RedactedChannel, Role, User } from '../api';
 import {
   ChannelEditFields,
   RoutingEditFields,
-  RecipientsEditFields,
+  收件人EditFields,
   providerLabel,
 } from './notificationChannelFields';
 import type { ChannelProvider } from './notificationChannelFields';
@@ -51,7 +51,7 @@ export function NotificationChannelEditPage() {
         setRoles(r);
         setUsers(u);
       })
-      .catch(e => setError(e instanceof Error ? e.message : 'Failed to load'))
+      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -94,7 +94,7 @@ export function NotificationChannelEditPage() {
       await updateNotificationChannel(id, patch);
       navigate('/dashboard/settings/notifications');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to save');
+      setError(e instanceof Error ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
@@ -149,7 +149,7 @@ export function NotificationChannelEditPage() {
           onClick={() => navigate('/dashboard/settings/notifications')}
         >
           <ArrowLeft size={16} />
-          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>Back to Notifications</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>返回通知</span>
         </button>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
           Edit {providerLabel(provider)} channel
@@ -187,7 +187,7 @@ export function NotificationChannelEditPage() {
 
         {activeTab === 'connection' && (
           <div className="form-section">
-            <h3 className="section-title">Channel settings</h3>
+            <h3 className="section-title">频道设置</h3>
             <div className="form-group">
               <label className="form-label">
                 Name <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span>
@@ -205,21 +205,21 @@ export function NotificationChannelEditPage() {
 
         {activeTab === 'routing' && (
           <div className="form-section">
-            <h3 className="section-title">Events and routing</h3>
+            <h3 className="section-title">事件和路由</h3>
             <RoutingEditFields form={form} onChange={onChange} />
           </div>
         )}
 
         {activeTab === 'recipients' && (
           <div className="form-section">
-            <h3 className="section-title">Recipients</h3>
-            <RecipientsEditFields form={form} onChange={onChange} roles={roles} users={users} />
+            <h3 className="section-title">收件人</h3>
+            <收件人EditFields form={form} onChange={onChange} roles={roles} users={users} />
           </div>
         )}
 
           {/* Test section */}
           <div className="form-section">
-            <h3 className="section-title">Send test</h3>
+            <h3 className="section-title">发送测试</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 {showRecipient && (
@@ -246,8 +246,8 @@ export function NotificationChannelEditPage() {
               </div>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: 0 }}>
                 {showRecipient
-                  ? 'Leave empty to send to your account email. Test uses the saved channel configuration.'
-                  : 'Test uses the saved channel configuration. Save changes first to test updated settings.'}
+                  ? '留空则发送到你的账号邮箱。测试使用已保存的频道配置。'
+                  : '测试使用已保存的频道配置。请先保存更改以测试新配置。'}
               </p>
               {testStatus && !testStatus.loading && (
                 <div style={{
@@ -274,7 +274,7 @@ export function NotificationChannelEditPage() {
             <button type="submit" className="btn btn-primary" disabled={saving}>
               {saving
                 ? <><span className="spinner" style={{ width: 14, height: 14 }} /> Saving…</>
-                : 'Save Changes'}
+                : '保存更改'}
             </button>
           </div>
         </form>
