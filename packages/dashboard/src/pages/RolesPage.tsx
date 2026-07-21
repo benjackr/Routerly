@@ -107,7 +107,7 @@ export function RolesPage() {
 
   function handleDelete(id: string) {
     setConfirmState({
-      message: 'Delete this role? Users with this role will be affected.',
+      message: '确定删除此角色？拥有此角色的用户将受影响。',
       onConfirm: async () => {
         setConfirmState(null);
         setError('');
