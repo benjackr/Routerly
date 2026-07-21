@@ -10,10 +10,10 @@ import { useTheme } from '../ThemeContext.js';
 const PALETTE = ['#3d75f5', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#8b5cf6', '#06b6d4', '#f97316'];
 
 const PERIOD_LABEL: Record<string, string> = {
-  daily: 'Cost per Hour (USD)',
-  weekly: 'Cost per Week (USD)',
-  monthly: 'Daily Cost (USD)',
-  all: 'Cost over Time (USD)',
+  daily: '每小时费用（美元）',
+  weekly: '每周费用（美元）',
+  monthly: '每日费用（美元）',
+  all: '费用趋势（美元）',
 };
 
 export function OverviewPage() {
@@ -111,7 +111,7 @@ export function OverviewPage() {
   }, [stats]);
 
   if (!stats) {
-    if (statsError) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)' }}>No permission to view usage data.</div>;
+    if (statsError) return <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)' }}>无权限查看用量数据。</div>;
     return <div className="loading-center"><div className="spinner" /></div>;
   }
 
@@ -126,7 +126,7 @@ export function OverviewPage() {
     <>
       <div className="page-header">
         <h1>概览</h1>
-        <p>Usage summary and cost breakdown</p>
+        <p>用量概览与费用明细</p>
       </div>
       <div className="page-body">
 
@@ -147,7 +147,7 @@ export function OverviewPage() {
         {/* Stats grid */}
         <div className="stats-grid">
           <StatCard icon={<DollarSign size={18} />} label="总消耗" accentColor="#3D75F5"
-            value={`$${stats.summary.totalCost.toFixed(4)}`} sub="USD this period" />
+            value={`$${stats.summary.total费用.toFixed(4)}`} sub="USD this period" />
           <StatCard icon={<Activity size={18} />} label="Total Calls" accentColor="#5A90F8"
             value={stats.summary.totalCalls}
             sub={`${stats.summary.routingCalls} routing · ${stats.summary.completionCalls} completion`} />
@@ -156,7 +156,7 @@ export function OverviewPage() {
               ? `${((stats.summary.successCalls / stats.summary.totalCalls) * 100).toFixed(1)}%`
               : '—'}
             sub="of all requests" />
-          <StatCard icon={<XCircle size={18} />} label="Errors" accentColor="#EF4444" valueColor="#EF4444"
+          <StatCard icon={<XCircle size={18} />} label="错误" accentColor="#EF4444" valueColor="#EF4444"
             value={stats.summary.errorCalls} sub="failed requests" />
           <StatCard icon={<Boxes size={18} />} label="模型" accentColor="#8B5CF6"
             value={modelCount} sub="registered" />
@@ -167,19 +167,19 @@ export function OverviewPage() {
         {/* Token aggregate strip */}
         {(totalIn > 0 || totalOut > 0) && (
           <div style={{ marginBottom: 20, fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            <span>Input tokens: <strong style={{ color: 'var(--text-secondary)' }}>{totalIn.toLocaleString()}</strong></span>
+            <span>输入令牌： <strong style={{ color: 'var(--text-secondary)' }}>{totalIn.toLocaleString()}</strong></span>
             <span>·</span>
-            <span>Output tokens: <strong style={{ color: 'var(--text-secondary)' }}>{totalOut.toLocaleString()}</strong></span>
+            <span>输出令牌： <strong style={{ color: 'var(--text-secondary)' }}>{totalOut.toLocaleString()}</strong></span>
             {totalCached > 0 && (
               <>
                 <span>·</span>
-                <span>Cached: <strong style={{ color: 'var(--text-secondary)' }}>{totalCached.toLocaleString()}</strong></span>
+                <span>已缓存： <strong style={{ color: 'var(--text-secondary)' }}>{totalCached.toLocaleString()}</strong></span>
               </>
             )}
           </div>
         )}
 
-        {/* Cost timeline */}
+        {/* 费用 timeline */}
         {timelineData.length > 0 && (
           <div className="chart-card">
             <h3>{PERIOD_LABEL[period]}</h3>
@@ -194,21 +194,21 @@ export function OverviewPage() {
                 <XAxis dataKey="date" tick={{ fill: tickColor, fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: tickColor, fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `$${v}`} />
                 <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: tickColor }}
-                  formatter={(v) => [`$${(v as number).toFixed(8)}`, 'Cost']} />
+                  formatter={(v) => [`$${(v as number).toFixed(8)}`, '费用']} />
                 <Area type="monotone" dataKey="cost" stroke="#5A90F8" fill="url(#grad)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         )}
 
-        {/* Cost by model (bar) + Calls by model (table) */}
+        {/* 费用 by model (bar) + Calls by model (table) */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
 
           {/* Horizontal bar chart — top models by cost */}
           <div className="chart-card" style={{ marginBottom: 0 }}>
-            <h3>Cost by Model</h3>
+            <h3>按模型计费</h3>
             {barData.length === 0 ? (
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', paddingTop: 8 }}>No cost recorded this period.</p>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', paddingTop: 8 }}>本期无记录。</p>
             ) : (
               <ResponsiveContainer key={period} width="100%" height={Math.max(barData.length * 36, 120)}>
                 <BarChart data={barData} layout="vertical" margin={{ left: 8, right: 32 }}>
@@ -228,15 +228,15 @@ export function OverviewPage() {
 
           {/* Calls by model table */}
           <div className="chart-card" style={{ marginBottom: 0 }}>
-            <h3>Calls by Model</h3>
+            <h3>按模型调用</h3>
             <div className="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>模型</th>
                     <th style={{ textAlign: 'right' }}>调用次数</th>
-                    <th style={{ textAlign: 'right' }}>Errors</th>
-                    <th style={{ textAlign: 'right' }}>Cost</th>
+                    <th style={{ textAlign: 'right' }}>错误</th>
+                    <th style={{ textAlign: 'right' }}>费用</th>
                   </tr>
                 </thead>
                 <tbody>
