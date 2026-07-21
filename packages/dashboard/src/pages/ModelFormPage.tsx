@@ -1119,7 +1119,7 @@ const filteredModels = useMemo(() => {
                     placeholder="us-central1" />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Service Account Key <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(JSON)</span></label>
+                  <label className="form-label">服务账号密钥 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>（JSON）</span></label>
                   <textarea className="form-input" rows={6}
                     value={form.vertexServiceAccountKey}
                     onChange={e => setForm(f => ({ ...f, vertexServiceAccountKey: e.target.value }))}
