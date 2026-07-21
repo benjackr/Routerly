@@ -855,151 +855,150 @@ const filteredModels = useMemo(() => {
 
 {/* ── Section: Model Information ────────────────────── */}
 
-<div className="form-section">
-  <h3 className="section-title">Model Identification</h3>
-  <p className="section-desc">Unique identifier and provider settings for this model configuration.</p>
+           <div className="form-section">
+            <h3 className="section-title">Model Identification</h3>
+            <p className="section-desc">Unique identifier and provider settings for this model configuration.</p>
 
-  <div className="form-group">
-    <label className="form-label">
-      Routerly ID <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional — default: <code style={{ fontSize: '0.78rem' }}>{autoId || `${autoIdPrefix}/model`}</code>)</span>
-    </label>
-    <input className="form-input" value={form.customId} name="modelId" autoComplete="关闭"
-      onChange={e => setForm(f => ({ ...f, customId: e.target.value }))}
-      placeholder={autoId || `${autoIdPrefix}/model`} />
-    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The identifier used when referencing this model in Routerly API calls. Also shown as provider name in the model list.</div>
-  </div>
-
-  <div className="form-group">
-    <label className="form-label">端点 URL</label>
-    <input className="form-input" value={form.endpoint}
-      onChange={e => setForm(f => ({ ...f, endpoint: e.target.value }))} required />
-  </div>
-
-  <div className="form-group">
-    <label className="form-label">
-      {isWebProvider(form.provider)
-        ? WEB_PROVIDER_TOKEN_LABEL[form.provider as WebProvider]
-        : isSubscriptionProvider(form.provider)
-        ? SUBSCRIPTION_TOKEN_LABEL[form.provider as SubscriptionProvider]
-        : 'API 密钥/令牌'}
-    </label>
-    {form.provider === 'openai-oauth' ? (
-      <>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <input className="form-input" type="text"
-            name="apiKey" autoComplete="off"
-            value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: e.target.value })); setOauthTest({ status: 'idle' }); }}
-            placeholder={(editingModelId || isCloning) ? '留空以保留现有路径' : '~/.codex/auth.json (default)'}
-            style={{ flex: 1 }} />
-          <button type="button"
-            onClick={handleTestOAuth}
-            disabled={oauthTest.status === 'testing'}
-            style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, padding: '0 14px', height: 38, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500, whiteSpace: 'nowrap' }}>
-            {oauthTest.status === 'testing' ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <FlaskConical size={14} />}
-            测试
-          </button>
-        </div>
-        {oauthTest.status === 'ok' && (
-          <div style={{ marginTop: 6, fontSize: '0.78rem', color: '#4ade80' }}>
-            {oauthTest.msg}
-          </div>
-        )}
-        {oauthTest.status === 'error' && (
-          <div style={{ marginTop: 6, fontSize: '0.78rem', color: '#f87171' }}>
-            {oauthTest.msg}
-          </div>
-        )}
-      </>
-    ) : (
-      <div style={{ position: 'relative' }}>
-        <input className="form-input" type={showToken ? 'text' : 'password'}
-          name="apiKey" autoComplete="new-password"
-          value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: e.target.value }))}
-          placeholder={editingModelId ? '留空以保留现有密钥' : isCloning ? '留空以保留现有密钥' : isWebProvider(form.provider) ? WEB_PROVIDER_TOKEN_PLACEHOLDER[form.provider as WebProvider] : isSubscriptionProvider(form.provider) ? SUBSCRIPTION_TOKEN_PLACEHOLDER[form.provider as SubscriptionProvider] : form.provider === 'ollama' ? '本地模型不需要' : 'sk-…'}
-          style={{ paddingRight: 40 }} />
-        <button type="button" onClick={() => setShowToken(v => !v)}
-          style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 0, display: 'flex', alignItems: 'center' }}>
-          {showToken ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
-      </div>
-    )}
-  </div>
-
-  {form.provider === 'custom' ? (
-    <>
-      <div className="form-group">
-        <label className="form-label">Provider <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(upstream provider name)</span></label>
-        <input className="form-input" value={form.customProviderName}
-          onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value }))}
-          placeholder="e.g. deepseek, mistral, groq" required />
-        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>Used as prefix for the Routerly ID (e.g. {form.customProviderName}/{form.id || "model"}).</div>
-        {discovering ? <span className="spinner" style={{ width: 13, height: 13 }} /> : "\uD83D\uDD0D"}
-        拉取模型
-      </button>
-
-      <input className="form-input" type="text"
-        value={discoverQuery}
-        onChange={e => setDiscoverQuery(e.target.value)}
-        placeholder='搜索模型…'
-        style={{ flex: 1, minWidth: 160, maxWidth: 260, height: 34, fontSize: '0.82rem' }} />
-
-      {selectedModelIds.size > 0 && (
-        <button type="button"
-          onClick={handleImportSelected}
-          disabled={importing}
-          style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 25%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 60%, transparent)', borderRadius: 6, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.82rem', fontWeight: 500 }}>
-          {importing ? <span className="spinner" style={{ width: 13, height: 13 }} /> : "\u2713"}
-          添加选中 ({selectedModelIds.size})
-        </button>
-      )}
-    </div>
-
-    {discoverError && (
-      <div style={{ padding: '6px 10px', borderRadius: 6, marginTop: 8, background: 'color-mix(in srgb, #ef4444 10%, transparent)', border: '1px solid color-mix(in srgb, #ef4444 30%, transparent)', color: '#f87171', fontSize: '0.82rem' }}>
-        {discoverError}
-      </div>
-    )}
-
-    {discoveredModels.length > 0 && (
-      <>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 8, marginBottom: 6, fontSize: "0.8rem", color: "var(--text-muted)" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
-            <input type="checkbox"
-              checked={filteredModels.length > 0 && filteredModels.every(m => selectedModelIds.has(m.id))}
-              onChange={e => {
-                if (e.target.checked) { setSelectedModelIds(new Set(filteredModels.map(m => m.id))); }
-                else { setSelectedModelIds(new Set()); }
-              }}
-              style={{ accentColor: 'var(--color-primary, #6366f1)' }} />
-            全选 ({filteredModels.length})
-          </label>
-          <span style={{ fontSize: '0.76rem' }}>共 {discoveredModels.length} 个模型</span>
-        </div>
-
-        <div style={{ maxHeight: 240, overflowY: 'auto', borderRadius: 6, border: '1px solid var(--border)' }}>
-          {filteredModels.length === 0 ? (
-            <div style={{ padding: '14px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>没有匹配的模型</div>
-          ) : (
-            filteredModels.map(m => (
-              <label key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', cursor: 'pointer', borderBottom: '1px solid color-mix(in srgb, var(--border) 50%, transparent)', fontSize: '0.82rem' }}>
-                <input type="checkbox"
-                  checked={selectedModelIds.has(m.id)}
-                  onChange={e => {
-                    const next = new Set(selectedModelIds);
-                    if (e.target.checked) next.add(m.id); else next.delete(m.id);
-                    setSelectedModelIds(next);
-                  }}
-                  style={{ accentColor: 'var(--color-primary, #6366f1)', flexShrink: 0 }} />
-                <span style={{ flex: 1 }}>{m.id}</span>
-                {m.owned_by && <span style={{ fontSize: '0.73rem', color: 'var(--text-muted)' }}>{m.owned_by}</span>}
+            <div className="form-group">
+              <label className="form-label">
+                Routerly ID <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional — default: <code style={{ fontSize: '0.78rem' }}>{autoId || `${autoIdPrefix}/model`}</code>)</span>
               </label>
-            ))
-          )}
-        </div>
-      </>
-    )}
-  </div>
-</div>
+              <input className="form-input" value={form.customId} name="modelId" autoComplete="关闭"
+                onChange={e => setForm(f => ({ ...f, customId: e.target.value }))}
+                placeholder={autoId || `${autoIdPrefix}/model`} />
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>The identifier used when referencing this model in Routerly API calls. Also shown as provider name in the model list.</div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">端点 URL</label>
+              <input className="form-input" value={form.endpoint}
+                onChange={e => setForm(f => ({ ...f, endpoint: e.target.value }))} required />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">
+                {isWebProvider(form.provider)
+                  ? WEB_PROVIDER_TOKEN_LABEL[form.provider as WebProvider]
+                  : isSubscriptionProvider(form.provider)
+                  ? SUBSCRIPTION_TOKEN_LABEL[form.provider as SubscriptionProvider]
+                  : 'API 密钥/令牌'}
+              </label>
+              {form.provider === 'openai-oauth' ? (
+                <>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <input className="form-input" type="text"
+                      name="apiKey" autoComplete="off"
+                      value={form.apiKey} onChange={e => { setForm(f => ({ ...f, apiKey: *** })); setOauthTest({ status: 'idle' }); }}
+                      placeholder={(editingModelId || isCloning) ? '留空以保留现有路径' : '~/.codex/auth.json (default)'}
+                      style={{ flex: 1 }} />
+                    <button type="button"
+                      onClick={handleTestOAuth}
+                      disabled={oauthTest.status === 'testing'}
+                      style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, padding: '0 14px', height: 38, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                      {oauthTest.status === 'testing' ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <FlaskConical size={14} />}
+                      测试
+                    </button>
+                  </div>
+                  {oauthTest.status === 'ok' && (
+                    <div style={{ marginTop: 6, fontSize: '0.78rem', color: '#4ade80' }}>
+                      {oauthTest.msg}
+                    </div>
+                  )}
+                  {oauthTest.status === 'error' && (
+                    <div style={{ marginTop: 6, fontSize: '0.78rem', color: '#f87171' }}>
+                      {oauthTest.msg}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{ position: 'relative' }}>
+                  <input className="form-input" type={showToken ? 'text' : 'password'}
+                    name="apiKey" autoComplete="new-password"
+                    value={form.apiKey} onChange={e => setForm(f => ({ ...f, apiKey: *** }))}
+                    placeholder={editingModelId ? '留空以保留现有密钥' : isCloning ? '留空以保留现有密钥' : isWebProvider(form.provider) ? WEB_PROVIDER_TOKEN_PLACEHOLDER[form.provider as WebProvider] : isSubscriptionProvider(form.provider) ? SUBSCRIPTION_TOKEN_PLACEHOLDER[form.provider as SubscriptionProvider] : form.provider === 'ollama' ? '本地模型不需要' : 'sk-…'}
+                    style={{ paddingRight: 40 }} />
+                  <button type="button" onClick={() => setShowToken(v => !v)}
+                    style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 0, display: 'flex', alignItems: 'center' }}>
+                    {showToken ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* --- 拉取模型 --- */}
+            <div className="form-group">
+              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                <button type="button"
+                  onClick={handleDiscover}
+                  disabled={discovering}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 15%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 40%, transparent)', borderRadius: 6, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.82rem', fontWeight: 500 }}>
+                  {discovering ? <span className="spinner" style={{ width: 13, height: 13 }} /> : "\uD83D\uDD0D"}
+                  拉取模型
+                </button>
+
+                <input className="form-input" type="text"
+                  value={discoverQuery}
+                  onChange={e => setDiscoverQuery(e.target.value)}
+                  placeholder='搜索模型…'
+                  style={{ flex: 1, minWidth: 160, maxWidth: 260, height: 34, fontSize: '0.82rem' }} />
+
+                {selectedModelIds.size > 0 && (
+                  <button type="button"
+                    onClick={handleImportSelected}
+                    disabled={importing}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', background: 'color-mix(in srgb, var(--color-primary, #6366f1) 25%, transparent)', border: '1px solid color-mix(in srgb, var(--color-primary, #6366f1) 60%, transparent)', borderRadius: 6, cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.82rem', fontWeight: 500 }}>
+                    {importing ? <span className="spinner" style={{ width: 13, height: 13 }} /> : "\u2713"}
+                    添加选中 ({selectedModelIds.size})
+                  </button>
+                )}
+              </div>
+
+              {discoverError && (
+                <div style={{ padding: '6px 10px', borderRadius: 6, marginTop: 8, background: 'color-mix(in srgb, #ef4444 10%, transparent)', border: '1px solid color-mix(in srgb, #ef4444 30%, transparent)', color: '#f87171', fontSize: '0.82rem' }}>
+                  {discoverError}
+                </div>
+              )}
+
+              {discoveredModels.length > 0 && (
+                <>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 8, marginBottom: 6, fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                    <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+                      <input type="checkbox"
+                        checked={filteredModels.length > 0 && filteredModels.every(m => selectedModelIds.has(m.id))}
+                        onChange={e => {
+                          if (e.target.checked) { setSelectedModelIds(new Set(filteredModels.map(m => m.id))); }
+                          else { setSelectedModelIds(new Set()); }
+                        }}
+                        style={{ accentColor: 'var(--color-primary, #6366f1)' }} />
+                      全选 ({filteredModels.length})
+                    </label>
+                    <span style={{ fontSize: '0.76rem' }}>共 {discoveredModels.length} 个模型</span>
+                  </div>
+
+                  <div style={{ maxHeight: 240, overflowY: 'auto', borderRadius: 6, border: '1px solid var(--border)' }}>
+                    {filteredModels.length === 0 ? (
+                      <div style={{ padding: '14px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>没有匹配的模型</div>
+                    ) : (
+                      filteredModels.map(m => (
+                        <label key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', cursor: 'pointer', borderBottom: '1px solid color-mix(in srgb, var(--border) 50%, transparent)', fontSize: '0.82rem' }}>
+                          <input type="checkbox"
+                            checked={selectedModelIds.has(m.id)}
+                            onChange={e => {
+                              const next = new Set(selectedModelIds);
+                              if (e.target.checked) next.add(m.id); else next.delete(m.id);
+                              setSelectedModelIds(next);
+                            }}
+                            style={{ accentColor: 'var(--color-primary, #6366f1)', flexShrink: 0 }} />
+                          <span style={{ flex: 1 }}>{m.id}</span>
+                          {m.owned_by && <span style={{ fontSize: '0.73rem', color: 'var(--text-muted)' }}>{m.owned_by}</span>}
+                        </label>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
           {/* ── Section: Connection ───────────────────────────── */}
           <div className="form-section">
             <h3 className="section-title">连接信息</h3>
