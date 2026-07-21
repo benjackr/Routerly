@@ -7,7 +7,7 @@ import {
   CHANNEL_PROVIDER_META,
   ChannelEditFields,
   RoutingEditFields,
-  RecipientsEditFields,
+  收件人EditFields,
   providerLabel,
 } from './notificationChannelFields';
 import type { ChannelProvider } from './notificationChannelFields';
@@ -100,7 +100,7 @@ export function NotificationChannelCreatePage() {
       const created = await createNotificationChannel(body);
       navigate(`/dashboard/settings/notifications/${created.id}`, { replace: true });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to create');
+      setError(e instanceof Error ? e.message : '创建失败');
     } finally {
       setSaving(false);
     }
@@ -118,10 +118,10 @@ export function NotificationChannelCreatePage() {
             onClick={() => navigate('/dashboard/settings/notifications')}
           >
             <ArrowLeft size={16} />
-            <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>Back to Notifications</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>返回通知</span>
           </button>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Choose a channel type</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 4 }}>Select the notification provider to configure.</p>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>选择频道类型</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 4 }}>选择要配置的通知提供商。</p>
         </div>
 
         <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', maxWidth: 500 }}>
@@ -153,10 +153,10 @@ export function NotificationChannelCreatePage() {
           onClick={() => { setProvider(null); setForm({}); }}
         >
           <ArrowLeft size={16} />
-          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>Change type</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>更改类型</span>
         </button>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>New {providerLabel(provider)} channel</h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 4 }}>Configure a new notification channel.</p>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 4 }}>配置新通知频道。</p>
       </div>
 
       <form onSubmit={handleSubmit} autoComplete="关闭" style={{ maxWidth: 600 }}>
@@ -187,7 +187,7 @@ export function NotificationChannelCreatePage() {
 
         {activeTab === 'connection' && (
           <div className="form-section">
-            <h3 className="section-title">Channel settings</h3>
+            <h3 className="section-title">频道设置</h3>
             <div className="form-group">
               <label className="form-label">
                 Name <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span>
@@ -205,15 +205,15 @@ export function NotificationChannelCreatePage() {
 
         {activeTab === 'routing' && (
           <div className="form-section">
-            <h3 className="section-title">Events and routing</h3>
+            <h3 className="section-title">事件和路由</h3>
             <RoutingEditFields form={form} onChange={onChange} />
           </div>
         )}
 
         {activeTab === 'recipients' && (
           <div className="form-section">
-            <h3 className="section-title">Recipients</h3>
-            <RecipientsEditFields form={form} onChange={onChange} roles={roles} users={users} />
+            <h3 className="section-title">收件人</h3>
+            <收件人EditFields form={form} onChange={onChange} roles={roles} users={users} />
           </div>
         )}
 
@@ -229,7 +229,7 @@ export function NotificationChannelCreatePage() {
           <button type="submit" className="btn btn-primary" disabled={saving}>
             {saving
               ? <><span className="spinner" style={{ width: 14, height: 14 }} /> Creating…</>
-              : 'Create Channel'}
+              : '创建频道'}
           </button>
         </div>
       </form>
