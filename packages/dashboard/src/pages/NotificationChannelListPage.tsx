@@ -309,14 +309,14 @@ export function NotificationChannelListPage() {
                         <button
                           className="btn-icon"
                           onClick={() => navigate(`/dashboard/settings/notifications/${ch.id}`)}
-                          title="Edit channel"
+                          title="编辑频道"
                         >
                           <Pencil size={15} />
                         </button>
                         <button
                           className="btn-icon danger"
                           onClick={() => handleDelete(ch.id, ch.name)}
-                          title="Delete channel"
+                          title="删除频道"
                         >
                           <Trash2 size={15} />
                         </button>
