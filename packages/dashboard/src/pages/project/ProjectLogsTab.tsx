@@ -153,7 +153,7 @@ export function ProjectLogsTab() {
               options={modelOptions}
               value={modelIds}
               onChange={setModelIds}
-              placeholder="All Models"
+              placeholder="全部模型"
             />
           </div>
 
