@@ -246,8 +246,8 @@ export function ProjectLogsTab() {
             </div>
             <div className="stat-card">
               <div className="stat-label">Errors</div>
-              <div className="stat-value" style={{ color: stats.summary.错误Calls > 0 ? 'var(--danger)' : 'var(--success)' }}>
-                {stats.summary.错误Calls}
+              <div className="stat-value" style={{ color: stats.summary.errorCalls > 0 ? 'var(--danger)' : 'var(--success)' }}>
+                {stats.summary.errorCalls}
               </div>
             </div>
           </div>
