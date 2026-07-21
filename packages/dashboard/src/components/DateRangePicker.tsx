@@ -308,7 +308,7 @@ export function DateRangePicker({ value, onChange }: Props) {
               <div style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', padding: '6px 12px 2px' }}>
                 Recenti
               </div>
-              {/* "From now" — freezes 'from' to the clicked instant, open-ended 'to' */}
+              {/* "至今" — freezes 'from' to the clicked instant, open-ended 'to' */}
               {(() => {
                 const active = value.label === '至今';
                 return (
@@ -326,7 +326,7 @@ export function DateRangePicker({ value, onChange }: Props) {
                     onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'var(--bg-elevated)'; }}
                     onMouseLeave={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
                   >
-                    From now
+                    至今
                   </button>
                 );
               })()}
