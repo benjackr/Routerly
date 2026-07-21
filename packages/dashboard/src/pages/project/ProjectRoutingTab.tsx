@@ -523,7 +523,7 @@ export function ProjectRoutingTab() {
                                     copy[mIdx] = val;
                                     setLlmModelIds(idx, copy);
                                   }}
-                                  placeholder="Select model"
+                                  placeholder="选择模型"
                                   style={{ flex: 1 }}
                                 />
                                 {mIdx === 0 && (
@@ -793,7 +793,7 @@ export function ProjectRoutingTab() {
                                             copy[mIdx] = val;
                                             setCacheModelIds(copy);
                                           }}
-                                          placeholder="Select model"
+                                          placeholder="选择模型"
                                           style={{ flex: 1 }}
                                         />
                                         {mIdx === 0 && (
@@ -927,7 +927,7 @@ export function ProjectRoutingTab() {
                                     copy[mIdx] = val;
                                     setSemModelIds(idx, copy);
                                   }}
-                                  placeholder="Select model"
+                                  placeholder="选择模型"
                                   style={{ flex: 1 }}
                                 />
                                 {mIdx === 0 && (
@@ -1204,7 +1204,7 @@ export function ProjectRoutingTab() {
                           </div>
                         </div>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>
-                          Names are normalized automatically (e.g. "Customer Support" → <code style={{ fontSize: '0.7rem' }}>customer_support</code>)
+                          Names are normalized automatically (e.g. "客户支持" → <code style={{ fontSize: '0.7rem' }}>customer_support</code>)
                         </div>
                       </div>
 
@@ -1356,7 +1356,7 @@ export function ProjectRoutingTab() {
                   })}
                 value=""
                 onChange={addPolicy}
-                placeholder="Add a policy..."
+                placeholder="添加策略..."
                 disabled={ALL_POLICY_TYPES.every(t => policies.some(p => p.type === t))}
               />
             </div>
@@ -1407,7 +1407,7 @@ export function ProjectRoutingTab() {
                     <SearchableSelect
                       value={item.modelId}
                       onChange={v => updateTargetModel(idx, 'modelId', v)}
-                      placeholder="Select model"
+                      placeholder="选择模型"
                       options={availableModels
                         .filter(m => !m.capabilities?.embedding && (m.id === item.modelId || !getUsedTargetModelIds(idx).has(m.id)))
                         .sort((a, b) => a.id.localeCompare(b.id))
