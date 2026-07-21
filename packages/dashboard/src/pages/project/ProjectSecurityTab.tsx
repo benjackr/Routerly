@@ -140,7 +140,7 @@ function PiiPolicyCard({
           type="button"
           onClick={onRemove}
           style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: 4, display: 'flex' }}
-          title="Remove policy"
+          title="移除策略"
         >
           <Trash2 size={15} />
         </button>
@@ -379,7 +379,7 @@ function SemanticFields({ rule, onChange, modelOptions }: {
           options={modelOptions.filter(o => o.value !== cfg.embeddingModelId)}
           value={cfg.fallbackModelIds ?? []}
           onChange={v => onChange({ ...rule, config: { ...cfg, fallbackModelIds: v } })}
-          placeholder="No fallback models..."
+          placeholder="无回退模型..."
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
@@ -438,7 +438,7 @@ function TopicFields({ rule, onChange, modelOptions }: {
           options={modelOptions.filter(o => o.value !== cfg.modelId)}
           value={cfg.fallbackModelIds ?? []}
           onChange={v => onChange({ ...rule, config: { ...cfg, fallbackModelIds: v } })}
-          placeholder="No fallback models..."
+          placeholder="无回退模型..."
         />
       </div>
       </>)}
@@ -498,7 +498,7 @@ function ModerationFields({ rule, onChange, modelOptions, instructionsError }: {
           options={modelOptions.filter(o => o.value !== cfg.modelId)}
           value={cfg.fallbackModelIds ?? []}
           onChange={v => onChange({ ...rule, config: { ...cfg, fallbackModelIds: v } })}
-          placeholder="No fallback models..."
+          placeholder="无回退模型..."
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
