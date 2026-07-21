@@ -324,7 +324,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
         <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.35)', borderRadius: 'var(--radius-sm)', padding: '8px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              {e.details?.target === 'request' ? 'REQUEST' : 'RESPONSE'} GUARDRAIL {e.details?.block === true ? 'BLOCKED' : 'TRIGGERED'}
+              {e.details?.target === 'request' ? '请求' : '响应'} GUARDRAIL {e.details?.block === true ? '已拦截' : '已触发'}
             </span>
             <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#fca5a5', background: 'rgba(239,68,68,0.12)', padding: '1px 7px', borderRadius: 99, border: '1px solid rgba(239,68,68,0.25)' }}>
               {String(e.details?.target ?? '—')}
