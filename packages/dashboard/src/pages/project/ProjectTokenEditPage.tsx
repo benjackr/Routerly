@@ -19,9 +19,9 @@ type LimitRow = {
 const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
   { value: 'cost',          label: '消耗(美元)'      },
   { value: 'calls',         label: 'Requests'        },
-  { value: 'input_tokens',  label: 'Input tokens'    },
-  { value: 'output_tokens', label: 'Output tokens'   },
-  { value: 'total_tokens',  label: 'Total tokens'    },
+  { value: 'input_tokens',  label: '输入令牌'    },
+  { value: 'output_tokens', label: '输出令牌'   },
+  { value: 'total_tokens',  label: '令牌总数'    },
 ];
 
 const PERIOD_OPTIONS: { value: LimitPeriod; label: string }[] = [
@@ -128,7 +128,7 @@ function inheritedLimitLabel(
     : undefined);
 
   const effective = projectLimits ?? globalLimits;
-  if (!effective?.length) return 'No limits';
+  if (!effective?.length) return '无限制';
   return effective.map(fmtLimit).join(' · ');
 }
 
@@ -187,7 +187,7 @@ export function ProjectTokenEditPage() {
       const updated = await updateProjectToken(projectId, tokenId, cleanedModels, editLabels, editTags);
       setProject(p => p ? { ...p, tokens: p.tokens?.map(t => t.id === tokenId ? updated : t) || [] } : p);
       navigate(`/dashboard/projects/${projectId}/token`);
-    } catch (e) { setErr(e instanceof Error ? e.message : 'Error saving token'); }
+    } catch (e) { setErr(e instanceof Error ? e.message : '保存令牌失败'); }
     finally { setLoading(false); }
   }
 
@@ -403,7 +403,7 @@ export function ProjectTokenEditPage() {
                                 {/* Max value */}
                                 <div className="form-group" style={{ margin: 0 }}>
                                   <label className="form-label" style={{ fontSize: '0.72rem' }}>
-                                  {lim.metric === 'cost' ? 'Max ($)' : lim.metric === 'calls' ? 'Max (n.)' : 'Max (tokens)'}
+                                  {lim.metric === 'cost' ? 'Max ($)' : lim.metric === 'calls' ? '最大（次数）' : '最大（令牌）'}
                                   </label>
                                   <input className="form-input" type="number" step="any" min="0" value={lim.value}
                                     onChange={e => upd({ value: e.target.value })}
