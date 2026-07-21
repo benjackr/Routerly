@@ -28,7 +28,7 @@ export function ProjectTokenTab() {
 
   function handleDelete(tokenId: string, snippet: string) {
     setConfirmState({
-      message: `Revoke token "${snippet}..."? Apps using it will stop working immediately.`,
+      message: `撤销 token "${snippet}..."? Apps using it will stop working immediately.`,
       onConfirm: async () => {
         setConfirmState(null);
         setErr(''); setLoading(true);
@@ -135,7 +135,7 @@ export function ProjectTokenTab() {
                     <button className="btn-icon" onClick={() => openEdit(token.id)} disabled={loading} title="Edit Configuration">
                       <Edit2 size={16} />
                     </button>
-                    <button className="btn-icon danger" onClick={() => handleDelete(token.id, token.tokenSnippet || '')} disabled={loading} title="Revoke Token">
+                    <button className="btn-icon danger" onClick={() => handleDelete(token.id, token.tokenSnippet || '')} disabled={loading} title="撤销 Token">
                       <Trash2 size={16} />
                     </button>
                   </div>
