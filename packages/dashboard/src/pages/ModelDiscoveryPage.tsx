@@ -20,7 +20,7 @@ function FilterLabel({ children }: { children: React.ReactNode }) {
 }
 
 function fmtPricePer1M(per1kTokens: number): string {
-  if (per1kTokens === 0) return 'free';
+  if (per1kTokens === 0) return '免费';
   const p = per1kTokens * 1000;
   if (p >= 10) return `$${p.toFixed(0)}`;
   if (p >= 1)  return `$${p.toFixed(2).replace(/\.?0+$/, '')}`;
@@ -294,10 +294,10 @@ export function 模型DiscoveryPage() {
                       <td><span className={`badge badge-${e.provider}`}>{e.provider}</span></td>
                       <td style={{ whiteSpace: 'nowrap' }}>{e.contextWindow > 0 ? fmtCtx(e.contextWindow) : '—'}</td>
                       <td style={{ whiteSpace: 'nowrap' }}>
-                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>free</span> : fmtPricePer1M(e.pricing.inputPer1kTokens)}
+                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.inputPer1kTokens)}
                       </td>
                       <td style={{ whiteSpace: 'nowrap' }}>
-                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>free</span> : fmtPricePer1M(e.pricing.outputPer1kTokens)}
+                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.outputPer1kTokens)}
                       </td>
                       <td>
                         <button
