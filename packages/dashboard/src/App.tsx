@@ -161,9 +161,9 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
           <HelpCircle size={15} />
           <span className="nav-label">帮助</span>
         </NavLink>
-        <button className="nav-item sign-out" title="Sign Out" onClick={handleLogout}>
+        <button className="nav-item sign-out" title="退出登录" onClick={handleLogout}>
           <LogOut size={15} />
-          <span className="nav-label">Sign Out</span>
+          <span className="nav-label">退出登录</span>
         </button>
       </div>
     </aside>
