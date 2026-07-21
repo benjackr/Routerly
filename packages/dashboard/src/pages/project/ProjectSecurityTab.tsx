@@ -20,12 +20,12 @@ import { SearchableSelect } from '../../components/SearchableSelect';
 import { MultiSelect } from '../../components/MultiSelect';
 import { useProject } from './ProjectLayout';
 
-const ALL_PII_ENTITIES: PiiEntity[] = ['EMAIL', 'PHONE', 'CREDIT_CARD', 'SSN', 'IBAN'];
+const ALL_PII_ENTITIES: PiiEntity[] = ['邮箱', '电话', 'CREDIT_CARD', 'SSN', 'IBAN'];
 
 const PII_LABELS: Record<PiiEntity, string> = {
   EMAIL: '邮箱',
-  PHONE: 'Phone',
-  CREDIT_CARD: 'Credit Card',
+  PHONE: '电话',
+  CREDIT_CARD: '信用卡',
   SSN: 'SSN',
   IBAN: 'IBAN',
 };
@@ -35,10 +35,10 @@ const PII_LABELS: Record<PiiEntity, string> = {
 type RuleWithId = GuardrailRule & { _id: string };
 
 const RULE_TYPE_LABELS: Record<GuardrailRuleType, string> = {
-  regex:      'Regex',
-  semantic:   'Semantic',
-  topic:      'Topic',
-  moderation: 'Moderation',
+  regex:      '正则表达式',
+  semantic:   '语义',
+  topic:      '主题',
+  moderation: '内容审核',
 };
 
 const RULE_TYPE_DESCRIPTIONS: Record<GuardrailRuleType, string> = {
