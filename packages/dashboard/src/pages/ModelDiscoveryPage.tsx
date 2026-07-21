@@ -84,7 +84,7 @@ export function 模型DiscoveryPage() {
       matchCtx(e, ctxFilter) &&
       matchPrice(e, priceFilter) &&
       (!only已配置 || e.is已配置) &&
-      (!only嵌入模型 || e.embedding) &&
+      (!only嵌入模型 || e.嵌入模型) &&
       (!q || e.id.toLowerCase().includes(q) || e.name?.toLowerCase().includes(q))
     );
   }, [entries, search, selected提供商s, ctxFilter, priceFilter, only已配置, only嵌入模型]);
@@ -275,7 +275,7 @@ export function 模型DiscoveryPage() {
                                 <Check size={9} strokeWidth={3} /> 已配置
                               </span>
                             )}
-                            {e.embedding && (
+                            {e.嵌入模型 && (
                               <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>嵌入模型</span>
                             )}
                             {e.local && (
@@ -305,7 +305,7 @@ export function 模型DiscoveryPage() {
                           onClick={() => navigate(`/dashboard/models/new?provider=${encodeURIComponent(e.provider)}&modelId=${encodeURIComponent(e.id)}`, { state: { catalogEntry: e } })}
                           style={{ whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                         >
-                          <Globe size={12} /> {e.is已配置 ? '重新添加' : 'Add'}
+                          <Globe size={12} /> {e.is已配置 ? '重新添加' : '添加'}
                         </button>
                       </td>
                     </tr>
@@ -335,7 +335,7 @@ export function 模型DiscoveryPage() {
                   disabled={page === totalPages}
                   onClick={() => setPage(p => p + 1)}
                 >
-                  Next <ChevronRight size={14} />
+                  下一页 <ChevronRight size={14} />
                 </button>
               </div>
             )}
