@@ -310,7 +310,7 @@ export function UsagePage() {
               className="btn btn-sm btn-secondary"
               onClick={handleRefreshNow}
               disabled={refreshing}
-              title="Refresh now"
+              title="立即刷新"
               style={{ marginLeft: 4 }}
             >
               {refreshing ? '…' : '↻ Now'}
@@ -334,7 +334,7 @@ export function UsagePage() {
                 options={projectOptions}
                 value={projectIds}
                 onChange={setProjectIds}
-                placeholder="All Projects"
+                placeholder="全部项目"
               />
             </div>
 
@@ -344,7 +344,7 @@ export function UsagePage() {
                 options={modelOptions}
                 value={modelIds}
                 onChange={setModelIds}
-                placeholder="All Models"
+                placeholder="全部模型"
               />
             </div>
 
@@ -487,7 +487,7 @@ export function UsagePage() {
                             <td style={{ color: 'var(--text-muted)', fontVariantNumeric: 'tabular-nums' }}>
                               {isBest
                                 ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                                    <Star size={13} fill="var(--warning)" color="var(--warning)" aria-label="Best cost-performance" />
+                                    <Star size={13} fill="var(--warning)" color="var(--warning)" aria-label="最佳性价比" />
                                     {displayRank}
                                   </span>
                                 : displayRank}
