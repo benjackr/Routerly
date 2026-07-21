@@ -433,9 +433,10 @@ export function ModelsPage() {
                 )}
               </>
             )}
-        {tab === 'health' && (
             </>
           )}
+
+        {tab === 'health' && (
 
           loading ? (
             <div className="loading-center"><div className="spinner" /></div>
