@@ -14,10 +14,10 @@ export function ProjectUsersTab() {
 
   const [adding, setAdding] = useState(false);
   const [newUserId, setNewUserId] = useState('');
-  const [newRole, setNewRole] = useState('viewer');
+  const [new角色, setNew角色] = useState('viewer');
 
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
-  const [editRole, setEditRole] = useState('viewer');
+  const [edit角色, setEdit角色] = useState('viewer');
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function ProjectUsersTab() {
     setErr('');
     setLoading(true);
     try {
-      const member = await addProjectMember(project!.id, newUserId, newRole);
+      const member = await addProjectMember(project!.id, newUserId, new角色);
       setProject(p => {
         /* v8 ignore next */
         if (!p) return p;
@@ -42,7 +42,7 @@ export function ProjectUsersTab() {
       });
       setAdding(false);
       setNewUserId('');
-      setNewRole('viewer');
+      setNew角色('viewer');
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Error adding member');
     } finally {
@@ -54,7 +54,7 @@ export function ProjectUsersTab() {
     setErr('');
     setLoading(true);
     try {
-      const updated = await updateProjectMember(project!.id, userId, editRole);
+      const updated = await updateProjectMember(project!.id, userId, edit角色);
       setProject(p => {
         /* v8 ignore next */
         if (!p) return p;
@@ -127,7 +127,7 @@ export function ProjectUsersTab() {
               </select>
             </div>
             <div style={{ width: 140 }}>
-              <select className="form-input" value={newRole} onChange={e => setNewRole(e.target.value)} disabled={loading}>
+              <select className="form-input" value={new角色} onChange={e => setNew角色(e.target.value)} disabled={loading}>
                 <option value="viewer">查看者</option>
                 <option value="editor">编辑者</option>
                 <option value="admin">管理员</option>
@@ -171,8 +171,8 @@ export function ProjectUsersTab() {
                       {isEditing ? (
                         <select
                           className="form-input"
-                          value={editRole}
-                          onChange={e => setEditRole(e.target.value)}
+                          value={edit角色}
+                          onChange={e => setEdit角色(e.target.value)}
                           disabled={loading}
                         >
                           <option value="viewer">查看者</option>
@@ -206,9 +206,9 @@ export function ProjectUsersTab() {
                         <>
                           <button
                             className="btn-icon"
-                            onClick={() => { setEditingUserId(member.userId); setEditRole(member.role); }}
+                            onClick={() => { setEditingUserId(member.userId); setEdit角色(member.role); }}
                             disabled={loading}
-                            title="Change Role"
+                            title="Change 角色"
                           >
                             <Edit2 size={16} />
                           </button>
