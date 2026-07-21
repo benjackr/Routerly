@@ -161,12 +161,6 @@ export function ModelsPage() {
     [models],
   );
 
-  const filteredFetch = useMemo(() => {
-    const q = fetchSearch.trim().toLowerCase();
-    if (!q) return discoveredModels;
-    return discoveredModels.filter(m => m.id.toLowerCase().includes(q) || (m.owned_by || '').toLowerCase().includes(q));
-  }, [discoveredModels, fetchSearch]);
-
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return models.filter(m => {
@@ -309,8 +303,6 @@ export function ModelsPage() {
                 <Link to="/dashboard/models/discover" className="btn">
                   <Telescope size={16} /> 发现
                 </Link>
-                <button className="btn" onClick={() => setShowFetchModal(true)}>
-                </button>
                 <Link to="/dashboard/models/new" className="btn btn-primary">
                   <Plus size={16} /> 添加模型
                 </Link>
@@ -535,7 +527,6 @@ export function ModelsPage() {
                   )}
                 </>
               )}
-            </>
           )
         )}
       </div>
