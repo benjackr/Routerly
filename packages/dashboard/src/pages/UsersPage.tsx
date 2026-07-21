@@ -37,7 +37,7 @@ export function UsersPage() {
 
   function handleDelete(id: string) {
     setConfirmState({
-      message: 'Delete this user?',
+      message: '确定删除此用户？',
       onConfirm: async () => {
         setConfirmState(null);
         await deleteUser(id);
