@@ -142,7 +142,7 @@ export function ProjectTokenCreatePage() {
 
             <div style={{ display: 'flex', gap: 10, marginTop: 28 }}>
               <button type="submit" className="btn btn-primary" disabled={loading}>
-                {loading ? <span className="spinner" /> : 'Create Token'}
+                {loading ? <span className="spinner" /> : '创建令牌'}
               </button>
               <button type="button" className="btn btn-secondary" onClick={goBack} disabled={loading}>
                 Cancel
