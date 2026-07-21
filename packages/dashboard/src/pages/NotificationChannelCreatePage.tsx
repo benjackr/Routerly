@@ -196,7 +196,7 @@ export function NotificationChannelCreatePage() {
                 className="form-input"
                 value={typeof form['name'] === 'string' ? form['name'] : ''}
                 onChange={e => onChange('name', e.target.value || undefined)}
-                placeholder="Label for this channel"
+                placeholder="频道标签"
               />
             </div>
             <ChannelEditFields form={form} onChange={onChange} isEdit={false} />
