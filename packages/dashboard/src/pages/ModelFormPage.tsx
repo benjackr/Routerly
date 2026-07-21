@@ -735,7 +735,7 @@ const filteredModels = useMemo(() => {
     setDiscoverError('');
     try {
       const result = await importModels({
-        provider: form.provider,
+        provider: form.customId.trim() || form.provider,
         endpoint: form.endpoint,
         apiKey: form.apiKey,
         modelIds: Array.from(selectedModelIds),
@@ -757,9 +757,9 @@ const filteredModels = useMemo(() => {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setErr(''); setSaving(true);
-    const idPrefix = form.provider === 'custom' && form.customProviderName.trim()
-      ? form.customProviderName.trim()
-      : form.provider;
+    const idPrefix = form.customId.trim() || form.provider;
+
+
     const finalId = form.customId.trim() || generateId(idPrefix, form.id, models.filter(m => m.id !== editingModelId).map(m => m.id));
     if (!finalId) { setErr('Model ID required'); setSaving(false); return; }
     if (isCloning && models.some(m => m.id === finalId)) { setErr(`模型 "${finalId}" already exists — set a different Custom ID`); setSaving(false); return; }
