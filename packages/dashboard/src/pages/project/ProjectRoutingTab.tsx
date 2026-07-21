@@ -582,7 +582,7 @@ export function ProjectRoutingTab() {
                             <textarea
                               className="form-input"
                               rows={3}
-                              placeholder="Extra instructions to include in the routing prompt..."
+                              placeholder="包含在路由提示中的额外说明..."
                               value={policy.config?.additionalPromptInfo ?? ''}
                               onChange={e => updatePolicyConfig(idx, { additionalPromptInfo: e.target.value })}
                               /* v8 ignore next 2 */
@@ -1427,7 +1427,7 @@ export function ProjectRoutingTab() {
                         className="form-input"
                         value={item.prompt}
                         onChange={e => updateTargetModel(idx, 'prompt', e.target.value)}
-                        placeholder="Describe exactly when and why the router should pick this model..."
+                        placeholder="准确描述路由应选择此模型的时间和原因..."
                         rows={2}
                         style={{ fontSize: '0.9rem', resize: 'vertical', minHeight: '60px' }}
                       />
