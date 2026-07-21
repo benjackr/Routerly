@@ -147,11 +147,11 @@ export function OverviewPage() {
         {/* Stats grid */}
         <div className="stats-grid">
           <StatCard icon={<DollarSign size={18} />} label="总消耗" accentColor="#3D75F5"
-            value={`$${stats.summary.totalCost.toFixed(4)}`} sub="USD this period" />
-          <StatCard icon={<Activity size={18} />} label="Total Calls" accentColor="#5A90F8"
+            value={`$${stats.summary.totalCost.toFixed(4)}`} sub="本期美元" />
+          <StatCard icon={<Activity size={18} />} label="总调用量" accentColor="#5A90F8"
             value={stats.summary.totalCalls}
             sub={`${stats.summary.routingCalls} routing · ${stats.summary.completionCalls} completion`} />
-          <StatCard icon={<TrendingUp size={18} />} label="Success Rate" accentColor="#10B981"
+          <StatCard icon={<TrendingUp size={18} />} label="成功率" accentColor="#10B981"
             value={stats.summary.totalCalls > 0
               ? `${((stats.summary.successCalls / stats.summary.totalCalls) * 100).toFixed(1)}%`
               : '—'}
