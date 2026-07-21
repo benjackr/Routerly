@@ -82,7 +82,7 @@ export function AuditPage() {
             <FilterLabel>用户</FilterLabel>
             <input
               className="form-input"
-              placeholder="Email or user ID"
+              placeholder="邮箱或用户 ID"
               value={emailFilter}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
