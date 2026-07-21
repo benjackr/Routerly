@@ -29,7 +29,7 @@ export function ProjectsPage() {
           await deleteProject(id);
           setProjects(p => p.filter(x => x.id !== id));
         } catch (error) {
-          setErr(error instanceof Error ? error.message : 'Error deleting project');
+          setErr(error instanceof Error ? error.message : '删除项目失败');
         }
       },
     });
@@ -39,7 +39,7 @@ export function ProjectsPage() {
     <>
       <div className="page-header">
         <h1>项目</h1>
-        <p>Client applications that access Routerly</p>
+        <p>访问 Routerly 的客户端应用</p>
       </div>
       {err && <div className="form-error" style={{ margin: '0 20px' }}>{err}</div>}
       <div className="page-body">
@@ -58,7 +58,7 @@ export function ProjectsPage() {
           <div className="table-wrap">
             <table>
               <thead>
-                <tr><th>名称</th><th>Token</th><th>Policies</th><th>模型</th><th></th></tr>
+                <tr><th>名称</th><th>令牌</th><th>策略</th><th>模型</th><th></th></tr>
               </thead>
               <tbody>
                 {projects.map(p => (
