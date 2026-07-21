@@ -699,6 +699,54 @@ const [discoverError, setDiscoverError] = useState('');
     }
   }
 
+
+  // 拉取模型
+  async function handleDiscover() {
+    setDiscoverError('');
+    setDiscoveredModels([]);
+    setSelectedModelIds(new Set());
+    setDiscovering(true);
+    try {
+      const endpoint = form.endpoint || form.provider + '.provider';
+      const result = await discoverModels(endpoint, form.apiKey);
+      if (result.success) {
+        setDiscoveredModels(result.models);
+      } else {
+        setDiscoverError(result.error || '拉取失败');
+      }
+    } catch (e) {
+      setDiscoverError(e instanceof Error ? e.message : '请求失败');
+    } finally {
+      setDiscovering(false);
+    }
+  }
+
+  // 批量导入选中模型
+  async function handleImportSelected() {
+    if (selectedModelIds.size === 0) return;
+    setImporting(true);
+    setDiscoverError('');
+    try {
+      const result = await importModels({
+        provider: form.provider,
+        endpoint: form.endpoint,
+        apiKey: form.apiKey,
+        modelIds: Array.from(selectedModelIds),
+      });
+      // 重新加载模型列表（通知用户结果）
+      setDiscoveredModels([]);
+      setSelectedModelIds(new Set());
+      if (result.imported > 0) {
+        // 刷新模型列表
+        const updated = await getModels();
+        setModels(updated);
+      }
+    } catch (e) {
+      setDiscoverError(e instanceof Error ? e.message : '导入失败');
+    } finally {
+      setImporting(false);
+    }
+  }
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setErr(''); setSaving(true);
