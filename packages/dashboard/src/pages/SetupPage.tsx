@@ -27,7 +27,7 @@ export function SetupPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    if (password !== confirm) { setError('Passwords do not match'); return; }
+    if (password !== confirm) { setError('密码不匹配'); return; }
     if (password.length < 8) { setError('Password must be at least 8 characters'); return; }
     setLoading(true);
     try {
@@ -35,7 +35,7 @@ export function SetupPage() {
       loginDirect(token, user);
       navigate('/dashboard/overview', { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Setup failed');
+      setError(err instanceof Error ? err.message : '设置失败');
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export function SetupPage() {
         <div className="login-logo">
           <Logo size={52} />
           <h1>Routerly.ai</h1>
-          <p>One gateway. Any AI model. Total control.</p>
+          <p>一个网关。任何 AI 模型。完全掌控。</p>
         </div>
 
         <div style={{
@@ -93,7 +93,7 @@ export function SetupPage() {
         <form onSubmit={handleSubmit}>
           {error && <div className="form-error">{error}</div>}
           <div className="form-group">
-            <label className="form-label" htmlFor="setup-email">Admin Email</label>
+            <label className="form-label" htmlFor="setup-email">管理员邮箱</label>
             <input
               id="setup-email"
               type="email"
@@ -135,7 +135,7 @@ export function SetupPage() {
             disabled={loading}
             style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
           >
-            {loading ? <span className="spinner" /> : 'Create Admin Account'}
+            {loading ? <span className="spinner" /> : '创建管理员账号'}
           </button>
         </form>
       </div>
