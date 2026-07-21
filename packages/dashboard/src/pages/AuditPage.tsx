@@ -34,7 +34,7 @@ export function AuditPage() {
 
   const [emailFilter, setEmail]   = useFilterState<string>({ key: 'audit-filter-email', defaultValue: '' });
   const [actionFilter, setAction] = useFilterState<string>({ key: 'audit-filter-action', defaultValue: '' });
-  const [resultFilter, setResult] = useFilterState<'all' | AuditEntry['result']>({ key: 'audit-filter-result', defaultValue: 'all' });
+  const [resultFilter, set结果] = useFilterState<'all' | AuditEntry['result']>({ key: 'audit-filter-result', defaultValue: 'all' });
   const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'audit-filter-dateRange', defaultValue: { from: '', to: '', label: '全部时间' } });
 
   const load = useCallback(async (p: number) => {
@@ -53,7 +53,7 @@ export function AuditPage() {
       setEntries(resp.entries);
       setPagination(resp.pagination);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load audit log');
+      setError(e instanceof Error ? e.message : '加载审计日志失败');
     } finally {
       setLoading(false);
     }
@@ -101,13 +101,13 @@ export function AuditPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Result</FilterLabel>
+            <FilterLabel>结果</FilterLabel>
             <div style={{ display: 'flex', gap: 4 }}>
               {(['all', 'success', 'forbidden', 'error'] as const).map(r => (
                 <button
                   key={r}
                   className={`btn btn-sm ${resultFilter === r ? 'btn-primary' : 'btn-secondary'}`}
-                  onClick={() => setResult(r)}
+                  onClick={() => set结果(r)}
                 >
                   {r === 'all' ? '全部' : r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
@@ -139,7 +139,7 @@ export function AuditPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
               <thead>
                 <tr style={{ background: 'var(--bg-secondary)' }}>
-                  {['时间', '用户', '操作', '端点', 'Result', '详情'].map(h => (
+                  {['时间', '用户', '操作', '端点', '结果', '详情'].map(h => (
                     <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
                 </tr>
