@@ -195,7 +195,7 @@ export function ProjectUsersTab() {
                     <td style={{ textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: 6 }}>
                       {isEditing ? (
                         <>
-                          <button className="btn-icon" onClick={() => handleUpdateMember(member.userId)} disabled={loading} title="Save changes">
+                          <button className="btn-icon" onClick={() => handleUpdateMember(member.userId)} disabled={loading} title="保存更改">
                             <Check size={16} />
                           </button>
                           <button className="btn-icon" onClick={() => setEditingUserId(null)} disabled={loading} title="取消">
