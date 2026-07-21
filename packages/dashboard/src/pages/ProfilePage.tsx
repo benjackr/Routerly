@@ -850,7 +850,7 @@ function ProfileSecurityTab() {
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button type="submit" className="btn btn-primary" disabled={tfaBusy}>
-                    {tfaBusy ? <span className="spinner" style={{ width: 14, height: 14 }} /> : 'Regenerate'}
+                    {tfaBusy ? <span className="spinner" style={{ width: 14, height: 14 }} /> : '重新生成'}
                   </button>
                   <button type="button" className="btn btn-ghost" onClick={() => { setBackupVisible(false); setTfaError(''); }}>取消</button>
                 </div>
