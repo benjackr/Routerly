@@ -96,7 +96,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
     { to: '/dashboard/models', icon: <Cpu size={17} />, label: '模型' },
     { to: '/dashboard/projects', icon: <FolderOpen size={17} />, label: '项目' },
     { to: '/dashboard/usage', icon: <BarChart2 size={17} />, label: '用量' },
-    { to: '/dashboard/test', icon: <FlaskConical size={17} />, label: 'Playground' },
+    { to: '/dashboard/test', icon: <FlaskConical size={17} />, label: '游乐场' },
   ];
 
   return (
