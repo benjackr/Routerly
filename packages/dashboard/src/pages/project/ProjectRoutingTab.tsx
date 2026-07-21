@@ -18,14 +18,14 @@ type PolicyItem = RoutingPolicy & {
 const ALL_POLICY_TYPES = ['health', 'context', 'capability', 'budget-remaining', 'rate-limit', 'semantic-intent', 'llm', 'performance', 'fairness', 'cheapest', 'model-preference'] as const;
 
 const POLICY_LABELS: Record<string, string> = {
-  llm:               'AI Routing Policy',
-  'rate-limit':      'Rate Limit Policy',
-  'budget-remaining':'Budget Remaining Policy',
-  'semantic-intent': 'Semantic Intent Policy',
-  health:            'Health Policy',
-  context:           'Context Policy',
-  capability:        'Capability Policy',
-  performance:       'Performance Policy',
+  llm:               'AI 路由策略',
+  'rate-limit':      '速率限制策略',
+  'budget-remaining':'预算剩余策略',
+  'semantic-intent': '语义意图策略',
+  health:            '健康检查策略',
+  context:           '上下文策略',
+  capability:        '能力策略',
+  performance:       '性能策略',
   fairness:          'Fairness Policy',
   cheapest:          'Cheapest Policy',
   'model-preference':'Model Preference Policy',
