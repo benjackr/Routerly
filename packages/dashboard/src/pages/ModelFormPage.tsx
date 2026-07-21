@@ -342,7 +342,7 @@ export function ModelFormPage() {
   const [isEmbeddingModel, setIsEmbeddingModel] = useState(false);
   const [fieldOverrides, setFieldOverrides] = useState<Record<string, boolean>>({});
   const [catalogDefaults, setCatalogDefaults] = useState<Model['catalogDefaults']>(undefined);
-  // Batch import states (new model only)
+  const isCustomModel = false; // Batch import states (new model only)
   const [showBatchImport, setShowBatchImport] = useState(true);
 
 const [discoveredModels, setDiscoveredModels] = useState<Array<{ id: string; object: string; created: number; owned_by: string }>>([]);
@@ -870,12 +870,54 @@ const filteredModels = useMemo(() => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">提供商名称</label>
-              <input className="form-input" value={form.provider}
-                onChange={e => setForm(f => ({ ...f, provider: e.target.value }))}
-                placeholder="例如：OPENROUTER、MY_PROVIDER" required />
-              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>自定义提供商名称，将显示在模型列表的"提供商"列中。导入模型时也将使用此名称。</div>
+              <label className="form-label">提供商</label>
+              <select className="form-input" value={form.provider}
+                onChange={e => handleProviderChange(e.target.value as Provider)}>
+                {PROVIDERS.map(p => <option key={p} value={p}>{PROVIDER_LABELS[p] ?? p}</option>)}
+              </select>
             </div>
+
+            {form.provider === 'custom' ? (
+              <>
+                <div className="form-group">
+                  <label className="form-label">提供商 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>（上游提供商名称）</span></label>
+                  <input className="form-input"
+                    value={form.customProviderName}
+                    onChange={e => setForm(f => ({ ...f, customProviderName: e.target.value }))}
+                    placeholder="例如 deepseek、mistral、groq"
+                    required />
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>用作 Routerly ID 的前缀（例如 <code style={{ fontSize: '0.72rem' }}>deepseek/deepseek-r1</code>）。</div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">模型 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>（上游模型 ID）</span></label>
+                  <input className="form-input"
+                    value={form.id}
+                    onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
+                    placeholder="例如 deepseek-r1、mistral-large-latest"
+                    required />
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>发送给上游 API 端点的模型标识符。</div>
+                </div>
+              </>
+            ) : (
+              <div className="form-group">
+                <label className="form-label">模型预设</label>
+                {providerModels.length > 0 ? (
+                  <select className="form-input" value={isCustomModel ? '__custom__' : form.id}
+                    onChange={e => handleModelChange(e.target.value)}>
+                    {providerModels.map(m => <option key={m.id} value={m.id}>{m.id}</option>)}
+                    <option value="__custom__">— 自定义模型名称 —</option>
+                  </select>
+                ) : null}
+                {(isCustomModel || providerModels.length === 0) && (
+                  <input className="form-input" style={{ marginTop: providerModels.length > 0 ? 6 : 0 }}
+                    value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
+                    placeholder="例如 my-fine-tuned-model" required autoFocus />
+                )}
+                {!isCustomModel && selectedPreset?.notes && (
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>{selectedPreset.notes}</div>
+                )}
+              </div>
+            )}
 
             <div className="form-group">
               <label className="form-label">端点 URL</label>
