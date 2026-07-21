@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Globe, HardDrive, ArrowLeft, ChevronLeft, ChevronRight, Check, ChevronsUpDown, ChevronUp, ChevronDown } from 'lucide-react';
-import { get模型Catalog, type CatalogEntry } from '../api';
+import { getModelCatalog, type CatalogEntry } from '../api';
 import { MultiSelect } from '../components/MultiSelect';
 
 const PAGE_SIZE = 25;
@@ -20,7 +20,7 @@ function FilterLabel({ children }: { children: React.ReactNode }) {
 }
 
 function fmtPricePer1M(per1kTokens: number): string {
-  if (per1kTokens === 0) return '免费';
+if (per1kTokens === 0) return '免费';
   const p = per1kTokens * 1000;
   if (p >= 10) return `$${p.toFixed(0)}`;
   if (p >= 1)  return `$${p.toFixed(2).replace(/\.?0+$/, '')}`;
@@ -50,23 +50,23 @@ function matchPrice(e: CatalogEntry, f: PriceFilter): boolean {
   return true;
 }
 
-export function 模型DiscoveryPage() {
+export function ModelDiscoveryPage() {
   const navigate = useNavigate();
   const [entries, setEntries] = useState<CatalogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [selected提供商s, setSelected提供商s] = useState<string[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [ctxFilter, setCtxFilter] = useState<CtxFilter>('all');
   const [priceFilter, setPriceFilter] = useState<PriceFilter>('all');
-  const [only已配置, setOnly已配置] = useState(false);
-  const [only嵌入模型, setOnly嵌入模型] = useState(false);
+  const [onlyConfigured, setOnlyConfigured] = useState(false);
+  const [onlyEmbedding, setOnlyEmbedding] = useState(false);
   const [page, setPage] = useState(1);
   const [sortCol, setSortCol] = useState<SortCol>('model');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
   useEffect(() => {
-    get模型Catalog()
+    getModelCatalog()
       .then(setEntries)
       .catch(e => setError((e as Error).message))
       .finally(() => setLoading(false));
@@ -80,16 +80,16 @@ export function 模型DiscoveryPage() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return entries.filter(e =>
-      (selected提供商s.length === 0 || selected提供商s.includes(e.provider)) &&
+      (selectedProviders.length === 0 || selectedProviders.includes(e.provider)) &&
       matchCtx(e, ctxFilter) &&
       matchPrice(e, priceFilter) &&
-      (!only已配置 || e.is已配置) &&
-      (!only嵌入模型 || e.嵌入模型) &&
+      (!onlyConfigured || e.isConfigured) &&
+      (!onlyEmbedding || e.embedding) &&
       (!q || e.id.toLowerCase().includes(q) || e.name?.toLowerCase().includes(q))
     );
-  }, [entries, search, selected提供商s, ctxFilter, priceFilter, only已配置, only嵌入模型]);
+  }, [entries, search, selectedProviders, ctxFilter, priceFilter, onlyConfigured, onlyEmbedding]);
 
-  useEffect(() => { setPage(1); }, [search, selected提供商s, ctxFilter, priceFilter, only已配置, only嵌入模型]);
+  useEffect(() => { setPage(1); }, [search, selectedProviders, ctxFilter, priceFilter, onlyConfigured, onlyEmbedding]);
 
   function toggleSort(col: SortCol) {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
@@ -115,10 +115,10 @@ export function 模型DiscoveryPage() {
   const startIdx = (page - 1) * PAGE_SIZE + 1;
   const endIdx = Math.min(page * PAGE_SIZE, sorted.length);
 
-  const hasReset = selected提供商s.length > 0 || ctxFilter !== 'all' || priceFilter !== 'all' || only已配置 || only嵌入模型 || search.trim();
+  const hasReset = selectedProviders.length > 0 || ctxFilter !== 'all' || priceFilter !== 'all' || onlyConfigured || onlyEmbedding || search.trim();
   function resetFilters() {
-    setSelected提供商s([]); setCtxFilter('all'); setPriceFilter('all');
-    setOnly已配置(false); setOnly嵌入模型(false); setSearch('');
+    setSelectedProviders([]); setCtxFilter('all'); setPriceFilter('all');
+    setOnlyConfigured(false); setOnlyEmbedding(false); setSearch('');
   }
 
   return (
@@ -130,10 +130,10 @@ export function 模型DiscoveryPage() {
           style={{ marginBottom: 16, display: 'inline-flex', padding: 4, width: 'fit-content' }}
         >
           <ArrowLeft size={16} />
-          <span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>Back to 模型s</span>
+<span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>返回模型列表</span>
         </button>
-        <h1>模型发现</h1>
-        <p>浏览可用模型并添加到你的路由配置中</p>
+<h1>模型发现</h1>
+<p>浏览可用模型并添加到你的路由配置中</p>
       </div>
       <div className="page-body">
 
@@ -143,13 +143,13 @@ export function 模型DiscoveryPage() {
           {/* Row 1: search + provider */}
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, maxWidth: 300 }}>
-              <FilterLabel>搜索</FilterLabel>
+<FilterLabel>搜索</FilterLabel>
               <div style={{ position: 'relative' }}>
                 <Search size={13} style={{ position: 'absolute', left: 9, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
                 <input
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="模型 ID 或名称…"
+placeholder="模型 ID 或名称…"
                   className="form-input"
                   style={{ paddingLeft: 28, paddingRight: search ? 28 : 10, width: '100%', boxSizing: 'border-box' }}
                 />
@@ -162,11 +162,11 @@ export function 模型DiscoveryPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1, maxWidth: 320 }}>
-              <FilterLabel>提供商</FilterLabel>
+<FilterLabel>提供商</FilterLabel>
               <MultiSelect
                 options={providerOptions}
-                value={selected提供商s}
-                onChange={setSelected提供商s}
+                value={selectedProviders}
+                onChange={setSelectedProviders}
                 placeholder="All providers"
               />
             </div>
@@ -184,35 +184,35 @@ export function 模型DiscoveryPage() {
           {/* Row 2: toggle filters */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>上下文</FilterLabel>
+<FilterLabel>上下文</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'small', 'medium', 'large', 'xl'] as CtxFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${ctxFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setCtxFilter(f)}>
-                    {{ all: '全部', small: '< 32k', medium: '32k–200k', large: '200k–1M', xl: '> 1M' }[f]}
+                    {{ all: 'All', small: '< 32k', medium: '32k–200k', large: '200k–1M', xl: '> 1M' }[f]}
                   </button>
                 ))}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>价格/百万</FilterLabel>
+<FilterLabel>价格/百万</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'free', 'low', 'mid', 'high'] as PriceFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${priceFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setPriceFilter(f)}>
-                    {{ all: '全部', free: '免费', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
+{{ all: 'All', free: '免费', low: '< $1', mid: '$1–$5', high: '> $5' }[f]}
                   </button>
                 ))}
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>显示</FilterLabel>
+<FilterLabel>显示</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
-                <button className={`btn btn-sm ${only已配置 ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnly已配置(v => !v)}>
-                  已配置
+                <button className={`btn btn-sm ${onlyConfigured ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnlyConfigured(v => !v)}>
+                  Configured
                 </button>
-                <button className={`btn btn-sm ${only嵌入模型 ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnly嵌入模型(v => !v)}>
-                  嵌入模型
+                <button className={`btn btn-sm ${onlyEmbedding ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnlyEmbedding(v => !v)}>
+                  Embedding
                 </button>
               </div>
             </div>
@@ -220,7 +220,7 @@ export function 模型DiscoveryPage() {
             {hasReset && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <FilterLabel>&nbsp;</FilterLabel>
-                <button className="btn btn-sm btn-secondary" onClick={resetFilters}>重置筛选</button>
+<button className="btn btn-sm btn-secondary" onClick={resetFilters}>重置筛选</button>
               </div>
             )}
           </div>
@@ -233,8 +233,8 @@ export function 模型DiscoveryPage() {
         ) : filtered.length === 0 ? (
           <div className="empty-state">
             <Search size={36} style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
-            <p>没有符合筛选条件的模型。</p>
-            <button type="button" className="btn btn-secondary" onClick={resetFilters} style={{ marginTop: 8 }}>重置筛选</button>
+<p>没有符合筛选条件的模型。</p>
+<button type="button" className="btn btn-secondary" onClick={resetFilters} style={{ marginTop: 8 }}>重置筛选</button>
           </div>
         ) : (
           <>
@@ -243,11 +243,11 @@ export function 模型DiscoveryPage() {
                 <thead>
                   <tr>
                     {([
-                      { col: 'model' as SortCol, label: '模型' },
-                      { col: 'provider' as SortCol, label: '提供商' },
-                      { col: 'context' as SortCol, label: '上下文' },
-                      { col: 'input' as SortCol, label: '输入/百万' },
-                      { col: 'output' as SortCol, label: '输出/百万' },
+{ col: 'model' as SortCol, label: '模型' },
+{ col: 'provider' as SortCol, label: '提供商' },
+                      { col: 'context' as SortCol, label: 'Context' },
+{ col: 'input' as SortCol, label: '输入/百万' },
+{ col: 'output' as SortCol, label: '输出/百万' },
                     ]).map(({ col, label }) => {
                       const active = sortCol === col;
                       const Icon = active ? (sortDir === 'asc' ? ChevronUp : ChevronDown) : ChevronsUpDown;
@@ -270,13 +270,13 @@ export function 模型DiscoveryPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                             <span className="mono" style={{ fontSize: '0.85rem', fontWeight: 500 }}>{e.id}</span>
-                            {e.is已配置 && (
+                            {e.isConfigured && (
                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.68rem', fontWeight: 600, padding: '1px 6px', borderRadius: 8, background: 'rgba(34,197,94,0.1)', color: '#22c55e', whiteSpace: 'nowrap' }}>
-                                <Check size={9} strokeWidth={3} /> 已配置
+                                <Check size={9} strokeWidth={3} /> Configured
                               </span>
                             )}
-                            {e.嵌入模型 && (
-                              <span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>嵌入模型</span>
+                            {e.embedding && (
+<span style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 8, background: 'rgba(99,102,241,0.12)', color: '#818cf8', whiteSpace: 'nowrap' }}>嵌入模型</span>
                             )}
                             {e.local && (
                               <span title="Runs locally" style={{ color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center' }}>
@@ -294,18 +294,18 @@ export function 模型DiscoveryPage() {
                       <td><span className={`badge badge-${e.provider}`}>{e.provider}</span></td>
                       <td style={{ whiteSpace: 'nowrap' }}>{e.contextWindow > 0 ? fmtCtx(e.contextWindow) : '—'}</td>
                       <td style={{ whiteSpace: 'nowrap' }}>
-                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.inputPer1kTokens)}
+{e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.inputPer1kTokens)}
                       </td>
                       <td style={{ whiteSpace: 'nowrap' }}>
-                        {e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.outputPer1kTokens)}
+{e.local ? <span style={{ color: 'var(--success, #22c55e)', fontWeight: 600, fontSize: '0.82rem' }}>免费</span> : fmtPricePer1M(e.pricing.outputPer1kTokens)}
                       </td>
                       <td>
                         <button
-                          className={`btn btn-sm${e.is已配置 ? ' btn-secondary' : ''}`}
+                          className={`btn btn-sm${e.isConfigured ? ' btn-secondary' : ''}`}
                           onClick={() => navigate(`/dashboard/models/new?provider=${encodeURIComponent(e.provider)}&modelId=${encodeURIComponent(e.id)}`, { state: { catalogEntry: e } })}
                           style={{ whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                         >
-                          <Globe size={12} /> {e.is已配置 ? '重新添加' : '添加'}
+                          <Globe size={12} /> {e.isConfigured ? 'Add again' : 'Add'}
                         </button>
                       </td>
                     </tr>
@@ -335,7 +335,7 @@ export function 模型DiscoveryPage() {
                   disabled={page === totalPages}
                   onClick={() => setPage(p => p + 1)}
                 >
-                  下一页 <ChevronRight size={14} />
+下一页 <ChevronRight size={14} />
                 </button>
               </div>
             )}
