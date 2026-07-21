@@ -23,7 +23,7 @@ export function ProjectUsersTab() {
   useEffect(() => {
     getUsers()
       .then(setUsers)
-      .catch((e) => setErr(e instanceof Error ? e.message : 'Failed to load users'));
+      .catch((e) => setErr(e instanceof Error ? e.message : '加载用户失败'));
   }, []);
 
   async function handleAddMember() {
@@ -44,7 +44,7 @@ export function ProjectUsersTab() {
       setNewUserId('');
       setNew角色('viewer');
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Error adding member');
+      setErr(e instanceof Error ? e.message : '添加成员失败');
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export function ProjectUsersTab() {
       });
       setEditingUserId(null);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Error updating member');
+      setErr(e instanceof Error ? e.message : '更新成员失败');
     } finally {
       setLoading(false);
     }
@@ -86,7 +86,7 @@ export function ProjectUsersTab() {
             return { ...p, members: p.members?.filter(m => m.userId !== userId) || [] };
           });
         } catch (e) {
-          setErr(e instanceof Error ? e.message : 'Error removing member');
+          setErr(e instanceof Error ? e.message : '移除成员失败');
         } finally {
           setLoading(false);
         }
