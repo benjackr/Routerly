@@ -305,7 +305,7 @@ placeholder="模型 ID 或名称…"
                           onClick={() => navigate(`/dashboard/models/new?provider=${encodeURIComponent(e.provider)}&modelId=${encodeURIComponent(e.id)}`, { state: { catalogEntry: e } })}
                           style={{ whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                         >
-                          <Globe size={12} /> {e.isConfigured ? 'Add again' : 'Add'}
+                          <Globe size={12} /> {e.isConfigured ? '再次添加' : 'Add'}
                         </button>
                       </td>
                     </tr>
