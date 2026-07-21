@@ -49,7 +49,7 @@ export function RolesPage() {
       const data = await getRoles();
       setRoles(data);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load roles');
+      setError(e instanceof Error ? e.message : '加载角色失败');
     } finally {
       setLoading(false);
     }
@@ -84,7 +84,7 @@ export function RolesPage() {
       setEditingId(null);
       setEditForm(EMPTY_FORM);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to update role');
+      setError(e instanceof Error ? e.message : '更新角色失败');
     } finally {
       setSaving(false);
     }
@@ -99,7 +99,7 @@ export function RolesPage() {
       setShowCreate(false);
       setCreateForm(EMPTY_FORM);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to create role');
+      setError(e instanceof Error ? e.message : '创建角色失败');
     } finally {
       setSaving(false);
     }
@@ -115,7 +115,7 @@ export function RolesPage() {
           await deleteRole(id);
           setRoles(rs => rs.filter(r => r.id !== id));
         } catch (e) {
-          setError(e instanceof Error ? e.message : 'Failed to delete role');
+          setError(e instanceof Error ? e.message : '删除角色失败');
         }
       },
     });
@@ -128,7 +128,7 @@ export function RolesPage() {
       {error && <div className="form-error" style={{ marginBottom: 20 }}>{error}</div>}
 
       <div className="toolbar">
-        <span className="toolbar-title">Manage roles and permissions. Built-in roles cannot be modified.</span>
+        <span className="toolbar-title">管理角色和权限。内置角色不可修改。</span>
         {!showCreate && (
           <button className="btn btn-primary" onClick={() => { setShowCreate(true); setEditingId(null); }}>
             <Plus size={15} /> New Role
@@ -257,7 +257,7 @@ function RoleForm({ form, onChange, onSave, onCancel, saving, isNew }: RoleFormP
       </div>
 
       <div style={{ marginBottom: 16 }}>
-        <label className="form-label" style={{ marginBottom: 8 }}>Permissions</label>
+        <label className="form-label" style={{ marginBottom: 8 }}>权限</label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {ALL_PERMISSIONS.map(perm => (
             <label key={perm}
