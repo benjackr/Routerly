@@ -140,7 +140,7 @@ export function UsagePage() {
       .catch((err: unknown) => {
         const msg = err instanceof Error ? err.message : String(err);
         setFetchError(msg);
-        console.error('Failed to load usage stats:', msg);
+        console.error('加载用量统计失败：', msg);
       });
   }, [dateRange, page, pageSize, projectIds, modelIds, callTypeFilter, outcomeFilter]);
 
@@ -302,7 +302,7 @@ export function UsagePage() {
                 marginLeft: 4,
                 ...(liveMode ? { background: '#ef4444', borderColor: '#ef4444', color: 'white' } : {}),
               }}
-              title={liveMode ? 'Disable live mode' : 'Enable live mode (refresh every 2s)'}
+              title={liveMode ? '关闭实时模式' : 'Enable live mode (refresh every 2s)'}
             >
               ● Live
             </button>
@@ -354,7 +354,7 @@ export function UsagePage() {
                 {(['all', 'completion', 'routing', 'guardrail'] as const).map(f => (
                   <button key={f} className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => setCallTypeFilter(f)}>
-                    {f === 'all' ? '全部' : f === 'completion' ? 'Completion' : f === 'routing' ? 'Router' : 'Guardrail'}
+                    {f === 'all' ? '全部' : f === 'completion' ? '补全' : f === 'routing' ? '路由' : '护栏'}
                   </button>
                 ))}
               </div>
@@ -366,7 +366,7 @@ export function UsagePage() {
                 {(['all', 'success', 'blocked', 'error'] as const).map(f => (
                   <button key={f} className={`btn btn-sm ${outcomeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                     onClick={() => setOutcomeFilter(f)}>
-                    {f === 'all' ? '全部' : f === 'success' ? '操作成功' : f === 'blocked' ? 'Blocked' : '错误'}
+                    {f === 'all' ? '全部' : f === 'success' ? '操作成功' : f === 'blocked' ? '已拦截' : '错误'}
                   </button>
                 ))}
               </div>
@@ -388,8 +388,8 @@ export function UsagePage() {
           <div className="loading-center"><div className="spinner" /></div>
         ) : fetchError ? (
           <div className="empty-state" style={{ color: 'var(--danger)' }}>
-            <p>Failed to load usage data: <strong>{fetchError}</strong></p>
-            <button className="btn btn-sm btn-secondary" style={{ marginTop: 8 }} onClick={handleRefreshNow}>Retry</button>
+            <p>加载用量数据失败： <strong>{fetchError}</strong></p>
+            <button className="btn btn-sm btn-secondary" style={{ marginTop: 8 }} onClick={handleRefreshNow}>重试</button>
           </div>
         ) : !stats ? null : (
           <>
@@ -400,7 +400,7 @@ export function UsagePage() {
                 <div className="stat-value">${stats.summary.totalCost.toFixed(4)}</div>
               </div>
               <div className="stat-card">
-                <div className="stat-label">Total Calls</div>
+                <div className="stat-label">总调用</div>
                 <div className="stat-value">{stats.summary.totalCalls}</div>
               </div>
               <div className="stat-card" style={{ cursor: 'pointer', outline: callTypeFilter === 'completion' ? '2px solid var(--primary)' : 'none', outlineOffset: 2 }}
@@ -441,7 +441,7 @@ export function UsagePage() {
                 </div>
               )}
               <div className="stat-card">
-                <div className="stat-label">Errors</div>
+                <div className="stat-label">错误</div>
                 <div className="stat-value" style={{ color: stats.summary.errorCalls > 0 ? 'var(--danger)' : 'var(--success)' }}>
                   {stats.summary.errorCalls}
                 </div>
@@ -464,12 +464,12 @@ export function UsagePage() {
                   <table>
                     <thead>
                       <tr>
-                        {th('Rank', 'rank')}
+                        {th('排名', 'rank')}
                         {th('模型', 'model')}
                         {th('提供商', 'provider')}
                         {th('调用次数', 'calls', 'right')}
-                        {th('Errors', 'errors', 'right')}
-                        {th('Success rate', 'successRate', 'right')}
+                        {th('错误', 'errors', 'right')}
+                        {th('成功率', 'successRate', 'right')}
                         {th('Avg latency', 'avgLatency', 'right')}
                         {th('P95 latency', 'p95Latency', 'right')}
                         {th('Input tokens', 'inputTokens', 'right')}
