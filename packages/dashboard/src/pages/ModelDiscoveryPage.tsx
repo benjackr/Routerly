@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Globe, HardDrive, ArrowLeft, ChevronLeft, ChevronRight, Check, ChevronsUpDown, ChevronUp, ChevronDown } from 'lucide-react';
-import { getModelCatalog, type CatalogEntry } from '../api';
+import { get模型Catalog, type CatalogEntry } from '../api';
 import { MultiSelect } from '../components/MultiSelect';
 
 const PAGE_SIZE = 25;
@@ -50,23 +50,23 @@ function matchPrice(e: CatalogEntry, f: PriceFilter): boolean {
   return true;
 }
 
-export function ModelDiscoveryPage() {
+export function 模型DiscoveryPage() {
   const navigate = useNavigate();
   const [entries, setEntries] = useState<CatalogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [selected提供商s, setSelected提供商s] = useState<string[]>([]);
   const [ctxFilter, setCtxFilter] = useState<CtxFilter>('all');
   const [priceFilter, setPriceFilter] = useState<PriceFilter>('all');
-  const [onlyConfigured, setOnlyConfigured] = useState(false);
-  const [onlyEmbedding, setOnlyEmbedding] = useState(false);
+  const [only已配置, setOnly已配置] = useState(false);
+  const [only嵌入模型, setOnly嵌入模型] = useState(false);
   const [page, setPage] = useState(1);
   const [sortCol, setSortCol] = useState<SortCol>('model');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
   useEffect(() => {
-    getModelCatalog()
+    get模型Catalog()
       .then(setEntries)
       .catch(e => setError((e as Error).message))
       .finally(() => setLoading(false));
@@ -80,16 +80,16 @@ export function ModelDiscoveryPage() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return entries.filter(e =>
-      (selectedProviders.length === 0 || selectedProviders.includes(e.provider)) &&
+      (selected提供商s.length === 0 || selected提供商s.includes(e.provider)) &&
       matchCtx(e, ctxFilter) &&
       matchPrice(e, priceFilter) &&
-      (!onlyConfigured || e.isConfigured) &&
-      (!onlyEmbedding || e.embedding) &&
+      (!only已配置 || e.is已配置) &&
+      (!only嵌入模型 || e.embedding) &&
       (!q || e.id.toLowerCase().includes(q) || e.name?.toLowerCase().includes(q))
     );
-  }, [entries, search, selectedProviders, ctxFilter, priceFilter, onlyConfigured, onlyEmbedding]);
+  }, [entries, search, selected提供商s, ctxFilter, priceFilter, only已配置, only嵌入模型]);
 
-  useEffect(() => { setPage(1); }, [search, selectedProviders, ctxFilter, priceFilter, onlyConfigured, onlyEmbedding]);
+  useEffect(() => { setPage(1); }, [search, selected提供商s, ctxFilter, priceFilter, only已配置, only嵌入模型]);
 
   function toggleSort(col: SortCol) {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
@@ -115,10 +115,10 @@ export function ModelDiscoveryPage() {
   const startIdx = (page - 1) * PAGE_SIZE + 1;
   const endIdx = Math.min(page * PAGE_SIZE, sorted.length);
 
-  const hasReset = selectedProviders.length > 0 || ctxFilter !== 'all' || priceFilter !== 'all' || onlyConfigured || onlyEmbedding || search.trim();
+  const hasReset = selected提供商s.length > 0 || ctxFilter !== 'all' || priceFilter !== 'all' || only已配置 || only嵌入模型 || search.trim();
   function resetFilters() {
-    setSelectedProviders([]); setCtxFilter('all'); setPriceFilter('all');
-    setOnlyConfigured(false); setOnlyEmbedding(false); setSearch('');
+    setSelected提供商s([]); setCtxFilter('all'); setPriceFilter('all');
+    setOnly已配置(false); setOnly嵌入模型(false); setSearch('');
   }
 
   return (
@@ -130,10 +130,10 @@ export function ModelDiscoveryPage() {
           style={{ marginBottom: 16, display: 'inline-flex', padding: 4, width: 'fit-content' }}
         >
           <ArrowLeft size={16} />
-          <span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>Back to Models</span>
+          <span style={{ marginLeft: 6, fontSize: '0.8rem', fontWeight: 500 }}>Back to 模型s</span>
         </button>
-        <h1>Model Discovery</h1>
-        <p>Browse available models and add them to your routing configuration</p>
+        <h1>模型发现</h1>
+        <p>浏览可用模型并添加到你的路由配置中</p>
       </div>
       <div className="page-body">
 
@@ -149,7 +149,7 @@ export function ModelDiscoveryPage() {
                 <input
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="Model ID or name…"
+                  placeholder="模型 ID 或名称…"
                   className="form-input"
                   style={{ paddingLeft: 28, paddingRight: search ? 28 : 10, width: '100%', boxSizing: 'border-box' }}
                 />
@@ -165,8 +165,8 @@ export function ModelDiscoveryPage() {
               <FilterLabel>提供商</FilterLabel>
               <MultiSelect
                 options={providerOptions}
-                value={selectedProviders}
-                onChange={setSelectedProviders}
+                value={selected提供商s}
+                onChange={setSelected提供商s}
                 placeholder="All providers"
               />
             </div>
@@ -184,7 +184,7 @@ export function ModelDiscoveryPage() {
           {/* Row 2: toggle filters */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>Context</FilterLabel>
+              <FilterLabel>上下文</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'small', 'medium', 'large', 'xl'] as CtxFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${ctxFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setCtxFilter(f)}>
@@ -195,7 +195,7 @@ export function ModelDiscoveryPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>Price / 1M</FilterLabel>
+              <FilterLabel>价格/百万</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
                 {(['all', 'free', 'low', 'mid', 'high'] as PriceFilter[]).map(f => (
                   <button key={f} className={`btn btn-sm ${priceFilter === f ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setPriceFilter(f)}>
@@ -206,13 +206,13 @@ export function ModelDiscoveryPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <FilterLabel>Show</FilterLabel>
+              <FilterLabel>显示</FilterLabel>
               <div style={{ display: 'flex', gap: 5 }}>
-                <button className={`btn btn-sm ${onlyConfigured ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnlyConfigured(v => !v)}>
-                  Configured
+                <button className={`btn btn-sm ${only已配置 ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnly已配置(v => !v)}>
+                  已配置
                 </button>
-                <button className={`btn btn-sm ${onlyEmbedding ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnlyEmbedding(v => !v)}>
-                  Embedding
+                <button className={`btn btn-sm ${only嵌入模型 ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setOnly嵌入模型(v => !v)}>
+                  嵌入模型
                 </button>
               </div>
             </div>
@@ -220,7 +220,7 @@ export function ModelDiscoveryPage() {
             {hasReset && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <FilterLabel>&nbsp;</FilterLabel>
-                <button className="btn btn-sm btn-secondary" onClick={resetFilters}>Reset filters</button>
+                <button className="btn btn-sm btn-secondary" onClick={resetFilters}>重置筛选</button>
               </div>
             )}
           </div>
@@ -233,8 +233,8 @@ export function ModelDiscoveryPage() {
         ) : filtered.length === 0 ? (
           <div className="empty-state">
             <Search size={36} style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
-            <p>No models match your filters.</p>
-            <button type="button" className="btn btn-secondary" onClick={resetFilters} style={{ marginTop: 8 }}>Reset filters</button>
+            <p>没有符合筛选条件的模型。</p>
+            <button type="button" className="btn btn-secondary" onClick={resetFilters} style={{ marginTop: 8 }}>重置筛选</button>
           </div>
         ) : (
           <>
@@ -245,9 +245,9 @@ export function ModelDiscoveryPage() {
                     {([
                       { col: 'model' as SortCol, label: '模型' },
                       { col: 'provider' as SortCol, label: '提供商' },
-                      { col: 'context' as SortCol, label: 'Context' },
-                      { col: 'input' as SortCol, label: 'Input / 1M' },
-                      { col: 'output' as SortCol, label: 'Output / 1M' },
+                      { col: 'context' as SortCol, label: '上下文' },
+                      { col: 'input' as SortCol, label: '输入/百万' },
+                      { col: 'output' as SortCol, label: '输出/百万' },
                     ]).map(({ col, label }) => {
                       const active = sortCol === col;
                       const Icon = active ? (sortDir === 'asc' ? ChevronUp : ChevronDown) : ChevronsUpDown;
@@ -270,9 +270,9 @@ export function ModelDiscoveryPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                             <span className="mono" style={{ fontSize: '0.85rem', fontWeight: 500 }}>{e.id}</span>
-                            {e.isConfigured && (
+                            {e.is已配置 && (
                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.68rem', fontWeight: 600, padding: '1px 6px', borderRadius: 8, background: 'rgba(34,197,94,0.1)', color: '#22c55e', whiteSpace: 'nowrap' }}>
-                                <Check size={9} strokeWidth={3} /> Configured
+                                <Check size={9} strokeWidth={3} /> 已配置
                               </span>
                             )}
                             {e.embedding && (
@@ -301,11 +301,11 @@ export function ModelDiscoveryPage() {
                       </td>
                       <td>
                         <button
-                          className={`btn btn-sm${e.isConfigured ? ' btn-secondary' : ''}`}
+                          className={`btn btn-sm${e.is已配置 ? ' btn-secondary' : ''}`}
                           onClick={() => navigate(`/dashboard/models/new?provider=${encodeURIComponent(e.provider)}&modelId=${encodeURIComponent(e.id)}`, { state: { catalogEntry: e } })}
                           style={{ whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                         >
-                          <Globe size={12} /> {e.isConfigured ? 'Add again' : 'Add'}
+                          <Globe size={12} /> {e.is已配置 ? '重新添加' : 'Add'}
                         </button>
                       </td>
                     </tr>
