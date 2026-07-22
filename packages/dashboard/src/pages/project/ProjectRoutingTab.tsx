@@ -466,10 +466,10 @@ export function ProjectRoutingTab() {
                     <div style={{ color: 'var(--text-muted)' }}><GripVertical size={16} /></div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: '0.9rem', fontWeight: 600, textTransform: 'capitalize' }}>
-                        {policy.type === 'llm' ? 'AI Routing'
-                          : policy.type === 'rate-limit' ? 'Rate Limit'
-                          : policy.type === 'budget-remaining' ? 'Budget Remaining'
-                          : policy.type === 'semantic-intent' ? 'Semantic Intent'
+                        {policy.type === 'llm' ? 'AI 路由'
+                          : policy.type === 'rate-limit' ? '速率限制'
+                          : policy.type === 'budget-remaining' ? '剩余预算'
+                          : policy.type === 'semantic-intent' ? '语义意图'
                           : policy.type} Policy
                       </div>
                       {POLICY_DESCRIPTIONS[policy.type] && (
