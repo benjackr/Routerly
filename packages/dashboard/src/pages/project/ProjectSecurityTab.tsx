@@ -42,7 +42,7 @@ const RULE_TYPE_LABELS: Record<GuardrailRuleType, string> = {
 };
 
 const RULE_TYPE_DESCRIPTIONS: Record<GuardrailRuleType, string> = {
-  regex:      'Block requests/responses matching regex patterns.',
+  regex:      '拦截匹配正则表达式的请求/响应。',
   semantic:   '屏蔽与提供的示例在语义上相似的内容。',
   topic:      '使用 LLM 判断器将对话限制在允许的主题内。',
   moderation: '使用 LLM 审核判断器屏蔽有害内容。',
