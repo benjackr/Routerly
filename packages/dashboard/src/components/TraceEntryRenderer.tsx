@@ -285,7 +285,7 @@ export function TraceEntryRenderer({ entry: e }: TraceEntryRendererProps) {
                 <div key={i} style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '6px 10px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: p.scores?.length > 1 ? 4 : 0 }}>
                     <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'capitalize' }}>
-                      {p.type === 'llm' ? 'AI Routing' : p.type === 'rate-limit' ? 'Rate Limit' : p.type === 'budget-remaining' ? 'Budget Remaining' : p.type === 'semantic-intent' ? 'Semantic Intent' : p.type === 'model-preference' ? 'Model Preference' : p.type}
+                      {p.type === 'llm' ? 'AI 路由' : p.type === 'rate-limit' ? '速率限制' : p.type === 'budget-remaining' ? '剩余预算' : p.type === 'semantic-intent' ? '语义意图' : p.type === 'model-preference' ? '模型偏好' : p.type}
                     </span>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>weight {p.weight?.toFixed(2)}</span>
                   </div>
