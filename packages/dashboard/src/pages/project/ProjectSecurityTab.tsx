@@ -114,7 +114,7 @@ function PiiPolicyCard({
     let next: GuardrailTarget;
     if (newReq && newRes) next = 'both';
     else if (newReq) next = 'request';
-    else next = '响应';
+    else next = 'response';
     onChange({ ...policy, target: next });
   }
 
