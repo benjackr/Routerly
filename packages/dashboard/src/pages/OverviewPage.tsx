@@ -7,6 +7,8 @@ import { Activity, DollarSign, XCircle, Boxes, FolderOpen, TrendingUp } from 'lu
 import { getUsage, getModels, getProjects, type UsageStats } from '../api.js';
 import { useTheme } from '../ThemeContext.js';
 
+const PERIOD_DISPLAY: Record<string, string> = { daily: '日费用', weekly: '周费用', monthly: '月费用', all: '全部' };
+
 const PALETTE = ['#3d75f5', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#8b5cf6', '#06b6d4', '#f97316'];
 
 const PERIOD_LABEL: Record<string, string> = {
@@ -155,13 +157,13 @@ export function OverviewPage() {
             value={stats.summary.totalCalls > 0
               ? `${((stats.summary.successCalls / stats.summary.totalCalls) * 100).toFixed(1)}%`
               : '—'}
-            sub="of all requests" />
+            sub="全部请求" />
           <StatCard icon={<XCircle size={18} />} label="错误" accentColor="#EF4444" valueColor="#EF4444"
-            value={stats.summary.errorCalls} sub="failed requests" />
+            value={stats.summary.errorCalls} sub="失败请求" />
           <StatCard icon={<Boxes size={18} />} label="模型" accentColor="#8B5CF6"
-            value={modelCount} sub="registered" />
+            value={modelCount} sub="已注册" />
           <StatCard icon={<FolderOpen size={18} />} label="项目" accentColor="#A78BFA"
-            value={projectCount} sub="active" />
+            value={projectCount} sub="已启用" />
         </div>
 
         {/* Token aggregate strip */}
