@@ -260,7 +260,7 @@ export function UsagePage() {
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
           <div>
             <h1 style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              Usage
+              用量
               {liveMode && (
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -277,10 +277,10 @@ export function UsagePage() {
               )}
             </h1>
             <p style={{ margin: 0 }}>
-              Detailed call logs and per-model breakdown
+              详细的调用日志和按模型分类明细
               {lastUpdated && (
                 <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginLeft: 8 }}>
-                  · updated at {lastUpdated.toLocaleTimeString()}
+                  · 更新于 {lastUpdated.toLocaleTimeString()}
                 </span>
               )}
             </p>
@@ -329,7 +329,7 @@ export function UsagePage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 200 }}>
-              <FilterLabel>Project</FilterLabel>
+              <FilterLabel>项目</FilterLabel>
               <MultiSelect
                 options={projectOptions}
                 value={projectIds}
@@ -349,7 +349,7 @@ export function UsagePage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <FilterLabel>Type</FilterLabel>
+              <FilterLabel>类型</FilterLabel>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['all', 'completion', 'routing', 'guardrail'] as const).map(f => (
                   <button key={f} className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
@@ -517,7 +517,7 @@ export function UsagePage() {
             {/* Recent calls */}
             <>
               <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 12px' }}>
-                Recent Calls
+                最近调用
                 <span style={{ fontWeight: 400, marginLeft: 8, color: 'var(--text-muted)' }}>
                   ({stats.pagination ? `${displayRecords.length} / ${stats.pagination.totalRecords}` : displayRecords.length})
                 </span>
@@ -525,7 +525,7 @@ export function UsagePage() {
 
               {displayRecords.length === 0 ? (
                 <div className="empty-state">
-                  <p>No usage records for this period.</p>
+                  <p>当前时间段没有使用记录。</p>
                 </div>
               ) : (
                 <>
@@ -533,8 +533,8 @@ export function UsagePage() {
                   <table>
                     <thead>
                       <tr>
-                        <th>Time</th><th>Project</th><th>模型</th><th>Type</th><th>In</th><th>Out</th>
-                        <th>Cost</th><th>Latency</th><th>TTFT</th><th>Tok/s</th><th>状态</th>
+                        <th>时间</th><th>项目</th><th>模型</th><th>类型</th><th>输入</th><th>输出</th>
+                        <th>费用</th><th>延迟</th><th>TTFT</th><th>Tok/s</th><th>状态</th>
                       </tr>
                     </thead>
                     <tbody>
