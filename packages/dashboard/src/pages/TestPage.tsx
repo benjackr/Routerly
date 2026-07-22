@@ -167,7 +167,7 @@ function ComparePanel({
           /* v8 ignore next */
           if (data.type === 'result') return;
           /* v8 ignore next */
-          if (data.type === 'error' || data.error) throw new Error(data.message || 'Service error');
+          if (data.type === 'error' || data.error) throw new Error(data.message || '服务错误');
           if (data.model && !modelName) modelName = data.model as string;
           if (data.usage) {
             inputTokens = data.usage.prompt_tokens ?? inputTokens;
@@ -537,7 +537,7 @@ export function TestPage() {
           /* v8 ignore next */
           if (data.type === 'result') return;
           /* v8 ignore next */
-          if (data.type === 'error' || data.error) throw new Error(data.message || data.error?.message || 'Service error');
+          if (data.type === 'error' || data.error) throw new Error(data.message || data.error?.message || '服务错误');
           if (data.model && !modelName) modelName = data.model as string;
           if (data.usage) {
             inputTokens = data.usage.prompt_tokens ?? inputTokens;
