@@ -254,8 +254,8 @@ function ComparePanel({
                   </select>
                 </div>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  <ParamSlider label="Temp" value={params.temperature} min={0} max={2} step={0.1} onChange={v => setParams((p: PanelParams) => ({ ...p, temperature: v }))} />
-                  <ParamSlider label="Max tokens" value={params.maxTokens} min={64} max={8192} step={64} onChange={v => setParams((p: PanelParams) => ({ ...p, maxTokens: v }))} />
+                  <ParamSlider label="温度" value={params.temperature} min={0} max={2} step={0.1} onChange={v => setParams((p: PanelParams) => ({ ...p, temperature: v }))} />
+                  <ParamSlider label="最大令牌数" value={params.maxTokens} min={64} max={8192} step={64} onChange={v => setParams((p: PanelParams) => ({ ...p, maxTokens: v }))} />
                   <ParamSlider label="Top-p" value={params.topP} min={0} max={1} step={0.05} onChange={v => setParams((p: PanelParams) => ({ ...p, topP: v }))} />
                 </div>
                 {assistantMsgs.length > 0 && (
@@ -357,7 +357,7 @@ function ComparePanel({
         <textarea
           className="form-input"
           rows={2}
-          placeholder="Send the same message to both models..."
+          placeholder="向两个模型发送相同的消息..."
           style={{ flex: 1, resize: 'none', fontFamily: 'inherit' }}
           value={compareInput}
           onChange={e => setCompareInput(e.target.value)}
@@ -381,7 +381,7 @@ export function TestPage() {
 
   // Single mode
   const [systemPromptOpen, setSystemPromptOpen] = useState(false);
-  const [systemPrompt, setSystemPrompt] = useState('You are a helpful AI assistant.');
+  const [systemPrompt, setSystemPrompt] = useState('你是一个有帮助的 AI 助手。');
   const [selectedModelId, setSelectedModelId] = useState('');
   const [temperature, setTemperature] = useState(0.7);
   const [maxTokens, setMaxTokens] = useState(1024);
@@ -664,7 +664,7 @@ export function TestPage() {
     const file = e.target.files?.[0];
     /* v8 ignore next */
     if (!file) return;
-    if (!file.type.startsWith('image/')) { setError('Only image attachments are supported.'); return; }
+    if (!file.type.startsWith('image/')) { setError('仅支持图片附件。'); return; }
     const reader = new FileReader();
     reader.onload = ev => setAttachedImage(ev.target?.result as string);
     reader.readAsDataURL(file);
@@ -701,7 +701,7 @@ export function TestPage() {
       setPresets(prev => [...prev, created]);
       setSavePresetName('');
       setShowSaveForm(false);
-    } catch (e) { console.error('Failed to save preset', e); }
+    } catch (e) { console.error('保存预设失败', e); }
   }
 
   async function deletePreset(presetId: string) {
@@ -710,7 +710,7 @@ export function TestPage() {
     try {
       await deletePlaygroundPreset(matchedProject.id, presetId);
       setPresets(prev => prev.filter(p => p.id !== presetId));
-    } catch (e) { console.error('Failed to delete preset', e); }
+    } catch (e) { console.error('删除预设失败', e); }
   }
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -740,7 +740,7 @@ export function TestPage() {
                   display: 'flex', alignItems: 'center', gap: 5,
                 }}>
                   {m === 'single' ? <MessageSquare size={13} /> : <SplitSquareHorizontal size={13} />}
-                  {m === 'single' ? 'Single' : 'Compare'}
+                  {m === 'single' ? '单模型' : '对比模式'}
                 </button>
               ))}
             </div>
@@ -749,8 +749,8 @@ export function TestPage() {
             {mode === 'compare' ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 {([
-                  { label: 'Token A', value: apiKey, set: setApiKey, show: showKey, setShow: setShowKey },
-                  { label: 'Token B', value: apiKeyB, set: setApiKeyB, show: showKeyB, setShow: setShowKeyB },
+                  { label: '令牌 A', value: apiKey, set: setApiKey, show: showKey, setShow: setShowKey },
+                  { label: '令牌 B', value: apiKeyB, set: setApiKeyB, show: showKeyB, setShow: setShowKeyB },
                 ] as const).map(({ label, value, set, show, setShow }) => (
                   <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{label}:</span>
@@ -759,7 +759,7 @@ export function TestPage() {
                         type={show ? 'text' : 'password'}
                         className="form-input"
                         style={{ width: 180, padding: '5px 32px 5px 10px', fontSize: '0.82rem', fontFamily: 'monospace' }}
-                        placeholder={label === 'Token B' ? 'same as A' : 'sk-rt-...'}
+                        placeholder={label === '令牌 B' ? '同 A' : 'sk-rt-...'}
                         value={value}
                         onChange={e => set(e.target.value)}
                         autoComplete="new-password"
@@ -852,7 +852,7 @@ export function TestPage() {
                 <input
                   className="form-input"
                   style={{ flex: 1, padding: '4px 8px', fontSize: '0.78rem' }}
-                  placeholder="Preset name..."
+                  placeholder="预设名称..."
                   value={savePresetName}
                   onChange={e => setSavePresetName(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') savePreset(); }}
@@ -934,8 +934,8 @@ export function TestPage() {
                       {availableModels.map(m => <option key={m.modelId} value={m.modelId}>{m.modelId}</option>)}
                     </select>
                   </div>
-                  <ParamSlider label="Temp" value={temperature} min={0} max={2} step={0.1} onChange={setTemperature} />
-                  <ParamSlider label="Max tokens" value={maxTokens} min={64} max={8192} step={64} onChange={setMaxTokens} />
+                  <ParamSlider label="温度" value={temperature} min={0} max={2} step={0.1} onChange={setTemperature} />
+                  <ParamSlider label="最大令牌数" value={maxTokens} min={64} max={8192} step={64} onChange={setMaxTokens} />
                   <ParamSlider label="Top-p" value={topP} min={0} max={1} step={0.05} onChange={setTopP} />
                   <label
                     title={streamingDisabled ? 'Streaming is not available: a response-blocking guardrail requires the full response to be inspected before delivery.' : undefined}
@@ -1001,7 +1001,7 @@ export function TestPage() {
                             /* v8 ignore start */
                             // ponytail: blocked with no content → show blockMessage as plain text
                             (msg.blocked && !msg.content)
-                              ? <span style={{ whiteSpace: 'pre-wrap' }}>{msg.blocked.blockMessage ?? 'This message was blocked by a guardrail.'}</span>
+                              ? <span style={{ whiteSpace: 'pre-wrap' }}>{msg.blocked.blockMessage ?? '此消息被护栏拦截。'}</span>
                               : (typeof msg.content === 'string'
                                   ? (showRawThis
                                       ? <pre style={{ margin: 0, fontSize: '0.75rem', overflowX: 'auto', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{msg.rawJson ?? msg.content}</pre>
@@ -1098,7 +1098,7 @@ export function TestPage() {
                 {attachedImage && (
                   <div style={{ marginBottom: 10 }}>
                     <div style={{ position: 'relative', display: 'inline-block' }}>
-                      <img src={attachedImage} alt="Attachment" style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)' }} />
+                      <img src={attachedImage} alt="附件" style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 6, border: '1px solid var(--border)' }} />
                       <button className="btn-icon danger" style={{ position: 'absolute', top: -5, right: -5, padding: 2, background: 'var(--bg-elevated)' }} onClick={() => setAttachedImage(null)}>
                         <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>×</span>
                       </button>
@@ -1107,11 +1107,11 @@ export function TestPage() {
                 )}
                 <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
                   <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileAttach} />
-                  <button className="btn-icon" title="Attach image" onClick={() => fileInputRef.current?.click()}><Paperclip size={17} /></button>
+                  <button className="btn-icon" title="附加图片" onClick={() => fileInputRef.current?.click()}><Paperclip size={17} /></button>
                   <textarea
                     className="form-input"
                     rows={2}
-                    placeholder="Type a message..."
+                    placeholder="输入消息..."
                     style={{ flex: 1, resize: 'none', fontFamily: 'inherit' }}
                     value={input}
                     onChange={e => setInput(e.target.value)}
@@ -1134,7 +1134,7 @@ export function TestPage() {
                     {debugTraceHistory.length > 0 && (
                       <button onClick={() => setDebugTraceHistory([])} style={{ fontSize: '0.7rem', color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}>清空</button>
                     )}
-                    <button onClick={() => setShowDebugSidebar(false)} className="btn-icon" style={{ padding: 4 }} title="Hide debug"><ChevronRight size={15} /></button>
+                    <button onClick={() => setShowDebugSidebar(false)} className="btn-icon" style={{ padding: 4 }} title="隐藏调试"><ChevronRight size={15} /></button>
                   </div>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: 12, background: 'var(--bg-base)' }}>
@@ -1174,7 +1174,7 @@ export function TestPage() {
             {!showDebugSidebar && (
               <button onClick={() => setShowDebugSidebar(true)} className="btn-icon"
                 style={{ position: 'fixed', right: 24, top: '50%', transform: 'translateY(-50%)', padding: 8, background: 'var(--bg-elevated)', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-                title="Show debug">
+                title="显示调试">
                 <ChevronLeft size={18} />
               </button>
             )}
