@@ -888,15 +888,7 @@ const filteredModels = useMemo(() => {
                     required />
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>用作 Routerly ID 的前缀（例如 <code style={{ fontSize: '0.72rem' }}>deepseek/deepseek-r1</code>）。</div>
                 </div>
-                <div className="form-group">
-                  <label className="form-label">模型 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>（上游模型 ID）</span></label>
-                  <input className="form-input"
-                    value={form.id}
-                    onChange={e => setForm(f => ({ ...f, id: e.target.value }))}
-                    placeholder="例如 deepseek-r1、mistral-large-latest"
-                    required />
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: 4 }}>发送给上游 API 端点的模型标识符。</div>
-                </div>
+
               </>
             ) : (
               <div className="form-group">
