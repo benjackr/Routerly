@@ -245,7 +245,7 @@ placeholder="模型 ID 或名称…"
                     {([
 { col: 'model' as SortCol, label: '模型' },
 { col: 'provider' as SortCol, label: '提供商' },
-                      { col: 'context' as SortCol, label: 'Context' },
+                      { col: 'context' as SortCol, label: '上下文' },
 { col: 'input' as SortCol, label: '输入/百万' },
 { col: 'output' as SortCol, label: '输出/百万' },
                     ]).map(({ col, label }) => {
