@@ -122,7 +122,7 @@ export function ProjectGeneralTab() {
           </div>
           <button type="button" className="btn btn-secondary" onClick={() => copyToken(revealedToken.token)} style={{ flexShrink: 0 }}>
             {copied ? <Check size={15} /> : <Copy size={15} />}
-            {copied ? 'Copied!' : '复制'}
+            {copied ? '已复制！' : '复制'}
           </button>
         </div>
 
@@ -167,7 +167,7 @@ export function ProjectGeneralTab() {
                 style={{ flexShrink: 0, padding: '5px 10px', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: 5 }}
               >
                 {copiedEndpoint === baseUrl ? <Check size={13} /> : <Copy size={13} />}
-                {copiedEndpoint === baseUrl ? 'Copied!' : '复制'}
+                {copiedEndpoint === baseUrl ? '已复制！' : '复制'}
               </button>
             </div>
           </div>
