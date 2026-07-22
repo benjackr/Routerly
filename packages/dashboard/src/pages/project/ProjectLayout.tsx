@@ -62,7 +62,7 @@ export function ProjectLayout() {
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 style={{ margin: 0 }}>{isNew ? '新建项目' : project?.name || 'Loading...'}</h1>
+            <h1 style={{ margin: 0 }}>{isNew ? '新建项目' : project?.name || '加载中...'}</h1>
             {!isNew && project && (
               <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                 Project ID: <span className="mono">{project.id}</span>
