@@ -23,7 +23,7 @@ const FAQ_ITEMS = [
     a: 'Routerly is self-hosted and stores data only on your machine (in ~/.routerly/ by default). Prompts and responses are never sent anywhere by Routerly. Request logs are stored locally and only if you enable them per-project.',
   },
   {
-    q: 'What\'s a project token and how is it different from a provider API key?',
+    q: '项目令牌是什么？它和提供商 API Key 有什么区别？',
     a: 'A project token is a credential you give to your app or team members to authenticate with Routerly. It\'s separate from your provider API keys, which Routerly stores securely on the server side. Your apps never see the real provider keys.',
   },
 ];
@@ -85,17 +85,17 @@ function Card({ children, style }: { children: React.ReactNode; style?: React.CS
 }
 
 const ISSUE_TEMPLATE = `**What happened?**
-(Describe the problem in plain words)
+（用文字描述问题）
 
-**Steps to reproduce**
+**复现步骤**
 1.
 2.
 
-**Expected behaviour**
-(What you expected to see)
+**期望行为**
+（你期望看到什么）
 
-**Routerly version**
-(Run \`routerly --version\` or check Settings → About)`;
+**Routerly 版本**
+（运行 \`routerly --version\` 或在 设置 → 关于 中查看）`;
 
 export function HelpPage() {
   const [templateVisible, setTemplateVisible] = useState(false);
@@ -106,8 +106,8 @@ export function HelpPage() {
   return (
     <>
       <div className="page-header">
-        <h1>Help &amp; Support</h1>
-        <p>We're here to help — find answers or reach out anytime.</p>
+        <h1>帮助与支持</h1>
+        <p>我们随时为您提供帮助——查找答案或随时联系我们。</p>
       </div>
 
       <div className="page-body" style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 640 }}>
@@ -128,7 +128,7 @@ export function HelpPage() {
             </div>
           </div>
           <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 14px' }}>
-            The official docs cover everything from getting started to advanced routing policies, provider setup, budgets, and the full API reference.
+            官方文档涵盖从入门到高级路由策略、提供商设置、预算管理以及完整的 API 参考。
           </p>
           <a
             href="https://doc.routerly.ai/next/"
@@ -137,7 +137,7 @@ export function HelpPage() {
             className="btn btn-secondary btn-sm"
             style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            <ExternalLink size={13} /> Open documentation
+            <ExternalLink size={13} /> 打开文档
           </a>
         </Card>
 
@@ -153,7 +153,7 @@ export function HelpPage() {
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>报告 Bug 或建议功能</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>Open a GitHub issue — it takes 2 minutes</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 1 }}>提交 GitHub Issue——只需 2 分钟</div>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ export function HelpPage() {
               }}
             >
               {templateVisible ? <ChevronDown size={13} /> : <ChevronRight size={13} />}
-              Show issue template
+              显示 Issue 模板
             </button>
             {templateVisible && (
               <pre style={{
@@ -198,7 +198,7 @@ export function HelpPage() {
               className="btn btn-primary btn-sm"
               style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}
             >
-              <ExternalLink size={13} /> Report a bug
+              <ExternalLink size={13} /> 报告 Bug
             </a>
             <a
               href={featureUrl}
@@ -207,7 +207,7 @@ export function HelpPage() {
               className="btn btn-secondary btn-sm"
               style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}
             >
-              <MessageSquarePlus size={13} /> Request a feature
+              <MessageSquarePlus size={13} /> 建议功能
             </a>
           </div>
         </Card>
@@ -229,7 +229,7 @@ export function HelpPage() {
           </div>
 
           <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 14px' }}>
-            For anything that doesn't fit a GitHub issue — billing questions, private concerns, or if you just want to say hi — drop us a line.
+            对于不适合 GitHub Issue 的任何问题——账单问题、隐私顾虑，或者只是想打个招呼——请给我们发邮件。
           </p>
 
           <a
@@ -244,10 +244,10 @@ export function HelpPage() {
         {/* ── FAQ ───────────────────────────────────────────────────────────── */}
         <Card>
           <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)', marginBottom: 4 }}>
-            Frequently asked questions
+            常见问题
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: 16 }}>
-            Quick answers to the most common questions
+            快速解答最常见问题
           </div>
           <div>
             {FAQ_ITEMS.map(item => (
