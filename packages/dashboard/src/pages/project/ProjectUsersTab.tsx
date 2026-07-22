@@ -216,7 +216,7 @@ export function ProjectUsersTab() {
                             className="btn-icon danger"
                             onClick={() => handleRemoveMember(member.userId)}
                             disabled={loading}
-                            title="Remove Member"
+                            title="移除成员"
                           >
                             <Trash2 size={16} />
                           </button>
