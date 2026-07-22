@@ -293,7 +293,7 @@ function ProtectedLayout() {
             color: 'var(--info-text, #1e40af)',
           }}>
             <span style={{ flex: 1 }}>
-              <strong>Routerly never sends data automatically.</strong>{' '}
+              <strong>Routerly 从不自动发送数据。</strong>{' '}
               Would you like to help by sending anonymous install metrics? Only event type, version, platform, and a random ID — no personal data, no IP.{' '}
               <a
                 href="https://doc.routerly.ai/next/reference/telemetry"
@@ -308,13 +308,13 @@ function ProtectedLayout() {
               onClick={() => handleTelemetryChoice(true)}
               style={{ padding: '4px 12px', borderRadius: 4, border: '1px solid currentColor', cursor: 'pointer', background: 'none', fontSize: '0.82rem', fontWeight: 600, color: 'inherit', whiteSpace: 'nowrap' }}
             >
-              Yes, help out
+              愿意帮助
             </button>
             <button
               onClick={() => handleTelemetryChoice(false)}
               style={{ padding: '4px 12px', borderRadius: 4, border: 'none', cursor: 'pointer', background: 'none', fontSize: '0.82rem', opacity: 0.7, color: 'inherit', whiteSpace: 'nowrap' }}
             >
-              No thanks
+              不了，谢谢
             </button>
           </div>
         )}
