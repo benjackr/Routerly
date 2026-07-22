@@ -52,9 +52,9 @@ function makeDefaultRule(type: GuardrailRuleType): RuleWithId {
   const _id = crypto.randomUUID();
   switch (type) {
     case 'regex':
-      return { _id, type, target: 'request', block: true, log: true, config: { patterns: [] } };
+      return { _id, type, target: '请求', block: true, log: true, config: { patterns: [] } };
     case 'semantic':
-      return { _id, type, target: 'request', block: true, log: true, config: { embeddingModelId: '', examples: [], threshold: 0.82 } };
+      return { _id, type, target: '请求', block: true, log: true, config: { embeddingModelId: '', examples: [], threshold: 0.82 } };
     case 'topic':
       return { _id, type, target: 'both', block: true, log: true, useJudgeResponse: true, config: { modelId: '', allowedTopics: '', threshold: 0.5 } };
     case 'moderation':
@@ -96,7 +96,7 @@ function PiiPolicyCard({
   onRemove: () => void;
 }) {
   const entities: Set<PiiEntity> = new Set(policy.entities ?? ALL_PII_ENTITIES);
-  const showsResponse = policy.target === 'response' || policy.target === 'both';
+  const showsResponse = policy.target === '响应' || policy.target === 'both';
 
   function toggleEntity(e: PiiEntity) {
     const next = new Set(entities);
@@ -105,9 +105,9 @@ function PiiPolicyCard({
   }
 
   // TargetSelector inline (same logic as the guardrail one below)
-  function handleTargetToggle(side: 'request' | 'response') {
-    const reqChecked = policy.target === 'request' || policy.target === 'both';
-    const resChecked = policy.target === 'response' || policy.target === 'both';
+  function handleTargetToggle(side: '请求' | '响应') {
+    const reqChecked = policy.target === '请求' || policy.target === 'both';
+    const resChecked = policy.target === '响应' || policy.target === 'both';
     const newReq = side === '请求' ? !reqChecked : reqChecked;
     const newRes = side === '响应' ? !resChecked : resChecked;
     if (!newReq && !newRes) return;
@@ -154,7 +154,7 @@ function PiiPolicyCard({
             <label key={side} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.85rem' }}>
               <input
                 type="checkbox"
-                checked={side === '请求' ? (policy.target === 'request' || policy.target === 'both') : (policy.target === 'response' || policy.target === 'both')}
+                checked={side === '请求' ? (policy.target === '请求' || policy.target === 'both') : (policy.target === '响应' || policy.target === 'both')}
                 onChange={() => handleTargetToggle(side)}
                 style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
@@ -226,7 +226,7 @@ function TargetSelector({ value, onChange }: { value: GuardrailTarget | undefine
   const reqChecked = value === '请求' || value === 'both';
   const resChecked = value === '响应' || value === 'both';
 
-  function toggle(side: 'request' | 'response') {
+  function toggle(side: '请求' | '响应') {
     const newReq = side === '请求' ? !reqChecked : reqChecked;
     const newRes = side === '响应' ? !resChecked : resChecked;
     if (!newReq && !newRes) return;
@@ -256,16 +256,16 @@ function TargetSelector({ value, onChange }: { value: GuardrailTarget | undefine
 // side (target), inject steers the request system prompt (rule.inject). At least
 // one must stay on. Dropping to inject-only (no judge) clears the judge actions.
 function ScopeSelector({ rule, onChange }: { rule: RuleWithId; onChange: (r: RuleWithId) => void }) {
-  const reqChecked = rule.target === 'request' || rule.target === 'both';
-  const resChecked = rule.target === 'response' || rule.target === 'both';
+  const reqChecked = rule.target === '请求' || rule.target === 'both';
+  const resChecked = rule.target === '响应' || rule.target === 'both';
   const injChecked = rule.inject === true;
 
   function apply(req: boolean, inj: boolean, res: boolean) {
     if (!req && !inj && !res) return; // a rule must do at least one thing
     const next: RuleWithId = { ...rule };
     if (req && res) next.target = 'both';
-    else if (req) next.target = 'request';
-    else if (res) next.target = 'response';
+    else if (req) next.target = '请求';
+    else if (res) next.target = '响应';
     else delete next.target; // inject-only: no judge
     if (inj) next.inject = true; else delete next.inject;
     // A judged side always blocks + logs and uses the judge's explanation; an
@@ -555,9 +555,9 @@ function RuleCard({ rule, onChange, onDelete, regexErrors, modelOptions, embeddi
   const supportsJudge = rule.type === 'topic' || rule.type === 'moderation';
   const scopeParts = supportsJudge
     ? [
-        (rule.target === 'request' || rule.target === 'both') ? '请求' : null,
+        (rule.target === '请求' || rule.target === 'both') ? '请求' : null,
         rule.inject ? 'inject' : null,
-        (rule.target === 'response' || rule.target === 'both') ? '响应' : null,
+        (rule.target === '响应' || rule.target === 'both') ? '响应' : null,
       ].filter(Boolean)
     : [rule.target];
   const scopeLabel = scopeParts.join(' + ');
@@ -869,7 +869,7 @@ export function ProjectSecurityTab() {
           type="button"
           className="btn btn-secondary"
           style={{ fontSize: '0.85rem' }}
-          onClick={() => setPiiPolicies(prev => [...prev, { enabled: true, target: 'request', entities: [] }])}
+          onClick={() => setPiiPolicies(prev => [...prev, { enabled: true, target: '请求', entities: [] }])}
         >
           + Add Policy
         </button>
