@@ -94,7 +94,7 @@ export function LoginPage() {
                 className="form-input"
                 value={totpCode}
                 onChange={e => setTotpCode(e.target.value.trim())}
-                placeholder={useBackupCode ? ''请输入邮箱...' : '000000'}
+                placeholder={useBackupCode ? '请输入备份码' : '000000'}
                 maxLength={useBackupCode ? 8 : 6}
                 autoComplete="one-time-code"
                 required
