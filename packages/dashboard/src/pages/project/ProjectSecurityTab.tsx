@@ -20,7 +20,7 @@ import { SearchableSelect } from '../../components/SearchableSelect';
 import { MultiSelect } from '../../components/MultiSelect';
 import { useProject } from './ProjectLayout';
 
-const ALL_PII_ENTITIES: PiiEntity[] = ['邮箱', '电话', 'CREDIT_CARD', '身份证号', '银行账号'];
+const ALL_PII_ENTITIES: PiiEntity[] = ['EMAIL', 'PHONE', 'CREDIT_CARD', 'SSN', 'IBAN'];
 
 const PII_LABELS: Record<PiiEntity, string> = {
   EMAIL: 'EMAIL',
