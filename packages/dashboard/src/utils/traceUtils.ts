@@ -91,7 +91,7 @@ export function extractMessageStats(traces: TraceEntry[]): MessageStats {
   const errorEntry = traces.find((e) => e.message === 'model:error');
   const hasSuccess = traces.some((e) => e.message === 'model:success');
   if (errorEntry) {
-    stats.errorMessage = errorEntry.details?.error ?? errorEntry.details?.message ?? 'Unknown error';
+    stats.errorMessage = errorEntry.details?.error ?? errorEntry.details?.message ?? '未知错误';
     if (hasSuccess) {
       stats.fallbackUsed = true;
     } else {
