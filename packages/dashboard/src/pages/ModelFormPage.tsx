@@ -187,7 +187,7 @@ type LimitRow = {
 
 const LIMIT_METRIC_OPTIONS: { value: LimitMetric; label: string }[] = [
   { value: 'cost',          label: '消耗(美元)'      },
-  { value: 'calls',         label: 'Requests'        },
+  { value: 'calls',         label: '请求'        },
   { value: 'input_tokens',  label: '输入令牌'    },
   { value: 'output_tokens', label: '输出令牌'   },
   { value: 'total_tokens',  label: '令牌总数'    },
