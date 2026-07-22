@@ -143,7 +143,7 @@ export function ProjectTestTab() {
         throw new Error(`HTTP ${res.status}`);
       }
 
-      if (!res.body) throw new Error('Response body is missing');
+      if (!res.body) throw new Error('响应体为空');
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -185,7 +185,7 @@ export function ProjectTestTab() {
 
                   // ── Errore dal service ────────────────────────────────────
                   if (data.type === 'error' || data.error) {
-                    throw new Error(data.message || data.error?.message || data.error || 'Service error');
+                    throw new Error(data.message || data.error?.message || data.error || '服务错误');
                   }
 
                   // ── Cattura modello ───────────────────────────────────────
@@ -228,10 +228,10 @@ export function ProjectTestTab() {
                   }
                 /* v8 ignore start */
                 } catch (e) {
-                  if (e instanceof Error && e.message !== 'Unexpected end of JSON input') {
+                  if (e instanceof Error && e.message !== 'JSON 输入意外结束') {
                     throw e;
                   }
-                  console.warn('Failed to parse SSE line', line, e);
+                  console.warn('解析 SSE 行失败', line, e);
                 }
                 /* v8 ignore stop */
               }
@@ -244,7 +244,7 @@ export function ProjectTestTab() {
       if (e instanceof Error && e.name === 'AbortError') {
         // Stop requested by user — not an error
       } else {
-        setError(e instanceof Error ? e.message : 'Unknown error occurred');
+        setError(e instanceof Error ? e.message : '发生未知错误');
       }
     } finally {
       abortControllerRef.current = null;
@@ -261,7 +261,7 @@ export function ProjectTestTab() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setError('Only image attachments are supported for vision models currently.');
+      setError('视觉模型目前仅支持图片附件。');
       return;
     }
 
