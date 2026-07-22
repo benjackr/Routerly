@@ -260,12 +260,12 @@ const CHANNEL_PROVIDERS: Array<{ key: EProvider; label: string; description: str
   { key: 'dashboard',  label: '仪表盘（应用内收件箱）', description: '将事件发送到应用内收件箱' },
   { key: 'smtp',       label: 'SMTP',               description: '自定义邮件服务器' },
   { key: 'ses',        label: '亚马逊 SES',          description: 'AWS 简单邮件服务' },
-  { key: 'sendgrid',   label: 'SendGrid',            description: 'Twilio SendGrid' },
+  { key: 'sendgrid',   label: 'SendGrid',            description: 'Twilio SendGrid 邮件' },
   { key: 'azure',      label: 'Azure 通信', description: 'Azure 通信服务' },
-  { key: 'google',     label: 'Google / Gmail',       description: 'Gmail via OAuth2' },
-  { key: 'webhook',    label: 'Webhook',             description: 'HTTP webhook callback' },
+  { key: 'google',     label: 'Google / Gmail',       description: '通过 OAuth2 的 Gmail' },
+  { key: 'webhook',    label: 'Webhook',             description: 'HTTP Webhook 回调' },
   { key: 'slack',      label: 'Slack',               description: 'Slack Bot API' },
-  { key: 'teams',      label: 'Microsoft Teams',     description: 'Teams Incoming Webhook' },
+  { key: 'teams',      label: 'Microsoft Teams',     description: 'Teams 入站 Webhook' },
   { key: 'pagerduty',  label: 'PagerDuty',           description: 'PagerDuty Events API v2' },
   { key: 'discord',    label: 'Discord',             description: 'Discord Webhook' },
 ];
@@ -946,12 +946,12 @@ export function SettingsNotificationsTab() {
 // ── Integrations tab ─────────────────────────────────────────────────────────
 
 const INTEGRATION_TYPES: Array<{ type: IntegrationType; label: string; description: string; Icon: React.ElementType }> = [
-  { type: 'prometheus', label: 'Prometheus',     description: 'pull — exposes /metrics',      Icon: BarChart2   },
-  { type: 'otel',       label: 'OpenTelemetry',  description: 'push — OTLP HTTP',             Icon: GitBranch   },
-  { type: 'datadog',    label: 'Datadog',         description: 'push — metrics API',           Icon: Dog         },
-  { type: 'grafana',    label: 'Grafana Cloud',   description: 'push — remote_write',          Icon: TrendingUp  },
-  { type: 'influxdb',   label: 'InfluxDB',        description: 'push — line protocol',         Icon: Database    },
-  { type: 'webhook',    label: 'Webhook',          description: 'push — HTTP POST JSON',        Icon: Webhook     },
+  { type: 'prometheus', label: 'Prometheus',     description: '拉取 — 暴露 /metrics',      Icon: BarChart2   },
+  { type: 'otel',       label: 'OpenTelemetry',  description: '推送 — OTLP HTTP',             Icon: GitBranch   },
+  { type: 'datadog',    label: 'Datadog',         description: '推送 — 指标 API',           Icon: Dog         },
+  { type: 'grafana',    label: 'Grafana Cloud',   description: '推送 — remote_write',          Icon: TrendingUp  },
+  { type: 'influxdb',   label: 'InfluxDB',        description: '推送 — 行协议',         Icon: Database    },
+  { type: 'webhook',    label: 'Webhook',          description: '推送 — HTTP POST JSON',        Icon: Webhook     },
 ];
 
 const DATADOG_SITES = ['datadoghq.com', 'datadoghq.eu', 'us3.datadoghq.com', 'us5.datadoghq.com', 'ddog-gov.com'] as const;
@@ -1487,7 +1487,7 @@ export function SettingsCatalogTab() {
       const st = await refreshCatalog().catch(() => [] as RepoStatus[]);
       setStatus(st);
     }
-    setSaved('Saved.');
+    setSaved('已保存。');
     setTimeout(() => setSaved(''), 2000);
   }
 
@@ -1636,7 +1636,7 @@ export function SettingsCatalogTab() {
       <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', marginBottom: 20 }}>
         {/* Header */}
         <div style={{ display: 'grid', gridTemplateColumns: COL, gap: 0, background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)', padding: '6px 14px' }}>
-          {['#', 'URL', 'Updated', '上次检查', '状态', ''].map(h => (
+          {['#', 'URL', '更新时间', '上次检查', '状态', ''].map(h => (
             <span key={h} style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
           ))}
         </div>
@@ -1944,15 +1944,15 @@ export function SettingsAboutTab() {
     <div style={{ maxWidth: 560 }}>
       <div style={{ marginBottom: 28 }}>
         <h3 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: 4 }}>Application</h3>
-        <InfoRow label="Version" value={`v${info.version}`} />
+        <InfoRow label="版本" value={`v${info.version}`} />
         <ChannelSelector current={info.channel ?? 'latest'} onSave={handleChannelSave} />
-        <InfoRow label="Uptime" value={formatUptime(info.uptimeSeconds)} />
+        <InfoRow label="运行时间" value={formatUptime(info.uptimeSeconds)} />
       </div>
 
       <div style={{ marginBottom: 28 }}>
         <h3 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', marginBottom: 4 }}>Runtime</h3>
         <InfoRow label="Node.js" value={info.nodeVersion} />
-        <InfoRow label="Platform" value={info.platform} />
+        <InfoRow label="平台" value={info.platform} />
       </div>
 
       <div style={{ marginBottom: 28 }}>
