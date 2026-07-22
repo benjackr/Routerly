@@ -1895,7 +1895,7 @@ export function SettingsAboutTab() {
 
   function handleUpdate() {
     setConfirmState({
-      message: 'This will download and install the latest version. The service will restart. Continue?',
+      message: '此操作将下载并安装最新版本，服务将重启。继续？',
       onConfirm: () => { setConfirmState(null); doUpdate(); },
     });
   }
@@ -2025,7 +2025,7 @@ const TABS = [
   { path: 'users',         label: '用户' },
   { path: 'roles',         label: '角色' },
   { path: 'audit',         label: '审计日志' },
-  { path: 'about',         label: 'About' },
+  { path: 'about',         label: '关于' },
 ];
 
 export function SettingsPage() {
