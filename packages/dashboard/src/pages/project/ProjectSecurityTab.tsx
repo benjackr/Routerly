@@ -6,7 +6,7 @@ import {
   type GuardrailConfig,
   type GuardrailRule,
   type GuardrailRuleType,
-  type GuardrailTarget,
+  type Guardrail目标,
   type Model,
   type RegexGuardConfig,
   type SemanticGuardConfig,
@@ -104,14 +104,14 @@ function PiiPolicyCard({
     onChange({ ...policy, entities: [...next] });
   }
 
-  // TargetSelector inline (same logic as the guardrail one below)
-  function handleTargetToggle(side: 'request' | 'response') {
+  // 目标Selector inline (same logic as the guardrail one below)
+  function handle目标Toggle(side: 'request' | 'response') {
     const reqChecked = policy.target === 'request' || policy.target === 'both';
     const resChecked = policy.target === 'response' || policy.target === 'both';
     const newReq = side === 'request' ? !reqChecked : reqChecked;
     const newRes = side === 'response' ? !resChecked : resChecked;
     if (!newReq && !newRes) return;
-    let next: GuardrailTarget;
+    let next: Guardrail目标;
     if (newReq && newRes) next = 'both';
     else if (newReq) next = 'request';
     else next = 'response';
@@ -146,16 +146,16 @@ function PiiPolicyCard({
         </button>
       </div>
 
-      {/* Target selector (reuses the same checkbox pattern as TargetSelector) */}
+      {/* 目标 selector (reuses the same checkbox pattern as 目标Selector) */}
       <div className="form-group" style={{ marginBottom: 10 }}>
-        <label className="form-label" style={{ fontSize: '0.72rem' }}>Apply to</label>
+        <label className="form-label" style={{ fontSize: '0.72rem' }}>应用于</label>
         <div style={{ display: 'flex', gap: 16 }}>
           {(['request', 'response'] as const).map(side => (
             <label key={side} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.85rem' }}>
               <input
                 type="checkbox"
                 checked={side === 'request' ? (policy.target === 'request' || policy.target === 'both') : (policy.target === 'response' || policy.target === 'both')}
-                onChange={() => handleTargetToggle(side)}
+                onChange={() => handle目标Toggle(side)}
                 style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
               {side}
@@ -167,7 +167,7 @@ function PiiPolicyCard({
       {/* Streaming buffer — only when response is targeted */}
       {showsResponse && (
         <div className="form-group" style={{ marginBottom: 10, marginLeft: 0 }}>
-          <label className="form-label" style={{ fontSize: '0.72rem' }}>Streaming buffer size (characters)</label>
+          <label className="form-label" style={{ fontSize: '0.72rem' }}>流式缓冲大小（字符数）</label>
           <input
             className="form-input"
             type="number"
@@ -181,7 +181,7 @@ function PiiPolicyCard({
       )}
 
       <div style={{ marginBottom: 10 }}>
-        <label className="form-label" style={{ fontSize: '0.72rem' }}>Entity types</label>
+        <label className="form-label" style={{ fontSize: '0.72rem' }}>实体类型</label>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           {ALL_PII_ENTITIES.map(entity => {
             const active = entities.has(entity);
@@ -220,9 +220,9 @@ function PiiPolicyCard({
   );
 }
 
-// ── Target selector ───────────────────────────────────────────────────────────
+// ── 目标 selector ───────────────────────────────────────────────────────────
 
-function TargetSelector({ value, onChange }: { value: GuardrailTarget | undefined; onChange: (v: GuardrailTarget) => void }) {
+function 目标Selector({ value, onChange }: { value: Guardrail目标 | undefined; onChange: (v: Guardrail目标) => void }) {
   const reqChecked = value === 'request' || value === 'both';
   const resChecked = value === 'response' || value === 'both';
 
@@ -322,11 +322,11 @@ function RegexFields({ rule, onChange, regexErrors }: {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Target</label>
-        <TargetSelector value={rule.target} onChange={t => onChange({ ...rule, target: t })} />
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>目标</label>
+        <目标Selector value={rule.target} onChange={t => onChange({ ...rule, target: t })} />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Patterns (one per line)</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>模式（每行一个）</label>
         <textarea
           className="form-input"
           rows={3}
@@ -361,11 +361,11 @@ function SemanticFields({ rule, onChange, modelOptions }: {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Target</label>
-        <TargetSelector value={rule.target} onChange={t => onChange({ ...rule, target: t })} />
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>目标</label>
+        <目标Selector value={rule.target} onChange={t => onChange({ ...rule, target: t })} />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Embedding model</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>嵌入模型</label>
         <SearchableSelect
           options={modelOptions}
           value={cfg.embeddingModelId}
@@ -383,7 +383,7 @@ function SemanticFields({ rule, onChange, modelOptions }: {
         />
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Example texts to block (one per line)</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>要拦截的示例文本（每行一个）</label>
         <textarea
           className="form-input"
           rows={3}
@@ -419,12 +419,12 @@ function TopicFields({ rule, onChange, modelOptions }: {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Apply to</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>应用于</label>
         <ScopeSelector rule={rule} onChange={onChange} />
       </div>
       {rule.target && (<>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Judge model</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>判定模型</label>
         <SearchableSelect
           options={modelOptions}
           value={cfg.modelId ?? ''}
@@ -443,7 +443,7 @@ function TopicFields({ rule, onChange, modelOptions }: {
       </div>
       </>)}
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Allowed topics (natural language)</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>允许的主题（自然语言）</label>
         <textarea
           className="form-input"
           rows={3}
@@ -479,12 +479,12 @@ function ModerationFields({ rule, onChange, modelOptions, instructionsError }: {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 10 }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Apply to</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>应用于</label>
         <ScopeSelector rule={rule} onChange={onChange} />
       </div>
       {rule.target && (<>
       <div className="form-group" style={{ marginBottom: 0 }}>
-        <label className="form-label" style={{ fontSize: '0.75rem' }}>Judge model</label>
+        <label className="form-label" style={{ fontSize: '0.75rem' }}>判定模型</label>
         <SearchableSelect
           options={modelOptions}
           value={cfg.modelId ?? ''}
@@ -794,9 +794,9 @@ export function ProjectSecurityTab() {
     <form onSubmit={(e) => { void handleSave(e); }} style={{ maxWidth: 800 }}>
       {err && <div className="form-error" style={{ marginBottom: 16 }}>{err}</div>}
 
-      {/* ── Content Guardrails ─────────────────────────────────────────────── */}
+      {/* ── 内容护栏 ─────────────────────────────────────────────── */}
       <div style={{ marginBottom: 36 }}>
-        <label className="form-label">Content Guardrails</label>
+        <label className="form-label">内容护栏</label>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
           Inspect requests and responses against configured rules. Active when at least one rule is configured.
         </p>
@@ -844,9 +844,9 @@ export function ProjectSecurityTab() {
         </div>
       </div>
 
-      {/* ── PII Policies ───────────────────────────────────────────────────── */}
+      {/* ── 个人信息保护策略 ───────────────────────────────────────────────────── */}
       <div style={{ marginBottom: 32 }}>
-        <label className="form-label">PII Policies</label>
+        <label className="form-label">个人信息保护策略</label>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
           Detect and redact personal data. Each policy targets request input, model response, or both, and controls its own entity set.
         </p>
