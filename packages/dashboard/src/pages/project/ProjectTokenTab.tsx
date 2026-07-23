@@ -60,7 +60,7 @@ export function ProjectTokenTab() {
         tokens.length === 0 ? (
           <div className="empty-state">
             <Key size={36} />
-            <p>No API tokens yet. Create one to start authenticating requests.</p>
+            <p>暂无API令牌。创建一个以开始认证请求。</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
