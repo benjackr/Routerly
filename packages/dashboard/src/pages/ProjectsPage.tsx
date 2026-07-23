@@ -86,10 +86,10 @@ export function ProjectsPage() {
                       {p.models.map(m => m.modelId).join(', ')}
                     </td>
                     <td style={{ display: 'flex', gap: 6 }}>
-                      <button className="btn-icon" onClick={() => navigate(`/dashboard/projects/${p.id}`)} title="Edit project">
+                      <button className="btn-icon" onClick={() => navigate(`/dashboard/projects/${p.id}`)} title="编辑项目">
                         <Pencil size={15} />
                       </button>
-                      <button className="btn-icon danger" onClick={() => handleDelete(p.id)} title="Delete project">
+                      <button className="btn-icon danger" onClick={() => handleDelete(p.id)} title="删除项目">
                         <Trash2 size={15} />
                       </button>
                     </td>
