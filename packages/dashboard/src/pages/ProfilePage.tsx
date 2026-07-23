@@ -2,25 +2,25 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { NavLink, useSearchParams } from 'react-router-dom';
 import QRCode from 'qrcode';
 import { User, Lock, ShieldCheck, ShieldOff, CheckCheck, Circle, RefreshCw, X, Trash2 } from 'lucide-react';
-import { updateMe, setup2fa, confirm2fa, disable2fa, regenerateBackupCodes, getNotificationInbox, getNotificationInboxPage, markNotificationsRead, markNotificationsUnread, deleteNotifications, type InboxItem, type InboxPagination } from '../api';
+import { updateMe, setup2fa, confirm2fa, disable2fa, regenerateBackupCodes, get通知Inbox, get通知InboxPage, mark通知s已读, mark通知s未读, delete通知s, type InboxItem, type InboxPagination } from '../api';
 import { useAuth } from '../AuthContext';
-import { severityIcon, timeAgo } from '../components/NotificationBell';
+import { severityIcon, timeAgo } from '../components/通知Bell';
 import { useFilterState } from '../hooks/useFilterState';
-import { DateRangePicker, type DateRange } from '../components/DateRangePicker';
+import { 日期RangePicker, type 日期Range } from '../components/日期RangePicker';
 
-// ─── Notifications tab ────────────────────────────────────────────────────────
+// ─── 通知s tab ────────────────────────────────────────────────────────
 
 const PAGE_SIZE = 20;
 
-type SeverityFilter = 'all' | 'info' | 'warning' | 'critical';
+type 严重程度Filter = 'all' | 'info' | 'warning' | 'critical';
 
 function severityLabel(sev: InboxItem['severity']): string {
   return sev.charAt(0).toUpperCase() + sev.slice(1);
 }
 
 /** Absolute, locale-formatted timestamp (the inbox table shows full date, not "ago"). */
-function fmtDate(ts: string): string {
-  return new Date(ts).toLocaleString();
+function fmt日期(ts: string): string {
+  return new 日期(ts).toLocaleString();
 }
 
 function FilterLabel({ children }: { children: React.ReactNode }) {
@@ -32,26 +32,26 @@ function FilterLabel({ children }: { children: React.ReactNode }) {
 }
 
 /** Right-side panel showing one notification's full detail. */
-function NotificationDetailDrawer({
+function 通知DetailDrawer({
   item,
   onClose,
-  onMarkRead,
-  onMarkUnread,
+  onMark已读,
+  onMark未读,
   onDelete,
 }: {
   item: InboxItem;
   onClose: () => void;
-  onMarkRead: (id: string) => void;
-  onMarkUnread: (id: string) => void;
+  onMark已读: (id: string) => void;
+  onMark未读: (id: string) => void;
   onDelete: (id: string) => void;
 }) {
   const detailEntries = Object.entries(item.details ?? {});
 
   // Close on Esc.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const onKey = (e: Keyboard事件) => { if (e.key === 'Escape') onClose(); };
+    window.add事件Listener('keydown', onKey);
+    return () => window.remove事件Listener('keydown', onKey);
   }, [onClose]);
 
   return (
@@ -62,7 +62,7 @@ function NotificationDetailDrawer({
       />
       <div
         role="dialog"
-        aria-label="Notification detail"
+        aria-label="通知 detail"
         style={{
           position: 'fixed', top: 0, right: 0, bottom: 0, width: 420, maxWidth: '90vw',
           background: 'var(--bg-elevated)', borderLeft: '1px solid var(--border)',
@@ -75,7 +75,7 @@ function NotificationDetailDrawer({
         }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
             {severityIcon(item.severity)}
-            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>Notification</span>
+            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>通知</span>
           </span>
           <button
             onClick={onClose}
@@ -88,7 +88,7 @@ function NotificationDetailDrawer({
 
         <div style={{ padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div>
-            <FilterLabel>Event</FilterLabel>
+            <FilterLabel>事件</FilterLabel>
             <div style={{ marginTop: 4 }}>
               <code style={{ fontSize: '0.85rem', background: 'var(--bg-secondary)', padding: '2px 6px', borderRadius: 4, color: 'var(--text-primary)' }}>
                 {item.event}
@@ -98,7 +98,7 @@ function NotificationDetailDrawer({
 
           <div style={{ display: 'flex', gap: 32 }}>
             <div>
-              <FilterLabel>Severity</FilterLabel>
+              <FilterLabel>严重程度</FilterLabel>
               <div style={{ marginTop: 4, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.85rem', color: 'var(--text-primary)' }}>
                 {severityIcon(item.severity)} {severityLabel(item.severity)}
               </div>
@@ -112,9 +112,9 @@ function NotificationDetailDrawer({
           </div>
 
           <div>
-            <FilterLabel>Date</FilterLabel>
+            <FilterLabel>日期</FilterLabel>
             <div style={{ marginTop: 4, fontSize: '0.85rem', color: 'var(--text-primary)' }}>
-              {fmtDate(item.timestamp)}
+              {fmt日期(item.timestamp)}
               <span style={{ color: 'var(--text-muted)', marginLeft: 8 }}>({timeAgo(item.timestamp)})</span>
             </div>
           </div>
@@ -143,11 +143,11 @@ function NotificationDetailDrawer({
 
         <div style={{ marginTop: 'auto', padding: '16px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8 }}>
           {item.read ? (
-            <button className="btn btn-secondary" onClick={() => onMarkUnread(item.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <button className="btn btn-secondary" onClick={() => onMark未读(item.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
               <Circle size={14} /> Mark as unread
             </button>
           ) : (
-            <button className="btn btn-secondary" onClick={() => onMarkRead(item.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <button className="btn btn-secondary" onClick={() => onMark已读(item.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
               <CheckCheck size={14} /> Mark as read
             </button>
           )}
@@ -160,10 +160,10 @@ function NotificationDetailDrawer({
   );
 }
 
-export function ProfileNotificationsTab() {
+export function Profile通知sTab() {
   const [searchParams] = useSearchParams();
   const [items, setItems] = useState<InboxItem[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, set未读Count] = useState(0);
   const [pagination, setPagination] = useState<InboxPagination>({ page: 1, pageSize: PAGE_SIZE, totalRecords: 0, totalPages: 1 });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -171,15 +171,15 @@ export function ProfileNotificationsTab() {
   // Row selection for bulk operations (mark read / delete).
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
 
-  const [severity, setSeverity] = useFilterState<SeverityFilter>({ key: 'notif-filter-severity', defaultValue: 'all' });
-  const [eventFilter, setEventFilter] = useFilterState<string>({ key: 'notif-filter-event', defaultValue: '' });
-  const [unreadOnly, setUnreadOnly] = useFilterState<boolean>({ key: 'notif-filter-unread', defaultValue: false });
-  const [dateRange, setDateRange] = useFilterState<DateRange>({ key: 'notif-filter-dateRange', defaultValue: { from: '', to: '', label: '全部时间' } });
+  const [severity, set严重程度] = useFilterState<严重程度Filter>({ key: 'notif-filter-severity', defaultValue: 'all' });
+  const [eventFilter, set事件Filter] = useFilterState<string>({ key: 'notif-filter-event', defaultValue: '' });
+  const [unreadOnly, set未读Only] = useFilterState<boolean>({ key: 'notif-filter-unread', defaultValue: false });
+  const [dateRange, set日期Range] = useFilterState<日期Range>({ key: 'notif-filter-dateRange', defaultValue: { from: '', to: '', label: '全部时间' } });
 
   const load = useCallback(async (p: number) => {
     setLoading(true);
     try {
-      const res = await getNotificationInboxPage({
+      const res = await get通知InboxPage({
         page: p,
         pageSize: PAGE_SIZE,
         ...(severity !== 'all' ? { severity } : {}),
@@ -189,7 +189,7 @@ export function ProfileNotificationsTab() {
         ...(dateRange.to ? { to: dateRange.to } : {}),
       });
       setItems(res.items);
-      setUnreadCount(res.unreadCount);
+      set未读Count(res.unreadCount);
       setPagination(res.pagination);
     } catch { /* non-critical */ }
     finally { setLoading(false); }
@@ -221,63 +221,63 @@ export function ProfileNotificationsTab() {
 
   async function markOne(id: string) {
     try {
-      await markNotificationsRead({ ids: [id] });
+      await mark通知s已读({ ids: [id] });
       setItems(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-      setUnreadCount(u => Math.max(0, u - 1));
+      set未读Count(u => Math.max(0, u - 1));
       /* v8 ignore next */
       setSelected(s => s && s.id === id ? { ...s, read: true } : s);
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
     } catch { /* non-critical */ }
   }
 
-  async function markUnreadOne(id: string) {
+  async function mark未读One(id: string) {
     try {
-      await markNotificationsUnread({ ids: [id] });
+      await mark通知s未读({ ids: [id] });
       setItems(prev => prev.map(n => n.id === id ? { ...n, read: false } : n));
-      setUnreadCount(u => u + 1);
+      set未读Count(u => u + 1);
       /* v8 ignore next */
       setSelected(s => s && s.id === id ? { ...s, read: false } : s);
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
     } catch { /* non-critical */ }
   }
 
   async function markAll() {
     try {
-      await markNotificationsRead({ all: true });
+      await mark通知s已读({ all: true });
       setItems(prev => prev.map(n => ({ ...n, read: true })));
-      setUnreadCount(0);
+      set未读Count(0);
       setSelected(s => s ? { ...s, read: true } : s);
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
     } catch { /* non-critical */ }
   }
 
-  async function bulkMarkRead() {
+  async function bulkMark已读() {
     const ids = [...checkedIds];
     /* v8 ignore next */
     if (ids.length === 0) return;
     try {
-      await markNotificationsRead({ ids });
+      await mark通知s已读({ ids });
       const idSet = new Set(ids);
-      const newlyRead = items.filter(n => idSet.has(n.id) && !n.read).length;
+      const newly已读 = items.filter(n => idSet.has(n.id) && !n.read).length;
       setItems(prev => prev.map(n => idSet.has(n.id) ? { ...n, read: true } : n));
-      setUnreadCount(u => Math.max(0, u - newlyRead));
+      set未读Count(u => Math.max(0, u - newly已读));
       setCheckedIds(new Set());
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
     } catch { /* non-critical */ }
   }
 
-  async function bulkMarkUnread() {
+  async function bulkMark未读() {
     const ids = [...checkedIds];
     /* v8 ignore next */
     if (ids.length === 0) return;
     try {
-      await markNotificationsUnread({ ids });
+      await mark通知s未读({ ids });
       const idSet = new Set(ids);
-      const newlyUnread = items.filter(n => idSet.has(n.id) && n.read).length;
+      const newly未读 = items.filter(n => idSet.has(n.id) && n.read).length;
       setItems(prev => prev.map(n => idSet.has(n.id) ? { ...n, read: false } : n));
-      setUnreadCount(u => u + newlyUnread);
+      set未读Count(u => u + newly未读);
       setCheckedIds(new Set());
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
     } catch { /* non-critical */ }
   }
 
@@ -285,17 +285,17 @@ export function ProfileNotificationsTab() {
     /* v8 ignore next */
     if (ids.length === 0) return;
     try {
-      await deleteNotifications({ ids });
+      await delete通知s({ ids });
       const idSet = new Set(ids);
-      const removedUnread = items.filter(n => idSet.has(n.id) && !n.read).length;
-      setUnreadCount(u => Math.max(0, u - removedUnread));
+      const removed未读 = items.filter(n => idSet.has(n.id) && !n.read).length;
+      set未读Count(u => Math.max(0, u - removed未读));
       setCheckedIds(prev => {
         const next = new Set(prev);
         for (const id of ids) next.delete(id);
         return next;
       });
       setSelected(s => s && idSet.has(s.id) ? null : s);
-      window.dispatchEvent(new Event('routerly:notifications'));
+      window.dispatch事件(new 事件('routerly:notifications'));
       await load(page);
     } catch { /* non-critical */ }
   }
@@ -309,13 +309,13 @@ export function ProfileNotificationsTab() {
       <div className="card" style={{ padding: '14px 18px', marginBottom: 20 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Severity</FilterLabel>
+            <FilterLabel>严重程度</FilterLabel>
             <div style={{ display: 'flex', gap: 4 }}>
               {(['all', 'info', 'warning', 'critical'] as const).map(s => (
                 <button
                   key={s}
                   className={`btn btn-sm ${severity === s ? 'btn-primary' : 'btn-secondary'}`}
-                  onClick={() => setSeverity(s)}
+                  onClick={() => set严重程度(s)}
                 >
                   {s === 'all' ? '全部' : severityLabel(s)}
                 </button>
@@ -324,25 +324,25 @@ export function ProfileNotificationsTab() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 200 }}>
-            <FilterLabel>Event</FilterLabel>
+            <FilterLabel>事件</FilterLabel>
             <input
               className="form-input"
               placeholder="e.g. provider.error"
               value={eventFilter}
-              onChange={e => setEventFilter(e.target.value)}
+              onChange={e => set事件Filter(e.target.value)}
             />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
             <FilterLabel>时间段</FilterLabel>
-            <DateRangePicker value={dateRange} onChange={setDateRange} />
+            <日期RangePicker value={dateRange} onChange={set日期Range} />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
             <FilterLabel>状态</FilterLabel>
             <button
               className={`btn btn-sm ${unreadOnly ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => setUnreadOnly(!unreadOnly)}
+              onClick={() => set未读Only(!unreadOnly)}
             >
               {unreadOnly ? '仅未读' : '全部'}
             </button>
@@ -374,10 +374,10 @@ export function ProfileNotificationsTab() {
       {checkedIds.size > 0 && (
         <div className="card" style={{ padding: '10px 16px', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{checkedIds.size} selected</span>
-          <button className="btn btn-sm btn-secondary" onClick={bulkMarkRead} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <button className="btn btn-sm btn-secondary" onClick={bulkMark已读} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <CheckCheck size={14} /> Mark as read
           </button>
-          <button className="btn btn-sm btn-secondary" onClick={bulkMarkUnread} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <button className="btn btn-sm btn-secondary" onClick={bulkMark未读} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <Circle size={14} /> Mark as unread
           </button>
           <button className="btn btn-sm btn-danger" onClick={bulkDelete} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
@@ -446,11 +446,11 @@ export function ProfileNotificationsTab() {
                         </span>
                       </td>
                       <td style={{ padding: '9px 12px', fontWeight: n.read ? 400 : 600, color: 'var(--text-primary)' }}>{n.event}</td>
-                      <td style={{ padding: '9px 12px', whiteSpace: 'nowrap', color: 'var(--text-secondary)' }}>{fmtDate(n.timestamp)}</td>
+                      <td style={{ padding: '9px 12px', whiteSpace: 'nowrap', color: 'var(--text-secondary)' }}>{fmt日期(n.timestamp)}</td>
                       <td style={{ padding: '9px 12px' }}>
                         {n.read
-                          ? <span style={{ color: 'var(--text-muted)' }}>Read</span>
-                          : <span style={{ color: 'var(--accent)', fontWeight: 600 }}>Unread</span>}
+                          ? <span style={{ color: 'var(--text-muted)' }}>已读</span>
+                          : <span style={{ color: 'var(--accent)', fontWeight: 600 }}>未读</span>}
                       </td>
                     </tr>
                   ))}
@@ -476,11 +476,11 @@ export function ProfileNotificationsTab() {
       )}
 
       {selected && (
-        <NotificationDetailDrawer
+        <通知DetailDrawer
           item={selected}
           onClose={() => setSelected(null)}
-          onMarkRead={markOne}
-          onMarkUnread={markUnreadOne}
+          onMark已读={markOne}
+          onMark未读={mark未读One}
           onDelete={deleteOne}
         />
       )}
@@ -503,7 +503,7 @@ function ProfileSecurityTab() {
   const [pwSaved, setPwSaved] = useState(false);
   const [pwError, setPwError] = useState('');
 
-  async function handlePasswordSubmit(e: React.FormEvent) {
+  async function handlePasswordSubmit(e: React.Form事件) {
     e.preventDefault();
     setPwError('');
     setPwSaved(false);
@@ -570,7 +570,7 @@ function ProfileSecurityTab() {
     }
   }
 
-  async function handleConfirm2fa(e: React.FormEvent) {
+  async function handleConfirm2fa(e: React.Form事件) {
     e.preventDefault();
     setTfaError('');
     setTfaBusy(true);
@@ -587,7 +587,7 @@ function ProfileSecurityTab() {
     }
   }
 
-  async function handleDisable2fa(e: React.FormEvent) {
+  async function handleDisable2fa(e: React.Form事件) {
     e.preventDefault();
     setTfaError('');
     setTfaBusy(true);
@@ -604,7 +604,7 @@ function ProfileSecurityTab() {
     }
   }
 
-  async function handleRegenerateBackupCodes(e: React.FormEvent) {
+  async function handleRegenerateBackupCodes(e: React.Form事件) {
     e.preventDefault();
     setTfaError('');
     setTfaBusy(true);
@@ -656,7 +656,7 @@ function ProfileSecurityTab() {
         </h3>
         <form onSubmit={handlePasswordSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" htmlFor="p-cur-pw">Current Password</label>
+            <label className="form-label" htmlFor="p-cur-pw">当前密码</label>
             <input
               id="p-cur-pw"
               type="password"
@@ -667,7 +667,7 @@ function ProfileSecurityTab() {
             />
           </div>
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" htmlFor="p-new-pw">New Password</label>
+            <label className="form-label" htmlFor="p-new-pw">新密码</label>
             <input
               id="p-new-pw"
               type="password"
@@ -679,7 +679,7 @@ function ProfileSecurityTab() {
             />
           </div>
           <div className="form-group" style={{ margin: 0 }}>
-            <label className="form-label" htmlFor="p-conf-pw">Confirm New Password</label>
+            <label className="form-label" htmlFor="p-conf-pw">Confirm 新密码</label>
             <input
               id="p-conf-pw"
               type="password"
@@ -690,7 +690,7 @@ function ProfileSecurityTab() {
             />
           </div>
           {pwError && <div className="form-error">{pwError}</div>}
-          {pwSaved && <div style={{ padding: '8px 12px', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 8, fontSize: '0.83rem', color: '#22c55e' }}>Password changed successfully.</div>}
+          {pwSaved && <div style={{ padding: '8px 12px', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: 8, fontSize: '0.83rem', color: '#22c55e' }}>密码修改成功。</div>}
           <div>
             <button type="submit" className="btn btn-primary" disabled={pwSaving}>
               {pwSaving
@@ -738,16 +738,16 @@ function ProfileSecurityTab() {
                 Open your authenticator app (Google Authenticator, Authy, 1Password, etc.) and add a new account:
               </p>
               <ol style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0, paddingLeft: 18, lineHeight: 1.7 }}>
-                <li>Tap <strong>Add account</strong> or the <strong>+</strong> button</li>
-                <li>Choose <strong>Enter setup key</strong> (or scan QR code if on mobile)</li>
-                <li>Enter the secret shown below</li>
+                <li>点击 <strong>添加账户</strong> or the <strong>+</strong> button</li>
+                <li>选择 <strong>输入设置密钥</strong> (or scan QR code if on mobile)</li>
+                <li>输入下方显示的密钥</li>
               </ol>
               {tfaQrUrl && (
                 <a
                   href={tfaQrUrl}
                   style={{ display: 'block', marginTop: 10, fontSize: '0.72rem', color: 'var(--accent)', wordBreak: 'break-all' }}
                 >
-                  Tap here on mobile to open authenticator
+                  点击 here on mobile to open authenticator
                 </a>
               )}
             </div>
@@ -779,7 +779,7 @@ function ProfileSecurityTab() {
             </div>
             <form onSubmit={handleConfirm2fa} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" htmlFor="tfa-confirm-code">Enter code from your app to activate</label>
+                <label className="form-label" htmlFor="tfa-confirm-code">从您的应用输入验证码以激活</label>
                 <input
                   id="tfa-confirm-code"
                   type="text"
@@ -835,7 +835,7 @@ function ProfileSecurityTab() {
             ) : backupVisible ? (
               <form onSubmit={handleRegenerateBackupCodes} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <div className="form-group" style={{ margin: 0 }}>
-                  <label className="form-label" htmlFor="regen-code">Enter authenticator code to regenerate backup codes</label>
+                  <label className="form-label" htmlFor="regen-code">输入验证器代码以重新生成备份码</label>
                   <input
                     id="regen-code"
                     type="text"
@@ -863,7 +863,7 @@ function ProfileSecurityTab() {
 
             <form onSubmit={handleDisable2fa} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <div className="form-group" style={{ margin: 0 }}>
-                <label className="form-label" htmlFor="disable-code">Disable 2FA (enter authenticator code)</label>
+                <label className="form-label" htmlFor="disable-code">禁用双重验证（输入验证器代码）</label>
                 <input
                   id="disable-code"
                   type="text"
@@ -906,7 +906,7 @@ export function ProfilePage({ initialTab = 'profile' }: { initialTab?: TabId }) 
   const [notifEnabled, setNotifEnabled] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    getNotificationInbox({ limit: 1 })
+    get通知Inbox({ limit: 1 })
       .then(res => setNotifEnabled(res.enabled))
       .catch(() => setNotifEnabled(false));
   }, []);
@@ -924,7 +924,7 @@ export function ProfilePage({ initialTab = 'profile' }: { initialTab?: TabId }) 
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
         <div style={{ paddingBottom: 24 }}>
-          <h1 style={{ margin: 0 }}>My Profile</h1>
+          <h1 style={{ margin: 0 }}>我的资料</h1>
           <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             Manage your account settings
           </p>
@@ -957,7 +957,7 @@ export function ProfilePage({ initialTab = 'profile' }: { initialTab?: TabId }) 
       </div>
 
       <div className="page-body" style={{ paddingTop: 32 }}>
-        {activeTab === 'notifications' ? <ProfileNotificationsTab /> : <ProfileSecurityTab />}
+        {activeTab === 'notifications' ? <Profile通知sTab /> : <ProfileSecurityTab />}
       </div>
     </>
   );
