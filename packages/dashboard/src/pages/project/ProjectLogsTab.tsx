@@ -24,7 +24,7 @@ export function ProjectLogsTab() {
   const [loading, setLoading]     = useState(true);
   const [dateRange, setDateRange] = useFilterState<DateRange>({ key: `project-${projectId}-filters-dateRange`, defaultValue: { from: '', to: '', label: '本月' } });
   const [modelIds, setModelIds]   = useFilterState<string[]>({ key: `project-${projectId}-filters-modelIds`, defaultValue: [] });
-  const [callTypeFilter, setCallTypeFilter] = useFilterState<'all' | 'completion' | 'routing'>({ key: `project-${projectId}-filters-callType`, defaultValue: 'all' });
+  const [call类型Filter, setCall类型Filter] = useFilterState<'all' | 'completion' | 'routing'>({ key: `project-${projectId}-filters-call类型`, defaultValue: 'all' });
   const [outcomeFilter, setOutcomeFilter]   = useFilterState<'all' | 'success' | 'error' | 'blocked'>({ key: `project-${projectId}-filters-outcome`, defaultValue: 'all' });
   const [lastUpdated, setLastUpdated]       = useState<Date | null>(null);
   const [pollInterval, setPollInterval]     = useFilterState<number>({ key: `project-${projectId}-filters-pollInterval`, defaultValue: 30_000 });
@@ -86,7 +86,7 @@ export function ProjectLogsTab() {
   }, [fetchStats, pollInterval]);
 
   // Reset page when filters change
-  useEffect(() => { setPage(1); }, [dateRange, modelIds, callTypeFilter, outcomeFilter]);
+  useEffect(() => { setPage(1); }, [dateRange, modelIds, call类型Filter, outcomeFilter]);
 
   const modelOptions = useMemo(() => {
     if (!stats) return [];
@@ -98,13 +98,13 @@ export function ProjectLogsTab() {
     if (!stats) return [];
     return stats.records.filter(r => {
       if (modelIds.length > 0 && !modelIds.includes(r.modelId)) return false;
-      if (callTypeFilter !== 'all' && (r.callType ?? 'completion') !== callTypeFilter) return false;
+      if (call类型Filter !== 'all' && (r.call类型 ?? 'completion') !== call类型Filter) return false;
       if (outcomeFilter !== 'all' && r.outcome !== outcomeFilter) return false;
       return true;
     });
-  }, [stats, modelIds, callTypeFilter, outcomeFilter]);
+  }, [stats, modelIds, call类型Filter, outcomeFilter]);
 
-  const hasReset = modelIds.length > 0 || callTypeFilter !== 'all' || outcomeFilter !== 'all';
+  const hasReset = modelIds.length > 0 || call类型Filter !== 'all' || outcomeFilter !== 'all';
 
   return (
     <div style={{ padding: '24px 0', maxWidth: 1100 }}>
@@ -116,7 +116,7 @@ export function ProjectLogsTab() {
             {pollInterval === 0
               ? '自动刷新已关闭'
               : `自动刷新每 ${POLL_OPTIONS.find(o => o.value === pollInterval)?.label}`}
-            {lastUpdated && <> &middot; ultimo aggiornamento: {lastUpdated.toLocaleTimeString()}</>}
+            {lastUpdated && <> &middot; ultimo aggiornamento: {lastUpdated.toLocale时间String()}</>}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)' }}>刷新</span>
@@ -158,13 +158,13 @@ export function ProjectLogsTab() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <FilterLabel>Type</FilterLabel>
+            <FilterLabel>类型</FilterLabel>
             <div style={{ display: 'flex', gap: 4 }}>
               {(['all', 'completion', 'routing'] as const).map(f => (
                 <button
                   key={f}
-                  className={`btn btn-sm ${callTypeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
-                  onClick={() => setCallTypeFilter(f)}
+                  className={`btn btn-sm ${call类型Filter === f ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setCall类型Filter(f)}
                 >
                   {f === 'all' ? '全部' : f === 'completion' ? '补全' : '路由'}
                 </button>
@@ -192,7 +192,7 @@ export function ProjectLogsTab() {
               <FilterLabel>&nbsp;</FilterLabel>
               <button
                 className="btn btn-sm btn-secondary"
-                onClick={() => { setModelIds([]); setCallTypeFilter('all'); setOutcomeFilter('all'); }}
+                onClick={() => { setModelIds([]); setCall类型Filter('all'); setOutcomeFilter('all'); }}
               >
                 Reset filters
               </button>
@@ -210,16 +210,16 @@ export function ProjectLogsTab() {
           <div className="stats-grid" style={{ marginBottom: 24 }}>
             <div className="stat-card">
               <div className="stat-label">总消耗</div>
-              <div className="stat-value">${stats.summary.totalCost.toFixed(4)}</div>
+              <div className="stat-value">${stats.summary.total费用.toFixed(4)}</div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Total Calls</div>
+              <div className="stat-label">总调用数</div>
               <div className="stat-value">{stats.summary.totalCalls}</div>
             </div>
             <div
               className="stat-card"
-              style={{ cursor: 'pointer', outline: callTypeFilter === 'completion' ? '2px solid var(--primary)' : 'none', outlineOffset: 2 }}
-              onClick={() => setCallTypeFilter(f => f === 'completion' ? 'all' : 'completion')}
+              style={{ cursor: 'pointer', outline: call类型Filter === 'completion' ? '2px solid var(--primary)' : 'none', outlineOffset: 2 }}
+              onClick={() => setCall类型Filter(f => f === 'completion' ? 'all' : 'completion')}
             >
               <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'inline-block' }} />
@@ -227,13 +227,13 @@ export function ProjectLogsTab() {
               </div>
               <div className="stat-value">{stats.summary.completionCalls ?? stats.summary.totalCalls}</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                ${(stats.summary.completionCost ?? stats.summary.totalCost).toFixed(4)}
+                ${(stats.summary.completion费用 ?? stats.summary.total费用).toFixed(4)}
               </div>
             </div>
             <div
               className="stat-card"
-              style={{ cursor: 'pointer', outline: callTypeFilter === 'routing' ? '2px solid var(--accent)' : 'none', outlineOffset: 2 }}
-              onClick={() => setCallTypeFilter(f => f === 'routing' ? 'all' : 'routing')}
+              style={{ cursor: 'pointer', outline: call类型Filter === 'routing' ? '2px solid var(--accent)' : 'none', outlineOffset: 2 }}
+              onClick={() => setCall类型Filter(f => f === 'routing' ? 'all' : 'routing')}
             >
               <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }} />
@@ -241,11 +241,11 @@ export function ProjectLogsTab() {
               </div>
               <div className="stat-value">{stats.summary.routingCalls ?? 0}</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                ${(stats.summary.routingCost ?? 0).toFixed(4)}
+                ${(stats.summary.routing费用 ?? 0).toFixed(4)}
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Errors</div>
+              <div className="stat-label">错误</div>
               <div className="stat-value" style={{ color: stats.summary.errorCalls > 0 ? 'var(--danger)' : 'var(--success)' }}>
                 {stats.summary.errorCalls}
               </div>
@@ -276,21 +276,21 @@ export function ProjectLogsTab() {
               <table>
                 <thead>
                   <tr>
-                    <th>Time</th>
+                    <th>时间</th>
                     <th>模型</th>
-                    <th>Type</th>
+                    <th>类型</th>
                     <th>In</th>
                     <th>Out</th>
-                    <th>Cost</th>
-                    <th>Latency</th>
+                    <th>费用</th>
+                    <th>延迟</th>
                     <th>TTFT</th>
-                    <th>Tok/s</th>
+                    <th>字/秒</th>
                     <th>状态</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredRecords.map((r, i) => {
-                    const isRouting = (r.callType ?? 'completion') === 'routing';
+                    const isRouting = (r.call类型 ?? 'completion') === 'routing';
                     return (
                       <tr
                         key={i}
