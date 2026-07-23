@@ -283,7 +283,7 @@ export function ProjectLogsTab() {
                     <th>Out</th>
                     <th>费用</th>
                     <th>延迟</th>
-                    <th>TTFT</th>
+                    <th>首字延迟</th>
                     <th>字/秒</th>
                     <th>状态</th>
                   </tr>
