@@ -167,9 +167,9 @@ export function ProjectRoutingTab() {
 
   // --- Semantic Intent Embedding Model Helpers ---
   function getSemModelIds(policy: PolicyItem): string[] {
-    const primary = policy.config?.embedding_model;
+    const 主模型 = policy.config?.embedding_model;
     const fallbacks: string[] = policy.config?.embedding_fallback_models ?? [];
-    const ids = primary ? [primary, ...fallbacks] : fallbacks;
+    const ids = 主模型 ? [主模型, ...fallbacks] : fallbacks;
     return ids.length === 0 ? [''] : ids;
   }
 
@@ -214,10 +214,10 @@ export function ProjectRoutingTab() {
 
   // --- LLM Routing Model Helpers ---
   function getLlmModelIds(policy: PolicyItem): string[] {
-    const primary = policy.config?.routingModelId;
+    const 主模型 = policy.config?.routingModelId;
     /* v8 ignore next */
     const fallbacks: string[] = policy.config?.fallbackModelIds ?? [];
-    return primary ? [primary, ...fallbacks] : fallbacks;
+    return 主模型 ? [主模型, ...fallbacks] : fallbacks;
   }
 
   function setLlmModelIds(policyIdx: number, newIds: string[]) {
@@ -439,7 +439,7 @@ export function ProjectRoutingTab() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
           <div className="form-group">
-            <label className="form-label">Routing Policies</label>
+            <label className="form-label">路由策略</label>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 12 }}>
               Policies determine how requests are routed. They are executed in order from top to bottom.
             </p>
@@ -492,8 +492,8 @@ export function ProjectRoutingTab() {
                   {policy.type === 'llm' && policy.enabled && (
                     <div style={{ paddingLeft: 30, paddingTop: 4, display: 'flex', flexDirection: 'column', gap: 12 }}>
                       <div>
-                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 8 }}>Routing Models</label>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, marginTop: -4 }}>The first model is the primary. The others are tried in order if the primary fails.</p>
+                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 8 }}>路由模型</label>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, marginTop: -4 }}>第一个模型为主模型。如果主模型失败，按顺序尝试其他模型。</p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                           {getLlmModelIds(policy).map((modelId, mIdx) => {
                             const usedIds = new Set(getLlmModelIds(policy).filter((_, i) => i !== mIdx));
@@ -527,7 +527,7 @@ export function ProjectRoutingTab() {
                                   style={{ flex: 1 }}
                                 />
                                 {mIdx === 0 && (
-                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>primary</span>
+                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>主模型</span>
                                 )}
                                 <button
                                   type="button"
@@ -569,7 +569,7 @@ export function ProjectRoutingTab() {
                               const checked = e.target.checked;
                               updatePolicyConfig(idx, { autoRouting: checked, ...(checked ? { additionalPromptInfo: undefined } : {}) });
                             }}
-                            style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                            style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                           />
                           Auto Routing
                         </label>
@@ -578,7 +578,7 @@ export function ProjectRoutingTab() {
                         </p>
                         {!(policy.config?.autoRouting /* v8 ignore next */ ?? true) && (
                           <div style={{ marginLeft: 22, marginBottom: 12 }}>
-                            <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>Additional Prompt Info <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span></label>
+                            <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>附加提示信息 <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>(optional)</span></label>
                             <textarea
                               className="form-input"
                               rows={3}
@@ -617,7 +617,7 @@ export function ProjectRoutingTab() {
                                   type="checkbox"
                                   checked={policy.config?.memory ?? false}
                                   onChange={(e) => updatePolicyConfig(idx, { memory: e.target.checked })}
-                                  style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                                  style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                                 />
                                 Memory
                               </label>
@@ -626,7 +626,7 @@ export function ProjectRoutingTab() {
                               </p>
                               {(policy.config?.memory ?? false) && (
                                 <div style={{ marginLeft: 22, marginTop: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
-                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Previous messages</label>
+                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>历史消息</label>
                                   <input
                                     type="number"
                                     min={1}
@@ -648,7 +648,7 @@ export function ProjectRoutingTab() {
                                   type="checkbox"
                                   checked={policy.config?.thinking ?? false}
                                   onChange={(e) => updatePolicyConfig(idx, { thinking: e.target.checked })}
-                                  style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                                  style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                                 />
                                 Thinking
                               </label>
@@ -663,7 +663,7 @@ export function ProjectRoutingTab() {
                                   type="checkbox"
                                   checked={policy.config?.includeReason ?? false}
                                   onChange={(e) => updatePolicyConfig(idx, { includeReason: e.target.checked })}
-                                  style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                                  style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                                 />
                                 Include Reason
                               </label>
@@ -674,7 +674,7 @@ export function ProjectRoutingTab() {
 
                             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, paddingBottom: 10 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>Max completion tokens</label>
+                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>最大完成令牌数</label>
                                 <input
                                   type="text"
                                   inputMode="numeric"
@@ -701,7 +701,7 @@ export function ProjectRoutingTab() {
 
                             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>Max prompt chars</label>
+                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>最大提示字符数</label>
                                 <input
                                   type="text"
                                   inputMode="numeric"
@@ -742,7 +742,7 @@ export function ProjectRoutingTab() {
                               });
                             }}
                             onMouseDown={e => e.stopPropagation()}
-                            style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                            style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                           />
                           Caching
                         </label>
@@ -751,9 +751,9 @@ export function ProjectRoutingTab() {
                         </p>
                         {(policy.config?.cache?.enabled ?? false) && (() => {
                           const cacheModelIds = (() => {
-                            const primary = policy.config?.cache?.embedding_model;
+                            const 主模型 = policy.config?.cache?.embedding_model;
                             const fallbacks: string[] = policy.config?.cache?.embedding_fallback_models ?? [];
-                            const ids = primary ? [primary, ...fallbacks] : fallbacks;
+                            const ids = 主模型 ? [主模型, ...fallbacks] : fallbacks;
                             return ids.length === 0 ? [''] : ids;
                           })();
                           const setCacheModelIds = (newIds: string[]) => {
@@ -771,10 +771,10 @@ export function ProjectRoutingTab() {
                           };
                           return (
                             <div style={{ marginLeft: 22, marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                              {/* Embedding Models */}
+                              {/* 嵌入模型 */}
                               <div>
-                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Embedding Models</label>
-                                <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 6, marginTop: -2 }}>The first model is the primary. The others are tried in order if the primary fails.</p>
+                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>嵌入模型</label>
+                                <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 6, marginTop: -2 }}>第一个模型为主模型。如果主模型失败，按顺序尝试其他模型。</p>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                                   {cacheModelIds.map((modelId, mIdx) => {
                                     const embeddingModels = availableModels.filter(m => m.capabilities?.embedding === true);
@@ -797,7 +797,7 @@ export function ProjectRoutingTab() {
                                           style={{ flex: 1 }}
                                         />
                                         {mIdx === 0 && (
-                                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>primary</span>
+                                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>主模型</span>
                                         )}
                                         <button
                                           type="button"
@@ -832,7 +832,7 @@ export function ProjectRoutingTab() {
                               {/* TTL + Threshold */}
                               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>TTL (seconds)</label>
+                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>存活时间（秒）</label>
                                   <input
                                     type="number"
                                     min={1}
@@ -848,7 +848,7 @@ export function ProjectRoutingTab() {
                                   />
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Similarity threshold</label>
+                                  <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>相似度阈值</label>
                                   <input
                                     type="number"
                                     min={0} max={1} step={0.01}
@@ -875,7 +875,7 @@ export function ProjectRoutingTab() {
                                     updatePolicyConfig(idx, { cache: { ...c, extend_on_hit: e.target.checked } });
                                   }}
                                   onMouseDown={e => e.stopPropagation()}
-                                  style={{ width: 14, height: 14, accentColor: 'var(--primary)', cursor: 'pointer' }}
+                                  style={{ width: 14, height: 14, accentColor: 'var(--主模型)', cursor: 'pointer' }}
                                 />
                                 Extend TTL on hit
                               </label>
@@ -895,8 +895,8 @@ export function ProjectRoutingTab() {
 
                       {/* --- Embedding Model --- */}
                       <div>
-                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 8 }}>Embedding Models</label>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, marginTop: -4 }}>The first model is the primary. The others are tried in order if the primary fails.</p>
+                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 8 }}>嵌入模型</label>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8, marginTop: -4 }}>第一个模型为主模型。如果主模型失败，按顺序尝试其他模型。</p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                           {getSemModelIds(policy).map((modelId, mIdx) => {
                             const embeddingModels = availableModels.filter(m => m.capabilities?.embedding === true);
@@ -931,7 +931,7 @@ export function ProjectRoutingTab() {
                                   style={{ flex: 1 }}
                                 />
                                 {mIdx === 0 && (
-                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>primary</span>
+                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, minWidth: 48, textAlign: 'right' }}>主模型</span>
                                 )}
                                 <button
                                   type="button"
@@ -1008,7 +1008,7 @@ export function ProjectRoutingTab() {
                                 >
                                   <span style={{ fontSize: '0.65rem', display: 'inline-block', transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.15s ease', color: 'var(--text-muted)', flexShrink: 0 }}>▶</span>
                                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
-                                  <span style={{ flex: 1, fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                                  <span style={{ flex: 1, fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-主模型)' }}>
                                     {intentName.replace(/_/g, ' ')}
                                   </span>
                                   <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontFamily: 'monospace', marginRight: 4 }}>
@@ -1070,7 +1070,7 @@ export function ProjectRoutingTab() {
                                                 style={{
                                                   flex: 1,
                                                   fontSize: '0.8rem',
-                                                  color: 'var(--text-primary)',
+                                                  color: 'var(--text-主模型)',
                                                   lineHeight: 1.4,
                                                   background: 'none',
                                                   border: '1px solid transparent',
@@ -1147,7 +1147,7 @@ export function ProjectRoutingTab() {
                                             setAddExampleInputs(prev => ({ ...prev, [exampleKey]: '' }));
                                           }
                                         }}
-                                        style={{ flex: 1, background: 'none', border: '1px solid var(--border)', borderRadius: 4, outline: 'none', fontSize: '0.8rem', color: 'var(--text-primary)', padding: '4px 8px' }}
+                                        style={{ flex: 1, background: 'none', border: '1px solid var(--border)', borderRadius: 4, outline: 'none', fontSize: '0.8rem', color: 'var(--text-主模型)', padding: '4px 8px' }}
                                       />
                                     </div>
                                   </div>
@@ -1199,7 +1199,7 @@ export function ProjectRoutingTab() {
                                 }
                                 setAddIntentInputs(prev => ({ ...prev, [idx]: '' }));
                               }}
-                              style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: '0.82rem', color: 'var(--text-primary)', padding: 0 }}
+                              style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: '0.82rem', color: 'var(--text-主模型)', padding: 0 }}
                             />
                           </div>
                         </div>
@@ -1448,8 +1448,8 @@ export function ProjectRoutingTab() {
                               style={{
                                 padding: '3px 10px',
                                 borderRadius: 12,
-                                border: `1px solid ${active ? 'var(--primary)' : 'var(--border)'}`,
-                                background: active ? 'var(--primary)' : 'transparent',
+                                border: `1px solid ${active ? 'var(--主模型)' : 'var(--border)'}`,
+                                background: active ? 'var(--主模型)' : 'transparent',
                                 color: active ? '#fff' : 'var(--text-secondary)',
                                 fontSize: '0.72rem',
                                 cursor: 'pointer',
@@ -1499,8 +1499,8 @@ export function ProjectRoutingTab() {
               opacity: availableModels.filter(m => !targetModels.some(t => t.modelId === m.id)).length === 0 ? 0.4 : 1,
             }}
             onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--primary)';
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--primary)';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--主模型)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--主模型)';
             }}
             onMouseLeave={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--border)';
@@ -1514,7 +1514,7 @@ export function ProjectRoutingTab() {
         <div style={{ marginTop: 32 }}>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-主模型"
             disabled={saving}
             onClick={() => void doSave()}
             style={saved ? { background: '#16a34a', borderColor: '#16a34a', transition: 'background 0.2s, border-color 0.2s' } : { transition: 'background 0.2s, border-color 0.2s' }}
