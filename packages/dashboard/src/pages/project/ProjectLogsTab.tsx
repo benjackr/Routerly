@@ -24,7 +24,7 @@ export function ProjectLogsTab() {
   const [loading, setLoading]     = useState(true);
   const [dateRange, setDateRange] = useFilterState<DateRange>({ key: `project-${projectId}-filters-dateRange`, defaultValue: { from: '', to: '', label: '本月' } });
   const [modelIds, setModelIds]   = useFilterState<string[]>({ key: `project-${projectId}-filters-modelIds`, defaultValue: [] });
-  const [call类型Filter, setCall类型Filter] = useFilterState<'all' | 'completion' | 'routing'>({ key: `project-${projectId}-filters-call类型`, defaultValue: 'all' });
+  const [typeFilter, setCall类型Filter] = useFilterState<'all' | 'completion' | 'routing'>({ key: `project-${projectId}-filters-type`, defaultValue: 'all' });
   const [outcomeFilter, setOutcomeFilter]   = useFilterState<'all' | 'success' | 'error' | 'blocked'>({ key: `project-${projectId}-filters-outcome`, defaultValue: 'all' });
   const [lastUpdated, setLastUpdated]       = useState<Date | null>(null);
   const [pollInterval, setPollInterval]     = useFilterState<number>({ key: `project-${projectId}-filters-pollInterval`, defaultValue: 30_000 });
@@ -86,7 +86,7 @@ export function ProjectLogsTab() {
   }, [fetchStats, pollInterval]);
 
   // Reset page when filters change
-  useEffect(() => { setPage(1); }, [dateRange, modelIds, call类型Filter, outcomeFilter]);
+  useEffect(() => { setPage(1); }, [dateRange, modelIds, typeFilter, outcomeFilter]);
 
   const modelOptions = useMemo(() => {
     if (!stats) return [];
@@ -98,13 +98,13 @@ export function ProjectLogsTab() {
     if (!stats) return [];
     return stats.records.filter(r => {
       if (modelIds.length > 0 && !modelIds.includes(r.modelId)) return false;
-      if (call类型Filter !== 'all' && (r.call类型 ?? 'completion') !== call类型Filter) return false;
+      if (typeFilter !== 'all' && (r.type ?? 'completion') !== typeFilter) return false;
       if (outcomeFilter !== 'all' && r.outcome !== outcomeFilter) return false;
       return true;
     });
-  }, [stats, modelIds, call类型Filter, outcomeFilter]);
+  }, [stats, modelIds, typeFilter, outcomeFilter]);
 
-  const hasReset = modelIds.length > 0 || call类型Filter !== 'all' || outcomeFilter !== 'all';
+  const hasReset = modelIds.length > 0 || typeFilter !== 'all' || outcomeFilter !== 'all';
 
   return (
     <div style={{ padding: '24px 0', maxWidth: 1100 }}>
@@ -163,7 +163,7 @@ export function ProjectLogsTab() {
               {(['all', 'completion', 'routing'] as const).map(f => (
                 <button
                   key={f}
-                  className={`btn btn-sm ${call类型Filter === f ? 'btn-primary' : 'btn-secondary'}`}
+                  className={`btn btn-sm ${typeFilter === f ? 'btn-primary' : 'btn-secondary'}`}
                   onClick={() => setCall类型Filter(f)}
                 >
                   {f === 'all' ? '全部' : f === 'completion' ? '补全' : '路由'}
@@ -218,7 +218,7 @@ export function ProjectLogsTab() {
             </div>
             <div
               className="stat-card"
-              style={{ cursor: 'pointer', outline: call类型Filter === 'completion' ? '2px solid var(--primary)' : 'none', outlineOffset: 2 }}
+              style={{ cursor: 'pointer', outline: typeFilter === 'completion' ? '2px solid var(--primary)' : 'none', outlineOffset: 2 }}
               onClick={() => setCall类型Filter(f => f === 'completion' ? 'all' : 'completion')}
             >
               <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -232,7 +232,7 @@ export function ProjectLogsTab() {
             </div>
             <div
               className="stat-card"
-              style={{ cursor: 'pointer', outline: call类型Filter === 'routing' ? '2px solid var(--accent)' : 'none', outlineOffset: 2 }}
+              style={{ cursor: 'pointer', outline: typeFilter === 'routing' ? '2px solid var(--accent)' : 'none', outlineOffset: 2 }}
               onClick={() => setCall类型Filter(f => f === 'routing' ? 'all' : 'routing')}
             >
               <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -241,7 +241,7 @@ export function ProjectLogsTab() {
               </div>
               <div className="stat-value">{stats.summary.routingCalls ?? 0}</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: 2 }}>
-                ${(stats.summary.routing费用 ?? 0).toFixed(4)}
+                ${(stats.summary.totalCost ?? 0).toFixed(4)}
               </div>
             </div>
             <div className="stat-card">
@@ -290,7 +290,7 @@ export function ProjectLogsTab() {
                 </thead>
                 <tbody>
                   {filteredRecords.map((r, i) => {
-                    const isRouting = (r.call类型 ?? 'completion') === 'routing';
+                    const isRouting = (r.type ?? 'completion') === 'routing';
                     return (
                       <tr
                         key={i}
