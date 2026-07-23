@@ -6,7 +6,7 @@ import {
   ChevronLeft, ChevronRight, Code, Trash2, Save, BookOpen,
   SplitSquareHorizontal, MessageSquare,
 } from 'lucide-react';
-import { getProjects, getPlaygroundPresets, createPlaygroundPreset, deletePlaygroundPreset, getTrace, type Project, type PlaygroundPreset, type TraceEntry } from '../api.js';
+import { getProjects, get调试台预设, create调试台Preset, delete调试台Preset, getTrace, type Project, type 调试台Preset, type TraceEntry } from '../api.js';
 import { TraceEntryRenderer } from '../components/TraceEntryRenderer.js';
 import { MessageStatsCard } from '../components/MessageStatsCard.js';
 import { extractMessageStats } from '../utils/traceUtils.js';
@@ -249,7 +249,7 @@ function ComparePanel({
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Model {label}:</span>
                   <select className="form-input" style={{ flex: 1, padding: '4px 8px', fontSize: '0.78rem' }} value={model} onChange={e => setModel(e.target.value)}>
-                    <option value="">Select model...</option>
+                    <option value="">选择模型...</option>
                     {availableModels.map(m => <option key={m.modelId} value={m.modelId}>{m.modelId}</option>)}
                   </select>
                 </div>
@@ -268,7 +268,7 @@ function ComparePanel({
               </div>
               <div style={{ flex: 1, overflowY: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {display.length === 0 ? (
-                  <p style={{ margin: 'auto', fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center' }}>No messages yet.</p>
+                  <p style={{ margin: 'auto', fontSize: '0.82rem', color: 'var(--text-muted)', textAlign: 'center' }}>暂无消息。</p>
                 ) : (
                   display.map((msg, i) => {
                     const isAssistant = msg.role === 'assistant';
@@ -298,7 +298,7 @@ function ComparePanel({
                             ) : null}
                             {/* v8 ignore start */
                             (msg.guardrailInputTokens || msg.guardrailOutputTokens) ? (
-                              <span title="Guardrail judge tokens" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 4px', fontFamily: 'monospace' }}>
+                              <span title="护栏判定令牌" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 4px', fontFamily: 'monospace' }}>
                                 guardrail ↑{msg.guardrailInputTokens ?? 0} ↓{msg.guardrailOutputTokens ?? 0} tok | {costEstimate(msg.guardrailInputTokens ?? 0, msg.guardrailOutputTokens ?? 0)}
                               </span>
                             ) : null /* v8 ignore stop */}
@@ -322,7 +322,7 @@ function ComparePanel({
               {traceHistory.length > 0 && (
                 <details style={{ borderTop: '1px solid var(--border)' }}>
                   <summary style={{ cursor: 'pointer', padding: '6px 14px', fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--bg-surface)', userSelect: 'none', display: 'list-item' }}>
-                    Debug ({traceHistory.length} {traceHistory.length === 1 ? 'turn' : 'turns'})
+                    调试 ({traceHistory.length} {traceHistory.length === 1 ? 'turn' : 'turns'})
                   </summary>
                   <div style={{ maxHeight: 200, overflowY: 'auto', padding: 10, background: 'var(--bg-base)', fontSize: '0.82rem' }}>
                     {traceHistory.map((traces, i) => {
@@ -331,7 +331,7 @@ function ComparePanel({
                         <div key={i} style={{ marginBottom: 8 }}>
                           <MessageStatsCard stats={stats} turnNumber={i + 1} />
                           <details style={{ marginTop: 4 }}>
-                            <summary style={{ cursor: 'pointer', fontSize: '0.72rem', color: 'var(--text-muted)', padding: '4px 8px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 4, userSelect: 'none', display: 'list-item' }}>Technical Details</summary>
+                            <summary style={{ cursor: 'pointer', fontSize: '0.72rem', color: 'var(--text-muted)', padding: '4px 8px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 4, userSelect: 'none', display: 'list-item' }}>技术详情</summary>
                             <div style={{ marginTop: 4, padding: 8, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 4 }}>
                               {(traces as TraceEntry[]).map((entry, j) => <TraceEntryRenderer key={j} entry={entry} />)}
                             </div>
@@ -396,8 +396,8 @@ export function TestPage() {
   const abortRef = useRef<AbortController | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const debugEndRef = useRef<HTMLDivElement>(null);
-  const [debugTraceHistory, setDebugTraceHistory] = useState<(unknown[] | null)[]>([]);
-  const [showDebugSidebar, setShowDebugSidebar] = useState(true);
+  const [debugTraceHistory, set调试TraceHistory] = useState<(unknown[] | null)[]>([]);
+  const [show调试Sidebar, setShow调试Sidebar] = useState(true);
 
   // Stream toggle (disabled when streamingDisabled)
   const [streamEnabled, setStreamEnabled] = useState(true);
@@ -408,10 +408,10 @@ export function TestPage() {
   const [apiKeyB, setApiKeyB] = useState('');
   const [showKeyB, setShowKeyB] = useState(false);
 
-  // Presets
-  const [showPresetsPanel, setShowPresetsPanel] = useState(false);
-  const [presets, setPresets] = useState<PlaygroundPreset[]>([]);
-  const [presetsLoading, setPresetsLoading] = useState(false);
+  // 预设
+  const [show预设Panel, setShow预设Panel] = useState(false);
+  const [presets, set预设] = useState<调试台Preset[]>([]);
+  const [presetsLoading, set预设Loading] = useState(false);
   const [savePresetName, setSavePresetName] = useState('');
   const [showSaveForm, setShowSaveForm] = useState(false);
 
@@ -438,12 +438,12 @@ export function TestPage() {
   useEffect(() => { getProjects().then(setProjects).catch(console.error); }, []);
 
   useEffect(() => {
-    if (!matchedProject) { setPresets([]); return; }
-    setPresetsLoading(true);
-    getPlaygroundPresets(matchedProject.id)
-      .then(setPresets)
-      .catch(() => setPresets([]))
-      .finally(() => setPresetsLoading(false));
+    if (!matchedProject) { set预设([]); return; }
+    set预设Loading(true);
+    get调试台预设(matchedProject.id)
+      .then(set预设)
+      .catch(() => set预设([]))
+      .finally(() => set预设Loading(false));
   }, [matchedProject?.id]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
@@ -472,7 +472,7 @@ export function TestPage() {
     const controller = new AbortController();
     abortRef.current = controller;
     const turnIndex = debugTraceHistory.length;
-    setDebugTraceHistory(prev => [...prev, []]);
+    set调试TraceHistory(prev => [...prev, []]);
 
     const sysMsgs = systemPrompt ? [{ role: 'system' as const, content: systemPrompt }] : [];
     const modelToUse = selectedModelId || matchedProject?.routingModelId || matchedProject?.models?.[0]?.modelId || '';
@@ -525,7 +525,7 @@ export function TestPage() {
         try {
           const data = JSON.parse(dataStr);
           if (data.type === 'trace') {
-            setDebugTraceHistory(prev => {
+            set调试TraceHistory(prev => {
               const u = [...prev];
               /* v8 ignore next */
               const cur = (u[turnIndex] as unknown[]) ?? [];
@@ -592,7 +592,7 @@ export function TestPage() {
           const traceData = await getTrace(traceId);
           traceEntries = traceData.trace;
           // Merge trace entries into debug sidebar (replace SSE-collected entries with full trace)
-          setDebugTraceHistory(prev => {
+          set调试TraceHistory(prev => {
             const u = [...prev];
             u[turnIndex] = traceEntries;
             return u;
@@ -628,7 +628,7 @@ export function TestPage() {
       }
 
       // Sum guardrail judge token usage across evaluated rules (request + response), so the
-      // Playground surfaces guardrail cost per turn — including a blocked turn, which has no completion.
+      // 调试台 surfaces guardrail cost per turn — including a blocked turn, which has no completion.
       let guardrailIn = 0, guardrailOut = 0;
       for (const e of traceEntries) {
         if (e.message !== 'guardrail:evaluated') continue;
@@ -672,9 +672,9 @@ export function TestPage() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  // ── Presets ────────────────────────────────────────────────────────────────
+  // ── 预设 ────────────────────────────────────────────────────────────────
 
-  function loadPreset(preset: PlaygroundPreset) {
+  function loadPreset(preset: 调试台Preset) {
     setSystemPrompt(preset.systemPrompt);
     setSystemPromptOpen(true);
     if (preset.messages) {
@@ -682,7 +682,7 @@ export function TestPage() {
     } else {
       setMessages([]);
     }
-    setShowPresetsPanel(false);
+    setShow预设Panel(false);
   }
 
   async function savePreset() {
@@ -697,8 +697,8 @@ export function TestPage() {
         systemPrompt,
       };
       if (convoMsgs.length > 0) presetData.messages = convoMsgs;
-      const created = await createPlaygroundPreset(matchedProject.id, presetData);
-      setPresets(prev => [...prev, created]);
+      const created = await create调试台Preset(matchedProject.id, presetData);
+      set预设(prev => [...prev, created]);
       setSavePresetName('');
       setShowSaveForm(false);
     } catch (e) { console.error('保存预设失败', e); }
@@ -708,8 +708,8 @@ export function TestPage() {
     /* v8 ignore next */
     if (!matchedProject) return;
     try {
-      await deletePlaygroundPreset(matchedProject.id, presetId);
-      setPresets(prev => prev.filter(p => p.id !== presetId));
+      await delete调试台Preset(matchedProject.id, presetId);
+      set预设(prev => prev.filter(p => p.id !== presetId));
     } catch (e) { console.error('删除预设失败', e); }
   }
 
@@ -724,7 +724,7 @@ export function TestPage() {
       <div className="page-header" style={{ paddingBottom: 16, flexShrink: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h1 style={{ margin: 0 }}>Playground</h1>
+            <h1 style={{ margin: 0 }}>调试台</h1>
             <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
               Test models, compare responses, and save prompt presets.
             </p>
@@ -817,14 +817,14 @@ export function TestPage() {
               </div>
             )}
 
-            {/* Presets button */}
+            {/* 预设 button */}
             {matchedProject && (
               <button
-                className={`btn${showPresetsPanel ? ' btn-primary' : ''}`}
-                onClick={() => setShowPresetsPanel(!showPresetsPanel)}
+                className={`btn${show预设Panel ? ' btn-primary' : ''}`}
+                onClick={() => setShow预设Panel(!show预设Panel)}
                 style={{ fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: 5 }}
               >
-                <BookOpen size={13} /> Presets {presets.length > 0 ? `(${presets.length})` : ''}
+                <BookOpen size={13} /> 预设 {presets.length > 0 ? `(${presets.length})` : ''}
               </button>
             )}
           </div>
@@ -834,11 +834,11 @@ export function TestPage() {
       {/* Body */}
       <div style={{ display: 'flex', gap: 16, flex: 1, minHeight: 0, padding: '0 32px 24px' }}>
 
-        {/* Presets sidebar */}
-        {showPresetsPanel && matchedProject && (
+        {/* 预设 sidebar */}
+        {show预设Panel && matchedProject && (
           <div className="card" style={{ width: 250, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0, flexShrink: 0 }}>
             <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.84rem', fontWeight: 600 }}>Presets</span>
+              <span style={{ fontSize: '0.84rem', fontWeight: 600 }}>预设</span>
               <button
                 onClick={() => setShowSaveForm(!showSaveForm)}
                 className="btn"
@@ -865,7 +865,7 @@ export function TestPage() {
               {presetsLoading ? (
                 <div style={{ textAlign: 'center', padding: 20 }}><span className="spinner" style={{ width: 14, height: 14 }} /></div>
               ) : presets.length === 0 ? (
-                <p style={{ margin: 0, padding: '20px 8px', textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)' }}>No presets yet.</p>
+                <p style={{ margin: 0, padding: '20px 8px', textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)' }}>暂无预设。</p>
               ) : (
                 presets.map(p => (
                   <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '5px 6px', borderRadius: 5, marginBottom: 2 }}
@@ -905,7 +905,7 @@ export function TestPage() {
                 >
                   <AlertTriangle size={15} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
                   <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.45 }}>
-                    <strong style={{ color: '#b45309' }}>Streaming not available</strong> — this project has a
+                    <strong style={{ color: '#b45309' }}>流式传输不可用</strong> — this project has a
                     response-blocking guardrail active. Routerly must inspect the full response before delivery,
                     so responses arrive all at once.
                   </p>
@@ -915,7 +915,7 @@ export function TestPage() {
               <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg-surface)', flexShrink: 0 }}>
                 <button onClick={() => setSystemPromptOpen(!systemPromptOpen)}
                   style={{ width: '100%', padding: '8px 16px', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                  <span style={{ fontWeight: 600 }}>System prompt</span>
+                  <span style={{ fontWeight: 600 }}>系统提示词</span>
                   <span style={{ transform: systemPromptOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.15s', display: 'inline-block', fontSize: '0.65rem' }}>▶</span>
                 </button>
                 {systemPromptOpen && (
@@ -930,7 +930,7 @@ export function TestPage() {
                     <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>模型</label>
                     <select className="form-input" style={{ padding: '4px 8px', fontSize: '0.78rem' }}
                       value={selectedModelId} onChange={e => setSelectedModelId(e.target.value)}>
-                      <option value="">Auto (project default)</option>
+                      <option value="">自动（项目默认）</option>
                       {availableModels.map(m => <option key={m.modelId} value={m.modelId}>{m.modelId}</option>)}
                     </select>
                   </div>
@@ -961,7 +961,7 @@ export function TestPage() {
                     )}
                   </label>
                   {messages.length > 0 && (
-                    <button className="btn" style={{ fontSize: '0.73rem', marginLeft: 'auto' }} onClick={() => { setMessages([]); setShowRaw({}); setDebugTraceHistory([]); }}>清空</button>
+                    <button className="btn" style={{ fontSize: '0.73rem', marginLeft: 'auto' }} onClick={() => { setMessages([]); setShowRaw({}); set调试TraceHistory([]); }}>清空</button>
                   )}
                 </div>
               </div>
@@ -970,8 +970,8 @@ export function TestPage() {
               <div style={{ flex: 1, overflowY: 'auto', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {displayMessages.length === 0 ? (
                   <div className="empty-state" style={{ margin: 'auto' }}>
-                    <p style={{ margin: 0 }}>No messages yet.</p>
-                    {!apiKey && <p style={{ fontSize: '0.8rem', marginTop: 4, color: 'var(--text-secondary)' }}>Enter a Project Token above to start.</p>}
+                    <p style={{ margin: 0 }}>暂无消息。</p>
+                    {!apiKey && <p style={{ fontSize: '0.8rem', marginTop: 4, color: 'var(--text-secondary)' }}>请在上方输入项目令牌以开始。</p>}
                   </div>
                 ) : (
                   displayMessages.map((msg, i) => {
@@ -1032,7 +1032,7 @@ export function TestPage() {
                           ) : null}
                           {isAssistant && (msg.guardrailInputTokens || msg.guardrailOutputTokens) ? (
                             /* v8 ignore next 3 */
-                            <span title="Guardrail judge tokens" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 5px', fontFamily: 'monospace' }}>
+                            <span title="护栏判定令牌" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 4, padding: '1px 5px', fontFamily: 'monospace' }}>
                               guardrail: {(msg.guardrailInputTokens ?? 0) + (msg.guardrailOutputTokens ?? 0)} | {costEstimate(msg.guardrailInputTokens ?? 0, msg.guardrailOutputTokens ?? 0)}
                             </span>
                           ) : null}
@@ -1125,23 +1125,23 @@ export function TestPage() {
               </div>
             </div>
 
-            {/* Debug sidebar */}
-            {showDebugSidebar && (
+            {/* 调试 sidebar */}
+            {show调试Sidebar && (
               <div className="card" style={{ width: 380, display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0 }}>
                 <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>Debug</h3>
+                  <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>调试</h3>
                   <div style={{ display: 'flex', gap: 6 }}>
                     {debugTraceHistory.length > 0 && (
-                      <button onClick={() => setDebugTraceHistory([])} style={{ fontSize: '0.7rem', color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}>清空</button>
+                      <button onClick={() => set调试TraceHistory([])} style={{ fontSize: '0.7rem', color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}>清空</button>
                     )}
-                    <button onClick={() => setShowDebugSidebar(false)} className="btn-icon" style={{ padding: 4 }} title="隐藏调试"><ChevronRight size={15} /></button>
+                    <button onClick={() => setShow调试Sidebar(false)} className="btn-icon" style={{ padding: 4 }} title="隐藏调试"><ChevronRight size={15} /></button>
                   </div>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: 12, background: 'var(--bg-base)' }}>
                   {debugTraceHistory.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '30px 10px', color: 'var(--text-muted)' }}>
-                      <p style={{ margin: 0, fontSize: '0.82rem' }}>No debug data yet.</p>
-                      <p style={{ margin: '6px 0 0', fontSize: '0.75rem' }}>Send a message to see routing details.</p>
+                      <p style={{ margin: 0, fontSize: '0.82rem' }}>暂无调试数据。</p>
+                      <p style={{ margin: '6px 0 0', fontSize: '0.75rem' }}>发送一条消息以查看路由详情。</p>
                     </div>
                   ) : (
                     debugTraceHistory.map((traces, i) => {
@@ -1153,7 +1153,7 @@ export function TestPage() {
                           <MessageStatsCard stats={stats} turnNumber={i + 1} />
                           <details style={{ marginTop: 6 }}>
                             <summary style={{ cursor: 'pointer', fontSize: '0.78rem', color: 'var(--text-muted)', padding: '6px 10px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: 6, userSelect: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
-                              Technical Details
+                              技术详情
                             </summary>
                             <div style={{ marginTop: 6, padding: 10, background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 6, fontSize: '0.83rem' }}>
                               {(traces as any[]).map((entry, j) => (
@@ -1171,8 +1171,8 @@ export function TestPage() {
                 </div>
               </div>
             )}
-            {!showDebugSidebar && (
-              <button onClick={() => setShowDebugSidebar(true)} className="btn-icon"
+            {!show调试Sidebar && (
+              <button onClick={() => setShow调试Sidebar(true)} className="btn-icon"
                 style={{ position: 'fixed', right: 24, top: '50%', transform: 'translateY(-50%)', padding: 8, background: 'var(--bg-elevated)', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                 title="显示调试">
                 <ChevronLeft size={18} />
