@@ -6,7 +6,7 @@ import {
   type GuardrailConfig,
   type GuardrailRule,
   type GuardrailRuleType,
-  type Guardrail目标,
+  type GuardrailTarget,
   type Model,
   type RegexGuardConfig,
   type SemanticGuardConfig,
@@ -111,7 +111,7 @@ function PiiPolicyCard({
     const newReq = side === 'request' ? !reqChecked : reqChecked;
     const newRes = side === 'response' ? !resChecked : resChecked;
     if (!newReq && !newRes) return;
-    let next: Guardrail目标;
+    let next: GuardrailTarget;
     if (newReq && newRes) next = 'both';
     else if (newReq) next = 'request';
     else next = 'response';
@@ -222,7 +222,7 @@ function PiiPolicyCard({
 
 // ── 目标 selector ───────────────────────────────────────────────────────────
 
-function 目标Selector({ value, onChange }: { value: Guardrail目标 | undefined; onChange: (v: Guardrail目标) => void }) {
+function 目标Selector({ value, onChange }: { value: GuardrailTarget | undefined; onChange: (v: GuardrailTarget) => void }) {
   const reqChecked = value === 'request' || value === 'both';
   const resChecked = value === 'response' || value === 'both';
 
