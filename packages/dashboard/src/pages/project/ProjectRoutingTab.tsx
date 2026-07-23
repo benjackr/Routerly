@@ -63,7 +63,7 @@ export function ProjectRoutingTab() {
   const [addIntentInputs, setAddIntentInputs] = useState<Record<number, string>>({});
 
   // Expanded intent state: which intents are open (keyed by intentName)
-  const [expandedIntents, setExpandedIntents] = useState<Set<string>>(new Set());
+  const [expanded意图, setExpanded意图] = useState<Set<string>>(new Set());
 
   // Show-all-examples toggle: keyed by `${policyIdx}::${intentName}`
   const [showAllExamples, setShowAllExamples] = useState<Set<string>>(new Set());
@@ -133,7 +133,7 @@ export function ProjectRoutingTab() {
   }
 
   // --- Semantic Intent / Model association helpers ---
-  function getIntentsForModel(modelId: string): Set<string> {
+  function get意图ForModel(modelId: string): Set<string> {
     const result = new Set<string>();
     const semPolicy = policies.find(p => p.type === 'semantic-intent' && p.enabled);
     /* v8 ignore next */
@@ -304,7 +304,7 @@ export function ProjectRoutingTab() {
     if (el) el.style.opacity = '1';
   }
 
-  // --- Target Models Handlers ---
+  // --- 目标模型 Handlers ---
   function addTargetModel() {
     const usedIds = new Set(targetModels.map(t => t.modelId));
     const firstAvailable = availableModels.find(m => !m.capabilities?.embedding && !usedIds.has(m.id));
@@ -422,7 +422,7 @@ export function ProjectRoutingTab() {
 
   const semanticIntentPolicy = policies.find(p => p.type === 'semantic-intent' && p.enabled);
   const isSemanticIntentEnabled = !!semanticIntentPolicy;
-  const semanticIntents = isSemanticIntentEnabled
+  const semantic意图 = isSemanticIntentEnabled
     ? (semanticIntentPolicy!.config?.intents ?? {}) as Record<string, { examples: string[]; candidate_models: string[] }>
     : {};
 
@@ -965,9 +965,9 @@ export function ProjectRoutingTab() {
                         </button>
                       </div>
 
-                      {/* --- Intents --- */}
+                      {/* --- 意图 --- */}
                       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10 }}>
-                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>Intents</label>
+                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>意图</label>
                         <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 8, lineHeight: 1.4 }}>
                           Each intent groups example utterances that represent a category of requests. The closer a user message is to an intent's examples, the higher its score.
                         </p>
@@ -976,7 +976,7 @@ export function ProjectRoutingTab() {
                             /* v8 ignore next */
                             const intentMap = (policy.config?.intents ?? {}) as Record<string, { examples: string[]; candidate_models: string[] }>;
                             return Object.entries(intentMap).map(([intentName, intentDef], iIdx, arr) => {
-                            const isExpanded = expandedIntents.has(intentName);
+                            const isExpanded = expanded意图.has(intentName);
                             const exampleKey = `${idx}::${intentName}`;
                             /* v8 ignore next */
                             const exampleCount = intentDef.examples?.length ?? 0;
@@ -1000,7 +1000,7 @@ export function ProjectRoutingTab() {
                                     cursor: 'pointer',
                                     userSelect: 'none',
                                   }}
-                                  onClick={() => setExpandedIntents(prev => {
+                                  onClick={() => setExpanded意图(prev => {
                                     const next = new Set(prev);
                                     next.has(intentName) ? next.delete(intentName) : next.add(intentName);
                                     return next;
@@ -1176,7 +1176,7 @@ export function ProjectRoutingTab() {
                                   if (!intents[key]) {
                                     intents[key] = { examples: [], candidate_models: [] };
                                     updatePolicyConfig(idx, { intents });
-                                    setExpandedIntents(prev => new Set(prev).add(key));
+                                    setExpanded意图(prev => new Set(prev).add(key));
                                   }
                                   setAddIntentInputs(prev => ({ ...prev, [idx]: '' }));
                                 } else if (e.key === 'Escape') {
@@ -1194,7 +1194,7 @@ export function ProjectRoutingTab() {
                                   if (!intents[key]) {
                                     intents[key] = { examples: [], candidate_models: [] };
                                     updatePolicyConfig(idx, { intents });
-                                    setExpandedIntents(prev => new Set(prev).add(key));
+                                    setExpanded意图(prev => new Set(prev).add(key));
                                   }
                                 }
                                 setAddIntentInputs(prev => ({ ...prev, [idx]: '' }));
@@ -1228,7 +1228,7 @@ export function ProjectRoutingTab() {
 
                             <div style={{ paddingBottom: 10 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>Confidence threshold</label>
+                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>置信度阈值</label>
                                 <input
                                   type="number"
                                   min={0} max={1} step={0.05}
@@ -1246,7 +1246,7 @@ export function ProjectRoutingTab() {
 
                             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 10, paddingBottom: 10 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>Ambiguity margin</label>
+                                <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', minWidth: 160 }}>模糊度阈值</label>
                                 <input
                                   type="number"
                                   min={0} max={0.5} step={0.01}
@@ -1272,7 +1272,7 @@ export function ProjectRoutingTab() {
                   {policy.type === 'fairness' && policy.enabled && (
                     <div style={{ paddingLeft: 30, display: 'flex', flexDirection: 'column', gap: 8 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Window (minutes)</label>
+                        <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>窗口（分钟）</label>
                         <input
                           type="number" min={1} max={1440}
                           className="form-input"
@@ -1301,7 +1301,7 @@ export function ProjectRoutingTab() {
                     <div style={{ paddingLeft: 30, display: 'flex', flexDirection: 'column', gap: 8 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Window (minutes)</label>
+                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>窗口（分钟）</label>
                           <input
                             type="number" min={1} max={60}
                             className="form-input"
@@ -1311,7 +1311,7 @@ export function ProjectRoutingTab() {
                           />
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Max calls per window</label>
+                          <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>每窗口最大调用数</label>
                           <input
                             type="number" min={1}
                             className="form-input"
@@ -1365,10 +1365,10 @@ export function ProjectRoutingTab() {
 
         <div style={{ margin: '32px 0 24px', borderTop: '1px solid var(--border)' }} />
 
-        {/* Target Models Section */}
+        {/* 目标模型 Section */}
         <div className="form-group">
           <label className="form-label" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span>Target Models</span>
+            <span>目标模型</span>
           </label>
 
           <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 16 }}>
@@ -1403,7 +1403,7 @@ export function ProjectRoutingTab() {
 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div className="form-group" style={{ margin: 0 }}>
-                    <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 4, display: 'block' }}>Endpoint Model</label>
+                    <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 4, display: 'block' }}>端点模型</label>
                     <SearchableSelect
                       value={item.modelId}
                       onChange={v => updateTargetModel(idx, 'modelId', v)}
@@ -1422,7 +1422,7 @@ export function ProjectRoutingTab() {
                       onMouseEnter={() => setPromptHoverIdx(idx)}
                       onMouseLeave={() => setPromptHoverIdx(null)}
                     >
-                      <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 4, display: 'block' }}>Prompt Definition</label>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 4, display: 'block' }}>提示词定义</label>
                       <textarea
                         className="form-input"
                         value={item.prompt}
@@ -1434,12 +1434,12 @@ export function ProjectRoutingTab() {
                     </div>
                   )}
 
-                  {isSemanticIntentEnabled && Object.keys(semanticIntents).length > 0 && (
+                  {isSemanticIntentEnabled && Object.keys(semantic意图).length > 0 && (
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 6, display: 'block' }}>Intents</label>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 6, display: 'block' }}>意图</label>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                        {Object.keys(semanticIntents).map(intentKey => {
-                          const active = getIntentsForModel(item.modelId).has(intentKey);
+                        {Object.keys(semantic意图).map(intentKey => {
+                          const active = get意图ForModel(item.modelId).has(intentKey);
                           return (
                             <button
                               key={intentKey}
