@@ -14,16 +14,16 @@ const LOG_LEVELS: Settings['logLevel'][] = ['trace', 'debug', 'info', 'warn', 'e
 function TelemetrySection({ settings, onSaved }: { settings: Settings; onSaved: (s: Settings) => void }) {
   const t = settings.telemetry;
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [error, set错误] = useState('');
 
   async function toggle(enabled: boolean) {
     setSaving(true);
-    setError('');
+    set错误('');
     try {
       const updated = await updateSettings({ telemetry: { enabled } } as Partial<Settings>);
       onSaved(updated);
     } catch (e) {
-      setError(e instanceof Error ? e.message : '保存失败');
+      set错误(e instanceof 错误 ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
@@ -93,7 +93,7 @@ export function SettingsGeneralTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [error, setError] = useState('');
+  const [error, set错误] = useState('');
 
   useEffect(() => { load(); }, []);
 
@@ -104,7 +104,7 @@ export function SettingsGeneralTab() {
       setSettings(s);
       setForm({ defaultTimeoutMs: s.defaultTimeoutMs, logLevel: s.logLevel, publicUrl: s.publicUrl || `http://localhost:${s.port}`, ...(s.requireMfa !== undefined ? { requireMfa: s.requireMfa } : {}), ...(s.notifications ? { notifications: s.notifications } : {}) });
     } catch (e) {
-      setError(e instanceof Error ? e.message : '加载设置失败');
+      set错误(e instanceof 错误 ? e.message : '加载设置失败');
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ export function SettingsGeneralTab() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    set错误('');
     setSaving(true);
     setSaved(false);
     try {
@@ -121,7 +121,7 @@ export function SettingsGeneralTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : '保存设置失败');
+      set错误(e instanceof 错误 ? e.message : '保存设置失败');
     } finally {
       setSaving(false);
     }
@@ -272,7 +272,7 @@ const CHANNEL_PROVIDERS: Array<{ key: EProvider; label: string; description: str
 
 // Readable labels for the canonical events
 const EVENT_LABELS: Record<string, string> = {
-  'provider.error':            'Provider – Error',
+  'provider.error':            'Provider – 错误',
   'provider.degraded':         'Provider – Degraded',
   'provider.recovered':        'Provider – Recovered',
   'provider.rate_limited':     'Provider – Rate Limited',
@@ -295,15 +295,15 @@ const EVENT_LABELS: Record<string, string> = {
 const EVENT_OPTIONS = NOTIFICATION_EVENTS.map(e => ({ value: e, label: EVENT_LABELS[e] ?? e }));
 
 const PERM_LABELS_LOCAL: Record<Permission, string> = {
-  'project:read':       'Projects – Read',
-  'project:write':      'Projects – Write',
-  'model:read':         'Models – Read',
-  'model:write':        'Models – Write',
+  'project:read':       '项目 – 读取',
+  'project:write':      '项目 – 写入',
+  'model:read':         '模型 – 读取',
+  'model:write':        '模型 – 写入',
   'user:read':          'Users – Read',
   'user:write':         'Users – Write',
   'report:read':        'Reports – Read',
-  'settings:read':      'Settings – Read',
-  'settings:write':     'Settings – Write',
+  'settings:read':      '设置 – 读取',
+  'settings:write':     '设置 – 写入',
   'notification:write': 'Notifications – Write',
   'token:read':         'Tokens – Read',
   'token:write':        'Tokens – Write',
@@ -363,7 +363,7 @@ export function SettingsNotificationsTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving]   = useState(false);
   const [saved, setSaved]     = useState(false);
-  const [error, setError]     = useState('');
+  const [error, set错误]     = useState('');
   const [addOpen, setAddOpen]             = useState(false);
   const [channelSearch, setChannelSearch] = useState('');
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
@@ -399,7 +399,7 @@ export function SettingsNotificationsTab() {
         const ids = notif?.channels?.map(ch => ch.id) ?? [];
         if (ids.length) setCollapsed(Object.fromEntries(ids.map(id => [id, true])));
       })
-      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
+      .catch(e => set错误(e instanceof 错误 ? e.message : '加载失败'))
       .finally(() => setLoading(false));
     // ponytail: load roles + users in parallel for targets editor; failures are non-fatal
     getRoles().then(setRoles).catch(() => {});
@@ -408,7 +408,7 @@ export function SettingsNotificationsTab() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(''); setSaving(true); setSaved(false);
+    set错误(''); setSaving(true); setSaved(false);
     try {
       // Strip empty events/targets before saving
       const cleanChannels = form.notifications
@@ -433,7 +433,7 @@ export function SettingsNotificationsTab() {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : '保存失败');
+      set错误(e instanceof 错误 ? e.message : '保存失败');
     } finally { setSaving(false); }
   }
 
@@ -484,7 +484,7 @@ export function SettingsNotificationsTab() {
       if (res.fixedSecure !== undefined) uf(id, 'secure', res.fixedSecure);
       setTestStatus(s => ({ ...s, [id]: { loading: false, ok: res.ok, message: res.message, warn: res.fixedSecure !== undefined } }));
     } catch (e) {
-      setTestStatus(s => ({ ...s, [id]: { loading: false, ok: false, message: e instanceof Error ? e.message : String(e) } }));
+      setTestStatus(s => ({ ...s, [id]: { loading: false, ok: false, message: e instanceof 错误 ? e.message : String(e) } }));
     }
   }
 
@@ -1182,7 +1182,7 @@ function integrationFormFields(
 export function SettingsIntegrationsTab() {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [loading, setLoading]           = useState(true);
-  const [error, setError]               = useState('');
+  const [error, set错误]               = useState('');
   const [addOpen, setAddOpen]           = useState(false);
   const [collapsed, setCollapsed]       = useState<Record<string, boolean>>({});
   const [forms, setForms]               = useState<Record<string, Record<string, unknown>>>({});
@@ -1194,7 +1194,7 @@ export function SettingsIntegrationsTab() {
   useEffect(() => {
     getIntegrations()
       .then(setIntegrations)
-      .catch(e => setError(e instanceof Error ? e.message : '加载集成失败'))
+      .catch(e => set错误(e instanceof 错误 ? e.message : '加载集成失败'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -1228,7 +1228,7 @@ export function SettingsIntegrationsTab() {
       const updated = await updateIntegration(integration.id, { enabled: !integration.enabled });
       setIntegrations(prev => prev.map(i => i.id === updated.id ? updated : i));
     } catch (e) {
-      setError(e instanceof Error ? e.message : '更新集成失败');
+      set错误(e instanceof 错误 ? e.message : '更新集成失败');
     }
   }
 
@@ -1248,7 +1248,7 @@ export function SettingsIntegrationsTab() {
         setCollapsed(c => ({ ...c, [id]: true }));
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : '保存集成失败');
+      set错误(e instanceof 错误 ? e.message : '保存集成失败');
     } finally {
       setSaving(s => ({ ...s, [id]: false }));
     }
@@ -1269,7 +1269,7 @@ export function SettingsIntegrationsTab() {
       const result = await testIntegration(id);
       setTestResults(r => ({ ...r, [id]: result }));
     } catch (e) {
-      setTestResults(r => ({ ...r, [id]: { ok: false, message: e instanceof Error ? e.message : String(e) } }));
+      setTestResults(r => ({ ...r, [id]: { ok: false, message: e instanceof 错误 ? e.message : String(e) } }));
     }
   }
 
@@ -1286,7 +1286,7 @@ export function SettingsIntegrationsTab() {
       setForms(f => { const n = { ...f }; delete n[id]; return n; });
       setTestResults(r => { const n = { ...r }; delete n[id]; return n; });
     } catch (e) {
-      setError(e instanceof Error ? e.message : '删除集成失败');
+      set错误(e instanceof 错误 ? e.message : '删除集成失败');
     }
   }
 
@@ -1308,7 +1308,7 @@ export function SettingsIntegrationsTab() {
 
       {integrations.length === 0 && (
         <div style={{ padding: '40px 0 24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-          No integrations configured yet.
+          尚未配置任何集成.
         </div>
       )}
 
@@ -1455,16 +1455,16 @@ export function SettingsCatalogTab() {
   const [repos, setRepos] = useState<ProviderRepo[]>([]);
   const [status, setStatus] = useState<RepoStatus[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, set错误] = useState('');
   const [newUrl, setNewUrl] = useState('');
-  const [addError, setAddError] = useState('');
+  const [add错误, setAdd错误] = useState('');
   const [probing, setProbing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [saved, setSaved] = useState('');
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [editUrl, setEditUrl] = useState('');
   const [editEnabled, setEditEnabled] = useState(true);
-  const [editError, setEditError] = useState('');
+  const [edit错误, setEdit错误] = useState('');
   const [confirmRemoveIdx, setConfirmRemoveIdx] = useState<number | null>(null);
 
   useEffect(() => {
@@ -1476,7 +1476,7 @@ export function SettingsCatalogTab() {
         setRepos(s.providerRepos ?? [{ url: DEFAULT_REPO_URL, enabled: true }]);
         setStatus(st);
       })
-      .catch(e => setError(e instanceof Error ? e.message : '加载设置失败'))
+      .catch(e => set错误(e instanceof 错误 ? e.message : '加载设置失败'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -1495,20 +1495,20 @@ export function SettingsCatalogTab() {
     e.preventDefault();
     const url = newUrl.trim();
     if (!url) return;
-    setAddError('');
+    setAdd错误('');
     if (repos.some(r => r.url === url)) {
-      setAddError('此 URL 已在列表中。');
+      setAdd错误('此 URL 已在列表中。');
       return;
     }
     setProbing(true);
     try {
       const probe = await probeRepo(url);
       if (!probe.ok) {
-        setAddError(probe.error ?? '无法在此 URL 找到有效的提供商目录。');
+        setAdd错误(probe.error ?? '无法在此 URL 找到有效的提供商目录。');
         return;
       }
     } catch {
-      setAddError('无法在此 URL 找到有效的提供商目录。');
+      setAdd错误('无法在此 URL 找到有效的提供商目录。');
       return;
     } finally {
       setProbing(false);
@@ -1524,7 +1524,7 @@ export function SettingsCatalogTab() {
     setEditIdx(idx);
     setEditUrl(repo.url);
     setEditEnabled(repo.enabled);
-    setEditError('');
+    setEdit错误('');
   }
 
   async function handleSaveEdit(e: React.FormEvent) {
@@ -1532,9 +1532,9 @@ export function SettingsCatalogTab() {
     /* v8 ignore next */
     if (editIdx === null) return;
     const url = editUrl.trim();
-    setEditError('');
+    setEdit错误('');
     if (repos.some((r, i) => i !== editIdx && r.url === url)) {
-      setEditError('此 URL 已在列表中。');
+      setEdit错误('此 URL 已在列表中。');
       return;
     }
     /* v8 ignore next */
@@ -1656,8 +1656,8 @@ export function SettingsCatalogTab() {
                   <div>
                     <label className="form-label" htmlFor={`edit-url-${idx}`}>URL</label>
                     <input id={`edit-url-${idx}`} className="form-input" type="url" value={editUrl}
-                      onChange={e => { setEditUrl(e.target.value); setEditError(''); }} required autoFocus />
-                    {editError && <div className="form-error" style={{ marginTop: 4 }}>{editError}</div>}
+                      onChange={e => { setEditUrl(e.target.value); setEdit错误(''); }} required autoFocus />
+                    {edit错误 && <div className="form-error" style={{ marginTop: 4 }}>{edit错误}</div>}
                   </div>
                   <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.85rem' }}>
                     <input type="checkbox" checked={editEnabled} onChange={e => setEditEnabled(e.target.checked)} />
@@ -1712,8 +1712,8 @@ export function SettingsCatalogTab() {
         <div style={{ flex: 1 }}>
           <label className="form-label" htmlFor="catalog-url">Add Repository</label>
           <input id="catalog-url" className="form-input" type="url" placeholder="https://example.com/catalog/"
-            value={newUrl} onChange={e => { setNewUrl(e.target.value); setAddError(''); }} required />
-          {addError && <div className="form-error" style={{ marginTop: 4 }}>{addError}</div>}
+            value={newUrl} onChange={e => { setNewUrl(e.target.value); setAdd错误(''); }} required />
+          {add错误 && <div className="form-error" style={{ marginTop: 4 }}>{add错误}</div>}
         </div>
         <button type="submit" className="btn btn-primary" style={{ fontSize: '0.83rem', display: 'flex', alignItems: 'center', gap: 5 }} disabled={probing}>
           {probing ? <><div className="spinner" style={{ width: 10, height: 10 }} /> Checking…</> : <><Plus size={14} /> Add</>}
@@ -1771,7 +1771,7 @@ function ChannelSelector({
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : '保存失败');
+      setErr(e instanceof 错误 ? e.message : '保存失败');
     } finally {
       setSaving(false);
     }
@@ -1855,21 +1855,21 @@ function InfoRow({ label, value, mono = false }: { label: string; value: string;
 export function SettingsAboutTab() {
   const [info, setInfo] = useState<SystemInfo | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, set错误] = useState('');
 
   // Update-check state
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
   const [checking, setChecking] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [updateMsg, setUpdateMsg] = useState('');
-  const [updateError, setUpdateError] = useState('');
+  const [update错误, setUpdate错误] = useState('');
   const pollRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const [confirmState, setConfirmState] = useState<{ message: string; onConfirm: () => void } | null>(null);
 
   useEffect(() => {
     getSystemInfo()
       .then(i => { setInfo(i); setUpdateInfo(i.updateInfo); })
-      .catch(e => setError(e instanceof Error ? e.message : '加载失败'))
+      .catch(e => set错误(e instanceof 错误 ? e.message : '加载失败'))
       .finally(() => setLoading(false));
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, []);
@@ -1882,12 +1882,12 @@ export function SettingsAboutTab() {
 
   async function handleCheckUpdates() {
     setChecking(true);
-    setUpdateError('');
+    setUpdate错误('');
     try {
       const result = await checkForUpdates();
       setUpdateInfo(result);
     } catch (e) {
-      setUpdateError(e instanceof Error ? e.message : '检查失败');
+      setUpdate错误(e instanceof 错误 ? e.message : '检查失败');
     } finally {
       setChecking(false);
     }
@@ -1902,7 +1902,7 @@ export function SettingsAboutTab() {
 
   async function doUpdate() {
     setUpdating(true);
-    setUpdateError('');
+    setUpdate错误('');
     setUpdateMsg('');
     try {
       const result = await triggerUpdate();
@@ -1926,7 +1926,7 @@ export function SettingsAboutTab() {
         }
       }, 3000);
     } catch (e) {
-      setUpdateError(e instanceof Error ? e.message : '更新失败');
+      setUpdate错误(e instanceof 错误 ? e.message : '更新失败');
       setUpdating(false);
     }
   }
@@ -1936,8 +1936,8 @@ export function SettingsAboutTab() {
   /* v8 ignore next */
   if (!info) return null;
 
-  const isAdmin = info.isDocker === false; // will refine via App.tsx context if needed
-  void isAdmin;
+  const is管理员 = info.isDocker === false; // will refine via App.tsx context if needed
+  void is管理员;
 
   return (
     <>
@@ -1974,7 +1974,7 @@ export function SettingsAboutTab() {
         ) : (
           <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', padding: '9px 0' }}>No update check performed yet.</p>
         )}
-        {updateError && <p style={{ color: 'var(--error, #e53e3e)', fontSize: '0.83rem', margin: '8px 0 0' }}>{updateError}</p>}
+        {update错误 && <p style={{ color: 'var(--error, #e53e3e)', fontSize: '0.83rem', margin: '8px 0 0' }}>{update错误}</p>}
         {updateMsg && <p style={{ color: 'var(--accent)', fontSize: '0.83rem', margin: '8px 0 0' }}>{updateMsg}</p>}
         <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
           <button
@@ -2033,7 +2033,7 @@ export function SettingsPage() {
     <>
       <div className="page-header" style={{ paddingBottom: 0 }}>
         <h1>设置</h1>
-        <p>Configuration for Routerly</p>
+        <p>Routerly 配置</p>
 
         <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid var(--border)', marginTop: 16 }}>
           {TABS.map(t => (
